@@ -2,40 +2,44 @@
   class LibraryRenderer {
     static render(options) {
       const unlockedCount = options.unlockedIds.length;
+      
+      // Map achievement IDs to tarot card images
+      const imageMap = {
+        'first_five': 'achievement_first_five.jpeg',
+        'major_arcana_adept': 'achievement_major_arcana.jpeg',
+        'wands_arcana_adept': 'achievement_wands.jpeg',
+        'cups_arcana_adept': 'achievement_cups.jpeg',
+        'swords_arcana_adept': 'achievement_swords.jpg',
+        'pentacles_arcana_adept': 'achievement_pentacles.jpg',
+        'quiz_perfectionist': 'achievement_quiz.jpg',
+        'speed_learner': 'achievement_speed.jpg',
+        'tarot_master': 'achievement_master.jpg'
+      };
+
       const cardsHtml = options.achievements.map((achievement, index) => {
         const unlocked = options.unlockedIds.includes(achievement.id);
         const theme = options.themes[achievement.id] || { className: '', kicker: 'Archive Card' };
-        const sigil = this.renderAchievementSigilSvg(achievement.id);
-        const starfield = this.renderStarfield(achievement.id);
-        const edgeDots = this.renderDotRow(12);
-        const footerDots = this.renderDotRow(10);
+        const imagePath = `assets/images/${imageMap[achievement.id] || 'achievement_master.jpg'}`;
 
         return `
           <article class="achievement-card ${theme.className} ${unlocked ? 'unlocked' : 'locked'}" data-achievement="${achievement.id}" style="--card-index:${index}; --sweep-delay:${index}s;">
             <div class="achievement-back" aria-hidden="true">
               <div class="achievement-back-inner">
-                <div class="achievement-frame" aria-hidden="true">
-                  <div class="edge-bar edge-top">
-                    <div class="edge-dot-track">${edgeDots}</div>
-                    <div class="edge-moons">☽ ○ ☾</div>
+                <div class="achievement-illustration">
+                  <img src="${imagePath}" alt="${achievement.name}" class="achievement-card-image" loading="lazy" />
+                  <div class="achievement-hover-sparkles" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span>
                   </div>
-                  <div class="edge-bar edge-bottom">
-                    <div class="edge-dot-track">${edgeDots}</div>
-                    <div class="edge-moons">☽ ○ ☾</div>
-                  </div>
-                  <div class="frame-side-dots frame-side-left"><span></span><span></span><span></span></div>
-                  <div class="frame-side-dots frame-side-right"><span></span><span></span><span></span></div>
-                </div>
-                <div class="achievement-starfield" aria-hidden="true">${starfield}</div>
-                <div class="achievement-illustration">${sigil}</div>
-                <div class="achievement-label">
-                  <div class="title-dots">${footerDots}</div>
-                  <h3 class="achievement-name">${achievement.name}</h3>
-                  <div class="title-dots">${footerDots}</div>
+                  <span class="card-ornament card-ornament-top" aria-hidden="true">✦ ☾ ✦</span>
+                  <span class="card-ornament card-ornament-bottom" aria-hidden="true">✧ ✦ ✧</span>
                 </div>
                 <p class="achievement-tooltip">${achievement.description}</p>
                 ${unlocked ? '<span class="achievement-unlocked-badge" aria-hidden="true">&#10022;</span>' : ''}
+                ${!unlocked ? '<span class="achievement-locked-badge" aria-hidden="true">&#128274;</span>' : ''}
               </div>
+            </div>
+            <div class="achievement-label">
+              <h3 class="achievement-name">${achievement.name}</h3>
             </div>
           </article>`;
       }).join('');

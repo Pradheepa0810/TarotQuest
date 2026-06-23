@@ -1,0 +1,72 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "git-status-rebase-state",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"-sb"
+			]
+		},
+		{
+			"label": "git-status-full",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status"
+			]
+		},
+		{
+			"label": "git-fix-rebase-and-push",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git checkout -- assets/images/achievement_cups.jpeg; git add -A; git commit --amend --no-edit; git rebase --continue; git push origin main; git status -sb"
+			]
+		},
+		{
+			"label": "git-clear-stale-lock",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$procs = Get-Process git -ErrorAction SilentlyContinue; if ($procs) { $procs | Select-Object Id,ProcessName,StartTime | Format-Table -AutoSize; exit 1 } else { if (Test-Path .git/index.lock) { Remove-Item .git/index.lock -Force; Write-Output 'Removed .git/index.lock' } else { Write-Output 'No index.lock present' }; git status -sb }"
+			]
+		},
+		{
+			"label": "git-kill-stuck-processes",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$procs = Get-Process git -ErrorAction SilentlyContinue; if ($procs) { $procs | Stop-Process -Force; Write-Output ('Stopped git processes: ' + (($procs | Select-Object -ExpandProperty Id) -join ', ')) } else { Write-Output 'No git processes to stop' }; if (Test-Path .git/index.lock) { Remove-Item .git/index.lock -Force; Write-Output 'Removed .git/index.lock' } else { Write-Output 'No index.lock present' }; git status -sb"
+			]
+		},
+		{
+			"label": "git-recover-lock-simple",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$p=Get-Process git -ErrorAction SilentlyContinue; if($p){Stop-Process -Id $p.Id -Force; Write-Output \"Stopped git processes\"}; if(Test-Path .git/index.lock){Remove-Item .git/index.lock -Force; Write-Output \"Removed index lock\"}; git status -sb"
+			]
+		},
+		{
+			"label": "git-complete-rebase-push",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git checkout -- assets/images/achievement_cups.jpeg; git add -A; git commit --amend --no-edit; git rebase --continue; git push origin main; git status -sb"
+			]
+		}
+	]
+}
