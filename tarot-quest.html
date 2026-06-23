@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarot Quest — Learn One Card at a Time</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+  <a href="#mainContent" class="skip-link">Skip to lesson content</a>
+  <div class="stars"></div>
+  <div class="env-scene" aria-hidden="true">
+    <div class="env-layer dust-motes"></div>
+    <div class="env-layer moon-shimmer"></div>
+    <div class="env-layer fog-layer"></div>
+    <div class="env-layer runes-glow"></div>
+
+    <div class="env-layer hanging-herbs">
+      <span style="left: 18px; --sway-time: 6.2s;"></span>
+      <span style="left: 52px; --sway-time: 5.6s;"></span>
+      <span style="left: 84px; --sway-time: 6.8s;"></span>
+      <span style="left: 116px; --sway-time: 5.9s;"></span>
+    </div>
+
+    <div class="env-layer drifting-leaves">
+      <span style="left: 8%; --leaf-x: 34px; --leaf-time: 17s; --leaf-delay: -7.2s;"></span>
+      <span style="left: 24%; --leaf-x: -20px; --leaf-time: 15s; --leaf-delay: -12.5s;"></span>
+      <span style="left: 42%; --leaf-x: 28px; --leaf-time: 19s; --leaf-delay: -5.1s;"></span>
+      <span style="left: 63%; --leaf-x: -30px; --leaf-time: 16s; --leaf-delay: -14.2s;"></span>
+      <span style="left: 79%; --leaf-x: 22px; --leaf-time: 18s; --leaf-delay: -3.4s;"></span>
+      <span style="left: 92%; --leaf-x: -24px; --leaf-time: 20s; --leaf-delay: -9.1s;"></span>
+    </div>
+
+    <div class="env-layer fireflies">
+      <span style="left: 14%; top: 58%; --fly-x: 16px; --fly-y: -22px; --fly-time: 10.5s; --fly-delay: -4.7s;"></span>
+      <span style="left: 28%; top: 78%; --fly-x: -12px; --fly-y: -18px; --fly-time: 12.2s; --fly-delay: -7.8s;"></span>
+      <span style="left: 52%; top: 64%; --fly-x: 22px; --fly-y: -12px; --fly-time: 11.7s; --fly-delay: -3.6s;"></span>
+      <span style="left: 72%; top: 72%; --fly-x: -14px; --fly-y: -20px; --fly-time: 10.9s; --fly-delay: -9.4s;"></span>
+      <span style="left: 88%; top: 60%; --fly-x: 10px; --fly-y: -16px; --fly-time: 12.5s; --fly-delay: -2.9s;"></span>
+    </div>
+
+    <div class="env-layer magic-sparkles">
+      <span style="left: 18%; top: 22%; --spark-time: 4.6s; --spark-delay: -1.4s;"></span>
+      <span style="left: 34%; top: 31%; --spark-time: 5.4s; --spark-delay: -3.2s;"></span>
+      <span style="left: 62%; top: 24%; --spark-time: 4.9s; --spark-delay: -2.6s;"></span>
+      <span style="left: 78%; top: 18%; --spark-time: 5.1s; --spark-delay: -4.1s;"></span>
+      <span style="left: 86%; top: 38%; --spark-time: 4.4s; --spark-delay: -0.7s;"></span>
+    </div>
+
+    <div class="env-layer ember-glow">
+      <span style="left: 42%; bottom: 10px; --ember-x: 10px; --ember-time: 8.2s; --ember-delay: -2.2s;"></span>
+      <span style="left: 48%; bottom: 14px; --ember-x: -8px; --ember-time: 9.1s; --ember-delay: -5.3s;"></span>
+      <span style="left: 56%; bottom: 6px; --ember-x: 13px; --ember-time: 8.7s; --ember-delay: -1.4s;"></span>
+      <span style="left: 63%; bottom: 10px; --ember-x: -11px; --ember-time: 9.6s; --ember-delay: -6.1s;"></span>
+    </div>
+  </div>
+  <div class="ambient-particles" id="ambientParticles" aria-hidden="true"></div>
+  <div class="fx-layer" id="fxLayer" aria-hidden="true"></div>
+
+  <div class="completion-popup" id="completionPopup" aria-hidden="true">
+    <div class="completion-card">
+      <div class="popup-fx" id="popupFx" aria-hidden="true"></div>
+      <div class="crystal-ball-wrap">
+        <div class="crystal-ball"></div>
+        <div class="crystal-base"></div>
+      </div>
+      <h3 class="completion-title" id="completionTitle">Card Mastered!</h3>
+      <p class="completion-text" id="completionText">Your tarot insight deepens.</p>
+      <div class="completion-gems" id="completionGems">+0 Gems</div>
+      <div class="nav-buttons" style="margin-top:0.4rem">
+        <button class="btn btn-primary" onclick="closeCompletionPopup()">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="welcome-overlay" id="welcomeOverlay" aria-hidden="true">
+    <div class="welcome-card">
+      <h3 id="welcomeTitle">Welcome back, Seeker</h3>
+      <p id="welcomeMessage">The cards remembered your footsteps.</p>
+      <div class="welcome-reward" id="welcomeReward">+0 Gems Daily Blessing</div>
+      <p class="completion-text" id="welcomeBlessing">Today's blessing will appear here.</p>
+      <div class="nav-buttons" style="margin-top:0.8rem">
+        <button class="btn btn-primary" onclick="closeWelcomeOverlay()">Step Into Today's Journey</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="magic-modal" id="magicModal" aria-hidden="true">
+    <div class="magic-modal-overlay" data-modal-close="overlay"></div>
+    <div
+      class="magic-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="magicModalTitle"
+      aria-describedby="magicModalMessage"
+    >
+      <div class="magic-modal-fx" id="magicModalFx" aria-hidden="true"></div>
+      <div class="magic-modal-icon" id="magicModalIcon"><i data-lucide="sparkles" class="ui-icon"></i></div>
+      <h3 class="magic-modal-title" id="magicModalTitle">Tarot Quest</h3>
+      <p class="magic-modal-message" id="magicModalMessage">Message</p>
+      <label for="magicModalInput" class="sr-only" id="magicModalInputLabel">Input</label>
+      <input id="magicModalInput" class="magic-modal-input" type="text" autocomplete="off">
+      <div class="magic-modal-actions">
+        <button type="button" class="btn btn-secondary" id="magicModalCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="magicModalPrimary">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <!-- ═══ LEFT SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="cottage-brand">
+        <img class="cottage-logo" src="whimsical%20cottage.jpeg" alt="Whimsical cottage logo">
+        <div class="sidebar-title cottage-name">The Alchemy Cottage</div>
+      </div>
+
+      <nav class="sidebar-shortcuts" aria-label="Quick pages">
+        <button type="button" class="sidebar-shortcut-btn" id="shortcutHomeBtn"><span class="icon-inline"><i data-lucide="house" class="ui-icon"></i><span>The Cottage</span></span></button>
+        <button type="button" class="sidebar-shortcut-btn" id="shortcutLibraryBtn"><span class="icon-inline"><i data-lucide="library" class="ui-icon"></i><span>Alchemy Library</span></span></button>
+        <button type="button" class="sidebar-shortcut-btn" id="shortcutChestBtn"><span class="icon-inline"><i data-lucide="gem" class="ui-icon"></i><span>Treasure Room</span></span></button>
+        <button type="button" class="sidebar-shortcut-btn" id="compareModeBtn" onclick="toggleCompareMode()" aria-pressed="false"><span class="icon-inline"><i data-lucide="split-square-horizontal" class="ui-icon"></i><span>Compare Cards</span></span></button>
+        <button type="button" class="sidebar-shortcut-btn" id="shortcutSearchBtn"><span class="icon-inline"><i data-lucide="search" class="ui-icon"></i><span>Search Cards</span></span></button>
+      </nav>
+
+      <div class="streak-panel">
+        <div class="streak-head">
+          <span class="streak-title"><span class="icon-inline"><i data-lucide="sparkles" class="ui-icon"></i><span>Mystic Streak</span></span></span>
+          <strong class="streak-days" id="sbStreak">0 days</strong>
+        </div>
+        <div class="mystic-calendar" id="sbMysticCalendar"></div>
+      </div>
+
+      <section class="progress-panel">
+        <h3>Seeker's Status</h3>
+        <div class="stat-grid">
+          <div class="stat-item gems-card">
+            <span class="stat-label"><span class="icon-inline"><i data-lucide="gem" class="ui-icon"></i><span>Collected Gems</span></span></span>
+            <strong class="stat-value" id="sbGems">0</strong>
+          </div>
+          <div class="stat-item mastery-card">
+            <span class="stat-label">Mastered Cards</span>
+            <strong class="stat-value"><span id="sbMastered">0</span>/<span id="sbTotal">78</span></strong>
+          </div>
+        </div>
+
+        <div class="sb-groups" id="sbGroups"></div>
+
+      </section>
+
+      <section class="sidebar-settings-panel" id="settingsDropdown" aria-label="Sanctum Settings">
+        <div class="settings-dropdown-title">Sanctum Settings</div>
+        <div class="theme-label">Theme</div>
+        <div class="theme-grid" role="radiogroup" aria-label="Choose game theme">
+          <button type="button" class="theme-chip" data-theme="forest" role="radio" aria-checked="false">Forest</button>
+          <button type="button" class="theme-chip" data-theme="dawn" role="radio" aria-checked="false">Dawn</button>
+          <button type="button" class="theme-chip" data-theme="moonlit" role="radio" aria-checked="false">Moonlit</button>
+        </div>
+
+        <div style="border-top: 1px solid rgba(220, 185, 119, 0.14); margin-top: 0.75rem; padding-top: 0.75rem;">
+          <button type="button" id="restartQuestBtn" class="settings-action-btn">Restart Quest (Reset Progress)</button>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <div class="app">
+      <header>
+        <h1>Tarot Quest</h1>
+        <p class="subtitle">Your Journey Through the Cards Begins Here.</p>
+      </header>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="lessonProgress"></div>
+      </div>
+
+      <div class="phase-dots" id="phaseDots"></div>
+
+      <main id="mainContent" tabindex="-1"></main>
+    </div>
+
+    <!-- ═══ RIGHT CARD PANEL ═══ -->
+    <aside class="card-altar" id="cardAltar">
+      <div class="altar-head">
+        <div class="altar-title">Current Card</div>
+      </div>
+      <div class="altar-content" id="cardAltarContent">
+        <img id="rightCardImg" class="altar-card-img" src="" alt="Current tarot card">
+        <h3 id="rightCardName" class="altar-card-name">Awaiting your quest...</h3>
+        <p id="rightCardMeta" class="altar-card-meta">Reveal a card to begin.</p>
+        <div id="rightCardKeywords" class="altar-keywords"></div>
+      </div>
+    </aside>
+
+  </div><!-- end .shell -->
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="deck-data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
+
