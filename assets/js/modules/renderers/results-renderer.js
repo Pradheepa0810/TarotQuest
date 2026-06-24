@@ -37,7 +37,7 @@
 
       return `
         <div class="card-panel results-panel">
-          <div class="phase-title">Gem Reward</div>
+          <div class="phase-title">Seeker Accuracy</div>
           <p>You scored <strong>${quiz.score}/${card.quiz.length}</strong> (${quiz.pct}%)</p>
           <div class="gem-burst">+${earned} Gems</div>
           <p style="color:var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem;">Earned Gems:</p>
@@ -48,8 +48,8 @@
 
           <div class="nav-buttons" style="margin-top:1.5rem">
             ${nextBtn}
-            ${options.state.lastReviewedCard ? '<button class="btn btn-secondary" onclick="reviewLastCard()">Review Last Card</button>' : ''}
-            <button class="btn btn-secondary" onclick="finishLesson()">Return Home</button>
+            ${options.state.lastReviewedCard ? '<button class="btn btn-secondary" onclick="reviewLastCard()">Review This Card Again</button>' : ''}
+            <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>
           </div>
         </div>`;
     }

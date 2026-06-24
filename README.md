@@ -6,7 +6,7 @@ This project is now organized into modular static assets for easier maintenance.
 
 - `tarot-quest.html` - page markup and script/style references only
 - `deck-data.js` - tarot deck/card data source
-- `whimsical cottage.jpeg` - local logo/home image
+- `assets/images/` - all local images (logo, treasure room, achievement art)
 - `assets/css/main.css` - all app styles
 - `assets/js/app.js` - app logic (state, routing, rendering, interactions)
 

@@ -165,6 +165,166 @@
     }
   };
 
+  const SUIT_LABEL = {
+    wands: 'Wands',
+    cups: 'Cups',
+    swords: 'Swords',
+    pentacles: 'Pentacles'
+  };
+
+  const NUMBER_PERSONALITY = {
+    1: { pattern: 'One begins the story with a single spark.', story: 'In Tarot, one is the moment intention chooses a direction.' },
+    2: { pattern: 'Two creates tension, mirroring, and choice.', story: 'In Tarot, two introduces relationship, polarity, and decisions.' },
+    3: { pattern: 'Three turns potential into visible growth.', story: 'In Tarot, three is where ideas become social, creative, and embodied.' },
+    4: { pattern: 'Four builds a structure that can hold energy.', story: 'In Tarot, four asks whether your foundations are supportive or confining.' },
+    5: { pattern: 'Five disrupts comfort so truth can emerge.', story: 'In Tarot, five marks friction, conflict, and the cost of growth.' },
+    6: { pattern: 'Six seeks restoration, reciprocity, and adjustment.', story: 'In Tarot, six is the rebalancing after tension.' },
+    7: { pattern: 'Seven always asks a question before progress.', story: 'In Tarot, seven is the testing ground where intention meets doubt.' },
+    8: { pattern: 'Eight channels power through skill and repetition.', story: 'In Tarot, eight shows momentum that must be directed with discipline.' },
+    9: { pattern: 'Nine intensifies the lesson right before completion.', story: 'In Tarot, nine is emotional and psychological saturation.' },
+    10: { pattern: 'Ten completes a cycle and reveals its consequences.', story: 'In Tarot, ten shows what a full arc produces, for better or worse.' }
+  };
+
+  function getNumberQuestionAcrossSuits(rank) {
+    if (rank === 7) {
+      return 'Across suits, seven tests conviction through questions: Seven of Wands asks, Can you defend yourself? Seven of Cups asks, Can you trust your dreams? Seven of Pentacles asks, Should you keep investing? Seven of Swords asks, Can you justify your actions?';
+    }
+
+    const rankLabel = RANK_NAMES[rank] || String(rank);
+    return `${rankLabel} of Wands, ${rankLabel} of Cups, ${rankLabel} of Pentacles, and ${rankLabel} of Swords each express the same number through a different element. Learn the number once, then watch each suit change the tone.`;
+  }
+
+  function buildNumerologyLesson(rank, cardName, suitKey, keywords, baseMeaning, baseWhy, baseExpression, fallbackHook) {
+    const pattern = NUMBER_PERSONALITY[rank];
+    if (!pattern) {
+      return {
+        meaning: baseMeaning,
+        why: `${baseWhy} In the larger Tarot arc, this number marks a specific stage in the journey from impulse to integration.`,
+        expression: baseExpression,
+        hook: fallbackHook
+      };
+    }
+
+    const suitName = suitKey ? SUIT_LABEL[suitKey] : 'Major Arcana';
+    const leadKeyword = (keywords && keywords[0]) ? keywords[0].toLowerCase() : 'the core lesson';
+    const secondKeyword = (keywords && keywords[1]) ? keywords[1].toLowerCase() : 'the emotional tone';
+
+    return {
+      meaning: `${pattern.pattern} ${baseMeaning}`,
+      why: `${pattern.story} ${getNumberQuestionAcrossSuits(rank)} ${baseWhy}`,
+      expression: `In ${cardName} (${suitName}), this number becomes practical: ${leadKeyword} and ${secondKeyword} are not random keywords, they are this number wearing the suit's costume. ${baseExpression}`,
+      hook: fallbackHook
+    };
+  }
+
+  function buildSymbolLesson(symbolName, cardName) {
+    const n = String(symbolName || '').toLowerCase();
+
+    if (/white|lily|rose|horse/.test(n)) {
+      return 'Notice the white first. White keeps returning across Rider-Waite cards like The Fool, Strength, and The Sun. Pamela Colman Smith uses white for spirit, honesty, and clarity. This detail pushes the scene toward truth, not decoration.';
+    }
+    if (/red|cloak|robe/.test(n)) {
+      return 'Start with the color temperature. Red in Rider-Waite imagery usually raises urgency, appetite, or courage. When red enters a scene, the card stops being passive and starts moving toward action.';
+    }
+    if (/mountain|peak|hill/.test(n)) {
+      return 'Look at the vertical distance. Mountains create effort, perspective, and emotional altitude. They tell you this card is not about comfort, it is about what must be climbed.';
+    }
+    if (/water|river|sea|pool/.test(n)) {
+      return 'Track where the water sits and how it behaves. Still water suggests reflection, flowing water suggests transition, rough water suggests emotional pressure. The emotional climate is written into the landscape.';
+    }
+    if (/sword|wand|cup|pentacle|coin/.test(n)) {
+      return `Read the tool as behavior. Ask what the figure is doing with it, because in ${cardName} the object tells you how energy is being directed, defended, offered, or withheld.`;
+    }
+
+    return `Notice this detail first, then ask what mood changes if you remove it. In ${cardName}, this image nudges the narrative and teaches your eye to read intention, not ornament.`;
+  }
+
+  function buildMajorCharacterLessons(meta) {
+    const posture = String(meta.posture || '').toLowerCase();
+    const postureIntention = posture.includes('standing')
+      ? `The artist makes ${meta.name} stand because this card needs visible will. If this figure were seated, the same energy would feel contemplative rather than active.`
+      : `The artist keeps ${meta.name} seated or grounded so the power feels inward, deliberate, and contained instead of impulsive.`;
+
+    return [
+      { aspect: 'Posture', detail: meta.posture, reveal: postureIntention },
+      { aspect: 'Eye Contact', detail: meta.gaze, reveal: 'Eye direction acts like a camera cue. It tells you where awareness is focused and where the card wants your attention to land.' },
+      { aspect: 'Hand Gestures', detail: meta.hands, reveal: 'Hands are choreography. Smith uses gesture to show whether power is being received, controlled, offered, or weaponized.' },
+      { aspect: 'Clothing', detail: meta.clothing, reveal: 'Wardrobe is narrative shorthand. Fabric, color, and adornment reveal status, vulnerability, and spiritual posture before a single word is spoken.' },
+      { aspect: 'Facial Expression', detail: meta.expression, reveal: 'The face anchors tone. It prevents over-reading by telling you whether the card is inviting trust, caution, grief, or confidence.' }
+    ];
+  }
+
+  function buildMinorCharacterLessons(name, profile, keywords) {
+    const leadKeyword = (keywords && keywords[0]) ? keywords[0].toLowerCase() : 'the central lesson';
+    const secondKeyword = (keywords && keywords[1]) ? keywords[1].toLowerCase() : 'the emotional tone';
+    return [
+      {
+        aspect: 'Figures & Posture',
+        detail: `Study the figures on the ${name} and how their bodies carry weight, tension, or ease.`,
+        reveal: `Posture is intentional. Smith uses body angle and stance to show how ${leadKeyword} is being handled in real time.`
+      },
+      {
+        aspect: 'Eye Contact',
+        detail: 'Notice whether people look at each other, avoid each other, or stare past each other.',
+        reveal: `Eye lines reveal relational truth. They tell you whether ${secondKeyword} is shared, hidden, or projected.`
+      },
+      {
+        aspect: 'Hand Gestures',
+        detail: 'Watch what hands are doing: gripping, offering, shielding, building, or reaching.',
+        reveal: `Hands convert element into behavior. This is where ${profile.element.toLowerCase()} energy becomes visible action.`
+      },
+      {
+        aspect: 'Suit Symbols',
+        detail: `Count the ${profile.suit.toLowerCase()} symbols and notice how they are arranged in space.`,
+        reveal: 'Quantity and placement change the emotional rhythm: crowded, balanced, guarded, or overflowing.'
+      },
+      {
+        aspect: 'Overall Mood',
+        detail: `Pause on the atmosphere before naming keywords.`,
+        reveal: 'Mood comes first, then interpretation. If the mood feels clear, the keywords usually become obvious.'
+      }
+    ];
+  }
+
+  function buildLandscapeMeaningText(cardName, landscapeText, keywords) {
+    const scene = String(landscapeText || '').toLowerCase();
+    const leadKeyword = (keywords && keywords[0]) ? keywords[0].toLowerCase() : 'the lesson';
+    const secondKeyword = (keywords && keywords[1]) ? keywords[1].toLowerCase() : 'the emotional tone';
+    const cues = [];
+
+    if (scene.includes('mountain')) cues.push('Mountains raise emotional stakes and suggest effort, distance, or initiation.');
+    if (scene.includes('water') || scene.includes('river') || scene.includes('sea') || scene.includes('pool')) cues.push('Water shifts the scene toward feeling, memory, and intuitive weather.');
+    if (scene.includes('garden') || scene.includes('forest') || scene.includes('field') || scene.includes('wheat')) cues.push('Living growth introduces nurture, timing, and organic development.');
+    if (scene.includes('desert') || scene.includes('barren')) cues.push('Sparse terrain removes comfort so only essentials remain.');
+    if (scene.includes('city') || scene.includes('wall') || scene.includes('temple') || scene.includes('throne')) cues.push('Human structures add social order, rules, and power dynamics.');
+
+    const cueText = cues.length ? cues.join(' ') : 'The environment sets emotional pressure, social context, and pacing for the figure.';
+    return `Treat this like a film location scout. Ask why this environment and not another one. ${cueText} That is why ${cardName} feels like ${leadKeyword} with undertones of ${secondKeyword}.`;
+  }
+
+  function buildKeywordFlow(cardName, keywords, sceneText) {
+    const [k1, k2, k3] = (keywords || ['Insight', 'Shift', 'Choice']).concat(['Choice']);
+    return `${cardName} does not throw random words at you. The scene establishes pressure, the figure shows response, and the symbols clarify motive. That sequence naturally grows into ${k1}, ${k2}, and ${k3}.`;
+  }
+
+  function buildMovieMovesText(cardName, keywords, element) {
+    const k1 = (keywords && keywords[0]) ? keywords[0].toLowerCase() : 'change';
+    const k2 = (keywords && keywords[1]) ? keywords[1].toLowerCase() : 'emotion';
+    return `${cardName} is not frozen, the air shifts, clothing or light responds, and the figure adjusts with ${k1}. The movement carries a ${element.toLowerCase()} tone and leaves ${k2} in the room.`;
+  }
+
+  function buildMemoryPack(cardName, landscapeText, keywords, summary, mnemonic) {
+    const k1 = (keywords && keywords[0]) ? keywords[0] : 'Insight';
+    const k2 = (keywords && keywords[1]) ? keywords[1] : 'Choice';
+    const scene = landscapeText || 'the card scene';
+    return {
+      summary: summary || `${cardName} teaches ${k1.toLowerCase()} through ${k2.toLowerCase()} under pressure.`,
+      mnemonic: mnemonic || `${cardName}: ${k1} + ${k2} = remember the scene before the keyword.`,
+      visual: `Picture ${scene}. Now exaggerate one detail until it is unforgettable, almost absurd. Attach ${k1.toLowerCase()} to that image, then replay it once like a short gif.`,
+      application: `Next time ${cardName} appears, ask: where in my life am I already living this scene, and what one action would align with ${k1.toLowerCase()}?`
+    };
+  }
+
   function titleCase(value) {
     if (!value) return '';
     return value
@@ -174,6 +334,234 @@
       .filter(Boolean)
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
+  }
+
+  function articleFor(word) {
+    return /^[aeiou]/i.test(String(word || '').trim()) ? 'an' : 'a';
+  }
+
+  function deriveEnvironmentCue(landscapeText) {
+    const t = String(landscapeText || '').toLowerCase();
+    if (!t) return 'open threshold';
+    if (t.includes('mountain')) return 'mountains';
+    if (t.includes('river') || t.includes('water') || t.includes('pool') || t.includes('sea')) return 'water';
+    if (t.includes('garden') || t.includes('forest') || t.includes('wheat') || t.includes('field')) return 'garden';
+    if (t.includes('desert') || t.includes('barren')) return 'desert';
+    if (t.includes('temple') || t.includes('cathedral') || t.includes('throne')) return 'sacred architecture';
+    if (t.includes('sky') || t.includes('cloud')) return 'open sky';
+    return 'setting';
+  }
+
+  function buildLandscapeMeaning(cardName, landscapeText, keywords) {
+    const cue = deriveEnvironmentCue(landscapeText);
+    const k1 = String(keywords?.[0] || 'the lesson').toLowerCase();
+    const k2 = String(keywords?.[1] || 'its tension').toLowerCase();
+    const cueLine = {
+      mountains: 'Mountains raise the emotional stakes: this is hard-won perspective, not comfort.',
+      water: 'Water softens edges and reveals feeling; the tone becomes reflective, intuitive, and vulnerable.',
+      garden: 'A garden suggests cultivation, choice, and consequence, what you tend here will grow.',
+      desert: 'A sparse horizon strips away distraction so only the core conflict remains.',
+      'sacred architecture': 'Structured architecture frames this moment as ritual: values are being tested, not merely displayed.',
+      'open sky': 'Open sky keeps the card exposed, everything here happens in full view.',
+      'open threshold': 'The scene feels like a threshold, the old mood behind you, the new mood not yet settled.'
+    }[cue] || 'The environment is not decoration; it controls pace, pressure, and emotional tone.';
+
+    return `Treat ${cardName} like a film still. Ask why this ${cue} was chosen. ${cueLine} That is why ${k1} and ${k2} feel inevitable in this card.`;
+  }
+
+  function buildCharacterIntent(meta, keywords) {
+    const k1 = String(keywords?.[0] || 'the card message').toLowerCase();
+    return [
+      {
+        aspect: 'Posture',
+        detail: meta.posture,
+        reveal: `${meta.name} is posed this way to communicate ${k1} instantly. If the pose changed, the story would change with it.`
+      },
+      {
+        aspect: 'Eye Contact',
+        detail: meta.gaze,
+        reveal: `The gaze direction is compositional storytelling: it tells you where attention, truth, or desire is being directed.`
+      },
+      {
+        aspect: 'Hand Gestures',
+        detail: meta.hands,
+        reveal: `Hands are the action grammar of tarot art, what is being received, controlled, offered, or withheld.`
+      },
+      {
+        aspect: 'Clothing',
+        detail: meta.clothing,
+        reveal: `Wardrobe is coded narrative. Color and fabric reveal role, status, and spiritual temperature before any text does.`
+      },
+      {
+        aspect: 'Facial Expression',
+        detail: meta.expression,
+        reveal: `Expression calibrates tone. The same symbol set with a different face would imply a different psychological reading.`
+      }
+    ];
+  }
+
+  function buildSymbolVisualLiteracy(metaName, symbolText, keywords) {
+    const symbolName = symbolText.split(' — ')[0].split(' (')[0].trim();
+    const detail = symbolText.includes(' — ') ? symbolText.split(' — ')[1].trim() : '';
+    const k1 = String(keywords?.[0] || 'the core lesson').toLowerCase();
+    const k2 = String(keywords?.[1] || 'the second lesson').toLowerCase();
+    const prompt = `Notice ${symbolName.toLowerCase()} first. What visual cue anchors it, color, direction, repetition, or placement?`;
+    const bridge = detail
+      ? `In ${metaName}, that cue links to ${detail.toLowerCase()}.`
+      : `In ${metaName}, track where this cue appears elsewhere in the deck and compare tone.`;
+    const takeaway = `Now the symbol stops being decoration. It teaches how ${k1} and ${k2} are built through composition.`;
+    return `${prompt} ${bridge} ${takeaway}`;
+  }
+
+  function buildKeywordFlow(metaName, keywords, visualAnchor) {
+    const list = (keywords || []).slice(0, 4).map(k => String(k).toLowerCase());
+    if (!list.length) return `${metaName} asks you to read image first, keyword second.`;
+    const [k1, k2, k3 = list[0], k4 = list[1] || list[0]] = list;
+    return `Read ${visualAnchor || 'the composition'} first, then the keywords unfold naturally: ${k1} creates the tension, ${k2} shows the method, ${k3} marks the turning point, and ${k4} tells you the consequence.`;
+  }
+
+  function buildMovieScene(metaName, landscapeText, keywords, baseNext) {
+    const k1 = String(keywords?.[0] || 'the lesson').toLowerCase();
+    const k2 = String(keywords?.[1] || 'the emotion').toLowerCase();
+    return {
+      setting: landscapeText,
+      sounds: `You hear layered ambience first, wind, fabric, footsteps, and one sharp sound that marks ${k1}.`,
+      weather: `The air matches ${k2}: it is emotionally legible before anyone speaks.`,
+      moves: `A key gesture shifts the frame and reveals what the card wants from the viewer right now.`,
+      emotions: `${titleCase(k1)} colliding with ${titleCase(k2)}`,
+      next: baseNext || `The shot does not end cleanly; it pushes the story forward and asks what choice comes next.`
+    };
+  }
+
+  function buildMemoryStory(metaName, landscapeText, keywords) {
+    const k1 = String(keywords?.[0] || 'the lesson').toLowerCase();
+    const k2 = String(keywords?.[1] || 'the tension').toLowerCase();
+    const absurdAnchor = `Picture ${metaName} inside ${articleFor(deriveEnvironmentCue(landscapeText))} ${deriveEnvironmentCue(landscapeText)} where one impossible detail keeps repeating until you notice ${k1}.`;
+    return {
+      summary: `${metaName} becomes unforgettable when you treat ${k2} as the emotional weather and ${k1} as the decision point.`,
+      mnemonic: `${metaName}: see it, feel it, decide it, then name it.`,
+      visual: `${absurdAnchor} That repetition is your memory hook.`,
+      application: `When ${metaName} appears, ask: where in my life is this same visual tension between ${k1} and ${k2}?`
+    };
+  }
+
+  function buildNumerologyCrossSuit(rank, suitLabel) {
+    const templates = {
+      1: {
+        question: 'What wants to begin?',
+        suitQuestion: {
+          Wands: 'What spark are you willing to act on?',
+          Cups: 'What feeling is asking to be welcomed?',
+          Swords: 'What truth is trying to be spoken?',
+          Pentacles: 'What practical seed can you plant today?'
+        }
+      },
+      2: {
+        question: 'What needs balancing?',
+        suitQuestion: {
+          Wands: 'Can your passion and patience cooperate?',
+          Cups: 'Can your heart stay open without losing boundaries?',
+          Swords: 'Can you hold two perspectives at once?',
+          Pentacles: 'Can you juggle resources without dropping purpose?'
+        }
+      },
+      3: {
+        question: 'What is trying to grow?',
+        suitQuestion: {
+          Wands: 'Which bold idea needs momentum?',
+          Cups: 'Which relationship needs celebration and care?',
+          Swords: 'Which insight needs to be articulated clearly?',
+          Pentacles: 'Which project needs real-world craftsmanship?'
+        }
+      },
+      4: {
+        question: 'What needs structure?',
+        suitQuestion: {
+          Wands: 'Where do you need stable fuel for your fire?',
+          Cups: 'Where do you need emotional safety?',
+          Swords: 'Where do your thoughts need order?',
+          Pentacles: 'What foundation secures your material life?'
+        }
+      },
+      5: {
+        question: 'What conflict is forcing growth?',
+        suitQuestion: {
+          Wands: 'Can you learn through competition instead of ego?',
+          Cups: 'Can grief become honest feeling instead of collapse?',
+          Swords: 'Can tension reveal what must be said?',
+          Pentacles: 'Can hardship clarify what truly matters?'
+        }
+      },
+      6: {
+        question: 'What can be restored?',
+        suitQuestion: {
+          Wands: 'Can recognition be used with humility?',
+          Cups: 'Can love be shared without possession?',
+          Swords: 'Can the mind move toward calmer waters?',
+          Pentacles: 'Can giving and receiving stay in balance?'
+        }
+      },
+      7: {
+        question: 'Seven always asks a question.',
+        suitQuestion: {
+          Wands: 'Can you defend yourself?',
+          Cups: 'Can you trust your dreams?',
+          Swords: 'Can you justify your actions?',
+          Pentacles: 'Should you keep investing?'
+        }
+      },
+      8: {
+        question: 'What must move now?',
+        suitQuestion: {
+          Wands: 'Can you sustain speed without losing aim?',
+          Cups: 'Can you walk away from what no longer nourishes you?',
+          Swords: 'Can you notice the prison your mind built?',
+          Pentacles: 'Can repetition become mastery instead of routine?'
+        }
+      },
+      9: {
+        question: 'What is nearing completion?',
+        suitQuestion: {
+          Wands: 'Can you hold your boundary for one more stretch?',
+          Cups: 'Can you receive joy without apology?',
+          Swords: 'Can you separate fear from fact?',
+          Pentacles: 'Can you trust the abundance you already built?'
+        }
+      },
+      10: {
+        question: 'What cycle is ending?',
+        suitQuestion: {
+          Wands: 'Is this burden still yours to carry?',
+          Cups: 'Can this harmony be protected over time?',
+          Swords: 'Can this ending clear the way for truth?',
+          Pentacles: 'What legacy are you building, not just earning?'
+        }
+      }
+    };
+
+    const t = templates[rank];
+    if (!t) return '';
+    const suitePrompt = t.suitQuestion[suitLabel] || t.question;
+    return `Across tarot, ${t.question} In ${rank} of ${suitLabel}, the question becomes: ${suitePrompt}`;
+  }
+
+  function getSuitLabelForElement(element) {
+    return {
+      Fire: 'Wands',
+      Water: 'Cups',
+      Air: 'Swords',
+      Earth: 'Pentacles'
+    }[element] || 'Wands';
+  }
+
+  function buildElementPersonality(element) {
+    const e = String(element || 'Air');
+    return {
+      Fire: 'Fire enters the room first, impatient, daring, and impossible to ignore. It wants movement now, not later.',
+      Water: 'Water feels everything in real time, reading subtleties, bonding quickly, and remembering what others dismissed.',
+      Air: 'Air dissects, compares, and questions. It wants coherence, evidence, and language precise enough to cut through fog.',
+      Earth: 'Earth slows the tempo, tests what lasts, and asks for proof in results, routines, and tangible care.'
+    }[e] || 'Air thinks in clean lines and asks better questions than it answers at first.';
   }
 
   function buildReversedProfile(name, keywords, element, suitLabel) {
@@ -186,23 +574,23 @@
     const reversedName = `${name} reversed`;
 
     return {
-      shadow: `${reversedName} suggests blocked ${element.toLowerCase()} energy, overcorrection, or misalignment with the card's core lesson.`,
+      shadow: `${reversedName} is not just weaker upright energy. It shows distortion: sometimes absence, sometimes excess, sometimes avoidance, delay, or misdirection of ${element.toLowerCase()} force.`,
       cautions: [
         {
           aspect: 'Blocked Flow',
-          detail: `${k1} may be stalled by fear, doubt, or second-guessing. The lesson is present, but movement is restricted.`
+          detail: `Absence pattern: ${k1} goes quiet. Instead of acting, the psyche withdraws and waits for impossible certainty.`
         },
         {
           aspect: 'Overcorrection',
-          detail: `${k2} can swing to the opposite extreme when balance is lost. Instead of integration, reactions become rigid.`
+          detail: `Excess pattern: ${k2} overcompensates. Energy spikes, but direction blurs, so intensity replaces wisdom.`
         },
         {
           aspect: 'Avoidance',
-          detail: `${k3} may be postponed, denied, or handled indirectly. What is ignored here tends to return louder.`
+          detail: `Avoidance and delay pattern: ${k3} is postponed through distraction, rationalization, or emotional sidestepping.`
         },
         {
           aspect: 'Misread Signals',
-          detail: `${k4} can appear distorted when intuition and action are disconnected. Slow down and reassess before committing.`
+          detail: `Misdirection pattern: ${k4} is present, but pointed at the wrong target. Effort is real, alignment is off.`
         }
       ],
       meanings: [
@@ -227,8 +615,8 @@
           application: 'Seek clarity from context, not urgency.'
         }
       ],
-      readingTip: `${reversedName} in a ${suitLabel} context often points to hesitation, compensation, or direction drift. Re-center, simplify, and move with intention.`,
-      contrast: `Upright ${name} expresses ${element.toLowerCase()} flow directly. Reversed ${name} shows that same force tangled, delayed, or overamplified.`
+      readingTip: `${reversedName} in ${suitLabel} asks a diagnostic question: is this energy missing, excessive, avoided, delayed, or misdirected? Name the pattern first, then choose one corrective action.`,
+      contrast: `Upright ${name} channels ${element.toLowerCase()} cleanly. Reversed ${name} keeps the same theme but shifts its psychology: impulse without aim, silence without peace, effort without alignment, or insight without embodiment.`
     };
   }
 
@@ -284,13 +672,17 @@
       21: { meaning: 'Twenty-one completes — 2+1=3, the full creative cycle.', why: 'The Fool who left at zero returns transformed.', expression: `${meta.name} dances at the center of all creation.` }
     };
     const nt = numThemes[n] || numThemes[1];
-    const syms = (meta.symbols || []).map(s => ({
-      icon: '🏆',
-      name: s.split(' — ')[0].split(' (')[0],
-      meaning: s,
-      hidden: `Smith placed this symbol deliberately in ${meta.name} — look for it on the card.`,
-      trick: `"${s.split(' ').slice(0, 4).join(' ')}…" — find it on the card.`
-    }));
+    const syms = (meta.symbols || []).map(s => {
+      const symbolName = s.split(' — ')[0].split(' (')[0];
+      const symbolDesc = s.split(' — ')[1] || s;
+      return {
+        icon: '🏆',
+        name: symbolName,
+        meaning: symbolDesc || symbolName,
+        hidden: `Smith placed this symbol deliberately in ${meta.name} — look for it on the card.`,
+        trick: `"${s.split(' ').slice(0, 4).join(' ')}…" — find it on the card.`
+      };
+    });
 
     const quiz = [
       { q: `What number is ${meta.name}?`, options: [`${n - 1}`, `${n}`, `${n + 1}`, 'None'], answer: 1, explain: `${meta.name} is number ${n} in the Major Arcana.` },
@@ -312,36 +704,51 @@
       archetype: meta.archetype,
       unlockTitle: meta.unlock,
       keywords: meta.keywords,
-      numerology: { meaning: nt.meaning, why: nt.why, expression: nt.expression, hook: meta.numHook },
+      numerology: {
+        meaning: nt.meaning,
+        why: `${nt.why} ${buildNumerologyCrossSuit(n, getSuitLabelForElement(meta.element))}`,
+        expression: `${nt.expression} In the bigger tarot story, this number behaves like a recurring character, not a one-card exception.`,
+        hook: meta.numHook
+      },
       colors: [
         { hex: '#d4a853', name: 'Gold & Yellow', meaning: 'Divine light, optimism, spiritual illumination', trick: '"Gold light guides the seeker."' },
         { hex: '#c0392b', name: 'Red', meaning: 'Life force, passion, action in the world', trick: '"Red means energy moves."' },
         { hex: '#9a6ad9', name: 'Violet', meaning: 'Intuition, depth, the unconscious realm', trick: '"Violet holds mystery."' },
         { hex: '#f0ece4', name: 'White', meaning: 'Purity, clarity, new beginnings', trick: '"White = truth unveiled."' }
       ],
-      character: [
-        { aspect: 'Posture', detail: meta.posture, reveal: `Posture reveals ${meta.name}'s core message — how power is held or shared.` },
-        { aspect: 'Eye Contact', detail: meta.gaze, reveal: 'The direction of gaze tells us where consciousness is directed.' },
-        { aspect: 'Hand Gestures', detail: meta.hands, reveal: 'Hands show what the figure does with power — gives, takes, holds, or channels.' },
-        { aspect: 'Clothing', detail: meta.clothing, reveal: 'Every garment is symbolic — status, humility, or transformation.' },
-        { aspect: 'Facial Expression', detail: meta.expression, reveal: 'The face reveals the emotional truth beneath the archetype.' }
-      ],
+      character: buildCharacterIntent(meta, meta.keywords),
       characterChallenge: meta.challenge,
-      landscape: [{ item: 'Background scene', symbol: meta.landscape, why: 'Pamela Colman Smith painted every background detail with Waite\'s symbolic guidance.' }],
+      landscape: [],
       landscapeStory: meta.landscape,
+      landscapeMeaning: buildLandscapeMeaning(meta.name, meta.landscape, meta.keywords),
       elemental: {
         dominant: meta.element,
         secondary: meta.secondary,
-        behavior: SUIT_PROFILE[{ Fire: 'wands', Water: 'cups', Air: 'swords', Earth: 'pentacles' }[meta.element] || 'wands'].behavior,
+        behavior: buildElementPersonality(meta.element),
         motivates: SUIT_PROFILE[{ Fire: 'wands', Water: 'cups', Air: 'swords', Earth: 'pentacles' }[meta.element] || 'wands'].motivates,
         strengths: SUIT_PROFILE[{ Fire: 'wands', Water: 'cups', Air: 'swords', Earth: 'pentacles' }[meta.element] || 'wands'].strengths,
         shadows: SUIT_PROFILE[{ Fire: 'wands', Water: 'cups', Air: 'swords', Earth: 'pentacles' }[meta.element] || 'wands'].shadows,
         asPerson: SUIT_PROFILE[{ Fire: 'wands', Water: 'cups', Air: 'swords', Earth: 'pentacles' }[meta.element] || 'wands'].asPerson
       },
-      symbols: syms.length ? syms : [{ icon: '🏆', name: meta.name, meaning: meta.keywords.join(', '), hidden: 'Study the card image carefully.', trick: meta.numHook }],
-      movie: { setting: meta.landscape, sounds: 'Wind, heartbeat, distant thunder or birdsong.', weather: 'Atmospheric — matching the card\'s emotional tone.', emotions: meta.keywords.slice(0, 2).join(' and '), next: meta.movie },
+      symbols: syms.map(s => ({
+        ...s,
+        meaning: buildSymbolVisualLiteracy(meta.name, `${s.name}${s.meaning ? ` — ${s.meaning}` : ''}`, meta.keywords)
+      })).length
+        ? syms.map(s => ({
+            ...s,
+            meaning: buildSymbolVisualLiteracy(meta.name, `${s.name}${s.meaning ? ` — ${s.meaning}` : ''}`, meta.keywords)
+          }))
+        : [{
+            icon: 'star',
+            name: meta.name,
+            meaning: buildSymbolVisualLiteracy(meta.name, meta.name, meta.keywords),
+            hidden: 'Study the card image carefully.',
+            trick: meta.numHook
+          }],
+      movie: buildMovieScene(meta.name, meta.landscape, meta.keywords, meta.movie),
       reversed: buildReversedProfile(meta.name, meta.keywords, meta.element, 'Major Arcana'),
-      memory: { summary: meta.memory, mnemonic: meta.mnemonic, visual: `Picture ${meta.name} as Smith painted it — ${meta.landscape.slice(0, 80)}…`, application: `When ${meta.name} appears, consider: ${meta.keywords[0].toLowerCase()} in your current situation.` },
+      memory: buildMemoryStory(meta.name, meta.landscape, meta.keywords),
+      keywordFlow: buildKeywordFlow(meta.name, meta.keywords, deriveEnvironmentCue(meta.landscape)),
       quiz,
       xpReward: 120
     };
@@ -388,50 +795,62 @@
       keywords,
       numerology: {
         meaning: `In the ${profile.suit}, ${rankName} expresses: <em>${rt.theme}</em>`,
-        why: `${rankName} carries the number ${rank}'s energy through the lens of ${profile.element}.`,
-        expression: `${name} shows how ${profile.element.toLowerCase()} energy manifests at this stage — ${keywords.join(', ').toLowerCase()}.`,
+        why: `${rankName} carries the number ${rank}'s energy through ${profile.element.toLowerCase()} experience. ${buildNumerologyCrossSuit(rank, profile.suit)}`,
+        expression: `${name} shows why this number repeats its personality across suits while changing costume. Here the costume is ${profile.element.toLowerCase()} and the drama is ${keywords.join(', ').toLowerCase()}.`,
         hook: rt.hook
       },
       colors: profile.colorSet,
       character: [
-        { aspect: 'Figures & Posture', detail: `Study the figures on the ${name} — their posture tells the story of ${keywords[0].toLowerCase()}.`, reveal: `${profile.element} energy shows in how bodies move and interact.` },
-        { aspect: 'Eye Contact', detail: 'Notice who looks at whom — connection or avoidance reveals the card\'s emotional truth.', reveal: 'Eyes reveal intention in minor arcana scenes.' },
-        { aspect: 'Hand Gestures', detail: 'What are hands doing? Holding, giving, fighting, crafting?', reveal: `Hands show how ${profile.element.toLowerCase()} energy is used practically.` },
-        { aspect: 'Suit Symbols', detail: `${profile.suit} appear throughout — count them. Each reinforces the ${profile.element} theme.`, reveal: `The suit symbol is the card\'s elemental signature.` },
-        { aspect: 'Overall Mood', detail: `The scene feels ${keywords.slice(0, 2).join(' and ').toLowerCase()} — let that emotion anchor your memory.`, reveal: 'Minor arcana often depict everyday moments with deep meaning.' }
+        {
+          aspect: 'Figures & Posture',
+          detail: `Study the figures on the ${name} — their posture carries ${keywords[0].toLowerCase()} before words do.`,
+          reveal: `The artist chooses this stance so the eye reads intention instantly: action posture, defensive posture, or reflective posture each tells a different story.`
+        },
+        {
+          aspect: 'Eye Contact',
+          detail: 'Notice who looks at whom — or who refuses to look.',
+          reveal: 'Eye lines are narrative arrows. They reveal trust, conflict, secrecy, or disconnection.'
+        },
+        {
+          aspect: 'Hand Gestures',
+          detail: 'What are hands doing? Holding, giving, fighting, building?',
+          reveal: `Hands show how ${profile.element.toLowerCase()} energy is being directed, toward creation, defense, avoidance, or repair.`
+        },
+        {
+          aspect: 'Suit Symbols',
+          detail: `${profile.suit} appear throughout — count placement, not just quantity.`,
+          reveal: `Placement teaches emphasis. Central symbols feel immediate; distant symbols feel conditional or delayed.`
+        },
+        {
+          aspect: 'Overall Mood',
+          detail: `The scene feels ${keywords.slice(0, 2).join(' and ').toLowerCase()} — let tone lead interpretation.`,
+          reveal: 'Mood is compositional logic. It explains why the keyword list feels inevitable.'
+        }
       ],
       characterChallenge: `What would change if the main figure on the ${name} turned away from the ${profile.suit.toLowerCase()}? <em>The ${profile.element.toLowerCase()} energy would shift — perhaps becoming blocked or redirected.</em>`,
       landscape: [{ item: profile.landscape, symbol: `${profile.element} realm — the world of ${profile.suit}`, why: 'Smith painted distinct landscapes for each suit to reinforce elemental identity.' }],
       landscapeStory: `In the realm of ${profile.element.toLowerCase()}, the ${name} unfolds: ${keywords.join(', ').toLowerCase()}. ${profile.landscape} The ${rankName} reminds you — ${rt.hook.replace(/"/g, '')}`,
+      landscapeMeaning: buildLandscapeMeaning(name, profile.landscape, keywords),
       elemental: {
         dominant: profile.element,
         secondary: `Minor Arcana — ${profile.suit}`,
-        behavior: profile.behavior,
+        behavior: buildElementPersonality(profile.element),
         motivates: profile.motivates,
         strengths: profile.strengths,
         shadows: profile.shadows,
         asPerson: profile.asPerson
       },
       symbols: keywords.slice(0, 4).map((k, i) => ({
-        icon: '🏆',
+        icon: 'star',
         name: `${profile.suit} — ${k}`,
-        meaning: k,
+        meaning: buildSymbolVisualLiteracy(name, `${profile.suit} — ${k}`, keywords),
         hidden: `Look for visual cues of "${k}" in the ${name} illustration.`,
         trick: `"${k}" — say it when you see the card.`
       })),
-      movie: {
-        setting: profile.landscape,
-        sounds: `${profile.element === 'Fire' ? 'Crackling energy' : profile.element === 'Water' ? 'Flowing water' : profile.element === 'Air' ? 'Wind and voices' : 'Earth and footsteps'}.`,
-        weather: `Matching ${profile.element} — ${keywords[0].toLowerCase()} in the air.`,
-        emotions: keywords.slice(0, 2).join(' and '),
-        next: `The ${name} resolves — ${keywords[2] || keywords[0]} emerges as the lesson.`
-      },
+      movie: buildMovieScene(name, profile.landscape, keywords, `The ${name} resolves, ${keywords[2] || keywords[0]} emerges as the lesson.`),
       reversed: buildReversedProfile(name, keywords, profile.element, `Minor Arcana — ${profile.suit}`),
-      memory: {
-        mnemonic: `${rankName[0]}-${profile.suit[0]}-${keywords[0][0]}: ${rankName} of ${profile.suit} = ${keywords[0]}.`,
-        visual: `See ${profile.suit} and ${profile.element.toLowerCase()} — "${keywords[0]}" in one image.`,
-        application: `When the ${name} appears, ask how ${keywords[0].toLowerCase()} shows up in your daily ${profile.element.toLowerCase()}-realm life.`
-      },
+      memory: buildMemoryStory(name, profile.landscape, keywords),
+      keywordFlow: buildKeywordFlow(name, keywords, deriveEnvironmentCue(profile.landscape)),
       quiz,
       xpReward: 100
     };

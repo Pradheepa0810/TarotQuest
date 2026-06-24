@@ -18,10 +18,9 @@
       { id: 'landscape',  icon: '', label: 'Scene' },
       { id: 'elemental',  icon: '', label: 'Elements' },
       { id: 'symbols',    icon: '', label: 'Symbols' },
-      { id: 'movie',      icon: '', label: 'Movie' },
       { id: 'reversed',   icon: '', label: 'Shadow' },
       { id: 'quiz',       icon: '', label: 'Boss Quiz' },
-      { id: 'memory',     icon: '', label: 'Spell' },
+      { id: 'movie',      icon: '', label: 'Spell' },
       { id: 'results',    icon: '', label: 'Gems' }
     ];
 
@@ -2293,12 +2292,12 @@
           <div class="ritual-room-dim" aria-hidden="true"></div>
 
           <div class="ritual-particles" aria-hidden="true">
-            <span style="left: 20%; top: 56%; --px: 8px; --particle-time: 6.2s; --particle-delay: 6.3s;"></span>
-            <span style="left: 29%; top: 60%; --px: -6px; --particle-time: 7.1s; --particle-delay: 6.9s;"></span>
-            <span style="left: 41%; top: 54%; --px: 9px; --particle-time: 6.6s; --particle-delay: 7.3s;"></span>
-            <span style="left: 58%; top: 58%; --px: -8px; --particle-time: 7.3s; --particle-delay: 6.4s;"></span>
-            <span style="left: 70%; top: 55%; --px: 7px; --particle-time: 6.8s; --particle-delay: 7.1s;"></span>
-            <span style="left: 79%; top: 61%; --px: -7px; --particle-time: 7.4s; --particle-delay: 6.7s;"></span>
+            <span style="left: 20%; top: 56%; --px: 8px; --particle-time: 6.2s; --particle-delay: 2.5s;"></span>
+            <span style="left: 29%; top: 60%; --px: -6px; --particle-time: 7.1s; --particle-delay: 2.7s;"></span>
+            <span style="left: 41%; top: 54%; --px: 9px; --particle-time: 6.6s; --particle-delay: 2.8s;"></span>
+            <span style="left: 58%; top: 58%; --px: -8px; --particle-time: 7.3s; --particle-delay: 2.4s;"></span>
+            <span style="left: 70%; top: 55%; --px: 7px; --particle-time: 6.8s; --particle-delay: 2.7s;"></span>
+            <span style="left: 79%; top: 61%; --px: -7px; --particle-time: 7.4s; --particle-delay: 2.6s;"></span>
           </div>
 
           <div class="ritual-card-wrap">
@@ -2311,8 +2310,6 @@
           </div>
 
           <div class="ritual-lesson">
-            <div class="phase-title">The Card</div>
-            <p class="unlock-text">A calm reading opens for today.</p>
             ${detailsHtml}
           </div>
         </div>`;
@@ -2339,33 +2336,68 @@
       }, 760);
     }
 
+    function cleanLessonHtml(value) {
+      return String(value ?? '').replace(/\s*[–—]\s*/g, ', ');
+    }
+
+    function normalizeLessonText(value) {
+      return String(value ?? '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+    }
+
+    function getLandscapeMeaning(card) {
+      const keywordA = String(card?.keywords?.[0] || 'the card lesson').toLowerCase();
+      const keywordB = String(card?.keywords?.[1] || 'its deeper message').toLowerCase();
+      return `This setting grounds the card in lived experience. It shows how ${keywordA} and ${keywordB} can be practiced, not just imagined.`;
+    }
+
+    function getSymbolMeaningText(card, symbol) {
+      const name = String(symbol?.name || '').trim();
+      let meaning = String(symbol?.meaning || '').trim();
+      meaning = meaning.replace(/^Notice\s+.*?\s+first\.\s*/i, '');
+      const normalizedName = normalizeLessonText(name);
+      const normalizedMeaning = normalizeLessonText(meaning);
+      if (meaning && normalizedMeaning !== normalizedName && !normalizedMeaning.startsWith(normalizedName + ' ')) {
+        return meaning;
+      }
+      const keywordA = String(card?.keywords?.[0] || 'the core lesson').toLowerCase();
+      const keywordB = String(card?.keywords?.[1] || 'its second theme').toLowerCase();
+      return `This symbol reinforces ${keywordA} and ${keywordB}, showing how ${card.name}'s message moves from idea into action.`;
+    }
+
+    const lessonRoot = typeof window !== 'undefined' ? window : globalThis;
+    lessonRoot.cleanLessonHtml = cleanLessonHtml;
+
     function renderCharacter(card) {
       const obs = card.character.map(o => `
         <div class="observation">
-          <h4>${o.aspect}</h4>
-          <p>${o.detail}</p>
-          <p><strong>What this reveals:</strong> ${o.reveal}</p>
+          <h4>${cleanLessonHtml(o.aspect)}</h4>
+          <p>${cleanLessonHtml(o.detail)}</p>
+          <p><strong>What this reveals:</strong> ${cleanLessonHtml(o.reveal)}</p>
         </div>`).join('');
       return `
         <div class="card-panel">
-          <div class="phase-title">Character Reading Challenge</div>
+          <div class="phase-title">The Portrait</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim)">Start with the body. Posture, eye contact, hands, clothing, and expression whisper secrets.</p>
           ${obs}
-          <div class="challenge-prompt"><strong>🤔 Your Turn:</strong> ${card.characterChallenge}</div>
         </div>`;
     }
 
     function renderLandscape(card) {
       const items = card.landscape.map(l => `
         <div class="observation">
-          <h4>${l.item}</h4>
-          <p><strong>Symbolizes:</strong> ${l.symbol}</p>
-          <p><strong>Why Smith included it:</strong> ${l.why}</p>
+          <p><strong>How to read this detail:</strong> ${cleanLessonHtml(l.why)}</p>
         </div>`).join('');
+      const meaning = card.landscapeMeaning || getLandscapeMeaning(card);
       return `
         <div class="card-panel">
-          <div class="phase-title">Landscape Explorer</div>
+          <div class="phase-title">The Landscape</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim)">The background is more than scenery. It reveals the world the card invites you into.</p>
           ${items}
-          <div class="memory-hook"><span class="icon-inline">${icon('book-open')}<span>Landscape Memory Story</span></span><br><br>${card.landscapeStory}</div>
+          <div class="memory-hook">${cleanLessonHtml(card.landscapeStory)}</div>
+          <div class="story-block"><strong>What it means:</strong> ${cleanLessonHtml(meaning)}</div>
         </div>`;
     }
 
@@ -2374,11 +2406,12 @@
 
       return `
         <div class="card-panel">
-          <div class="phase-title">Numerology Quest</div>
-          <div class="story-block"><strong>What ${card.number} means:</strong><br>${n.meaning}</div>
-          <div class="story-block"><strong>Why it matters:</strong><br>${n.why}</div>
-          <div class="story-block"><strong>How ${card.name} expresses it:</strong><br>${n.expression}</div>
-          <div class="memory-hook">🪝 Memory Hook: ${n.hook}</div>
+          <div class="phase-title">The Numerology</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim)">The number reveals the card's role. It is the first thread that weaves the story together.</p>
+          <div class="story-block"><strong>What ${card.number} means:</strong><br>${cleanLessonHtml(n.meaning)}</div>
+          <div class="story-block"><strong>Why it matters:</strong><br>${cleanLessonHtml(n.why)}</div>
+          <div class="story-block"><strong>How ${card.name} expresses it:</strong><br>${cleanLessonHtml(n.expression)}</div>
+          <div class="memory-hook">🪝 Memory Hook: ${cleanLessonHtml(n.hook)}</div>
         </div>`;
     }
 
@@ -2387,16 +2420,16 @@
         <div class="color-row">
           <div class="color-swatch" style="background:${c.hex}"></div>
           <div>
-            <div class="color-name">${c.name}</div>
-            <div>${c.meaning}</div>
-            <div class="color-trick">→ "${c.trick.replace(/"/g, '')}"</div>
+            <div class="color-name">${cleanLessonHtml(c.name)}</div>
+            <div>${cleanLessonHtml(c.meaning)}</div>
+            <div class="color-trick">${cleanLessonHtml(c.trick.replace(/"/g, ''))}</div>
           </div>
         </div>`).join('');
 
       return `
         <div class="card-panel">
-          <div class="phase-title">Color Detective</div>
-          <p style="margin-bottom:1rem;color:var(--text-dim)">Color → Meaning → Memory Trick</p>
+          <div class="phase-title">The Palette</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim)">Color speaks before meaning does.</p>
           ${rows}
         </div>`;
     }
@@ -2428,14 +2461,15 @@
           <div class="elemental-particles" aria-hidden="true">
             <span></span><span></span><span></span><span></span><span></span>
           </div>
-          <div class="phase-title">Elemental Energy Scan</div>
-          <p><strong>Dominant:</strong> ${e.dominant} &nbsp;|&nbsp; <strong>Secondary:</strong> ${e.secondary}</p>
+          <div class="phase-title">The Elements</div>
+          <p><strong>Dominant:</strong> ${cleanLessonHtml(e.dominant)} &nbsp;|&nbsp; <strong>Secondary:</strong> ${cleanLessonHtml(e.secondary)}</p>
           ${elementDisplay}
-          <div class="story-block"><strong>How ${e.dominant} behaves:</strong> ${e.behavior}</div>
-          <div class="story-block"><strong>What motivates it:</strong> ${e.motivates}</div>
-          <div class="story-block"><strong>Strengths:</strong> ${e.strengths}</div>
-          <div class="story-block"><strong>Shadow traits:</strong> ${e.shadows}</div>
-          <div class="story-block emphasis"><strong>If this card were a person:</strong> ${e.asPerson}</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim)">Think of the element as the card's weather. It reveals how its energy naturally moves, what nourishes it, and where it can lose its balance.</p>
+          <div class="story-block"><strong>How ${cleanLessonHtml(e.dominant)} behaves:</strong> ${cleanLessonHtml(e.behavior)}</div>
+          <div class="story-block"><strong>What motivates it:</strong> ${cleanLessonHtml(e.motivates)}</div>
+          <div class="story-block"><strong>Strengths:</strong> ${cleanLessonHtml(e.strengths)}</div>
+          <div class="story-block"><strong>Shadow traits:</strong> ${cleanLessonHtml(e.shadows)}</div>
+          <div class="story-block emphasis" style="border: 2px solid var(--accent-gold); padding: 1rem; background: rgba(255,215,0,0.05); border-radius: 8px;"><strong>If this card were a person:</strong> ${cleanLessonHtml(e.asPerson)}</div>
         </div>`;
     }
 
@@ -2444,16 +2478,14 @@
         <div class="treasure-item">
           <span class="treasure-icon">${icon(s.icon || 'star')}</span>
           <div>
-            <h4>Found: ${s.name}</h4>
-            <p><strong>Meaning:</strong> ${s.meaning}</p>
-            <p><strong>Hidden message:</strong> ${s.hidden}</p>
-            <p class="color-trick">Memory Trick: ${s.trick}</p>
+            <h4>${cleanLessonHtml(s.name)}</h4>
+            <p><strong>Look closer:</strong> ${cleanLessonHtml(getSymbolMeaningText(card, s))}</p>
           </div>
         </div>`).join('');
       return `
         <div class="card-panel">
-          <div class="phase-title">Symbol Treasure Hunt</div>
-          <p style="margin-bottom:1rem;color:var(--text-dim)">Examine the card image above in your mind — then collect each treasure:</p>
+          <div class="phase-title">The Symbolism</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim)">Every symbol is a clue. Notice them one by one, and the card's story begins to unfold.</p>
           ${items}
         </div>`;
     }
@@ -2468,57 +2500,66 @@
       }
 
       const r = card.reversed;
-      const cautionHtml = r.cautions.map(c => `
-        <div class="shadow-item">
-          <strong style="color:var(--gold)">${c.aspect}</strong>
-          <p style="font-size:0.88rem;color:var(--text)">${c.detail}</p>
-        </div>`).join('');
-
-      const meaningsHtml = r.meanings.map(m => `
-        <div class="reversed-meaning">
-          <div class="reversed-keyword">${m.keyword}</div>
-          <div style="font-size:0.85rem;color:var(--text-dim);margin-bottom:0.35rem">${m.meaning}</div>
-          <div style="font-size:0.8rem;color:var(--gold-dim);font-style:italic">→ ${m.application}</div>
-        </div>`).join('');
+      const combinedHtml = r.cautions.map((c, i) => {
+        const meaning = r.meanings?.[i] || {};
+        const reversedKeyword = cleanLessonHtml(meaning.keyword || 'the upright keyword');
+        return `
+        <div class="shadow-item reversed-meaning">
+          <strong style="color:var(--gold)">${cleanLessonHtml(c.aspect)} (opposite of ${reversedKeyword})</strong>
+          <p style="font-size:0.88rem;color:var(--text)">${cleanLessonHtml(c.detail)}</p>
+          <div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.35rem;margin-bottom:0.35rem">${cleanLessonHtml(meaning.meaning || '')}</div>
+          <div style="font-size:0.8rem;color:var(--gold-dim);font-style:italic">${cleanLessonHtml(meaning.application || '')}</div>
+        </div>`;
+      }).join('');
 
       return `
         <div class="card-panel">
           <div class="phase-title">Shadow & Reversal</div>
 
-          <p style="color:var(--text-dim);margin-bottom:1rem;font-size:0.87rem;line-height:1.5;font-style:italic">"${r.shadow}"</p>
+          <p style="color:var(--text-dim);margin-bottom:1rem;font-size:0.87rem;line-height:1.5;font-style:italic">${cleanLessonHtml(r.shadow)}</p>
 
           <div style="background:rgba(210,60,60,0.08);border:1px solid rgba(210,60,60,0.2);border-radius:12px;padding:1rem;margin-bottom:1.2rem">
             <div style="font-family:'Cinzel',serif;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:0.75rem">When Reversed</div>
-            ${cautionHtml}
-          </div>
-
-          <div style="margin-bottom:1rem">
-            <div style="font-family:'Cinzel',serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold-dim);margin-bottom:0.65rem">Reversed Keywords</div>
-            ${meaningsHtml}
+            ${combinedHtml}
           </div>
 
           <div style="background:rgba(102,95,209,0.08);border:1px solid rgba(102,95,209,0.2);border-radius:10px;padding:0.85rem;margin-bottom:1rem">
             <div style="font-size:0.75rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.35rem">Reading Tip</div>
-            <p style="font-size:0.86rem;color:var(--text);line-height:1.5;margin:0">${r.readingTip}</p>
+            <p style="font-size:0.86rem;color:var(--text);line-height:1.5;margin:0">${cleanLessonHtml(r.readingTip)}</p>
           </div>
 
           <div style="background:rgba(220,185,119,0.07);border-left:2px solid rgba(220,185,119,0.25);padding:0.7rem 0.85rem;border-radius:6px">
-            <p style="font-size:0.82rem;color:var(--text-dim);margin:0;font-style:italic"><strong>Quick contrast:</strong> ${r.contrast}</p>
+            <p style="font-size:0.82rem;color:var(--text-dim);margin:0;font-style:italic"><strong>Quick contrast:</strong> ${cleanLessonHtml(r.contrast)}</p>
           </div>
         </div>`;
     }
 
     function renderMovie(card) {
-      const m = card.movie;
+      const movie = card.movie || {};
+      const m = card.memory || {};
       return `
         <div class="card-panel">
-          <div class="phase-title">Movie Scene Method</div>
+          <div class="phase-title">Memory Spell</div>
+          <p style="margin-bottom:1rem;color:var(--text-dim);font-size:0.95rem;line-height:1.55">Read the card like a short film, then lock it in with memory anchors.</p>
           <div class="movie-scene">
-            <p><strong class="icon-inline">${icon('clapperboard')}<span>Setting:</span></strong> ${m.setting}</p>
-            <p><strong class="icon-inline">${icon('volume-2')}<span>Sounds:</span></strong> ${m.sounds}</p>
-            <p><strong class="icon-inline">${icon('cloud-sun')}<span>Weather:</span></strong> ${m.weather}</p>
-            <p><strong class="icon-inline">${icon('sparkles')}<span>Emotions:</span></strong> ${m.emotions}</p>
-            <p><strong class="icon-inline">${icon('arrow-right')}<span>What happens next:</span></strong> ${m.next}</p>
+            <p><strong>Setting:</strong> ${cleanLessonHtml(movie.setting || 'The scene is set for the card lesson.')}</p>
+            <p><strong>Sound:</strong> ${cleanLessonHtml(movie.sounds || 'Listen for the emotional tone beneath the image.')}</p>
+            <p><strong>Atmosphere:</strong> ${cleanLessonHtml(movie.weather || 'The mood tells you how this card is lived, not just defined.')}</p>
+            <p><strong>Key Movement:</strong> ${cleanLessonHtml(movie.moves || 'A single action reveals the card\'s turning point.')}</p>
+            <p><strong>Core Tension:</strong> ${cleanLessonHtml(movie.emotions || 'Notice what forces collide in this frame.')}</p>
+            <p><strong>What Happens Next:</strong> ${cleanLessonHtml(movie.next || 'The scene opens into the next choice.')}</p>
+          </div>
+          <div class="memory-spell-block">
+            <div class="spell-label">One-Sentence Summary</div>
+            <div class="spell-text">${cleanLessonHtml(m.summary)}</div>
+          </div>
+          <div class="memory-spell-block">
+            <div class="spell-label">Visual Memory Image</div>
+            <div class="spell-text">${cleanLessonHtml(m.visual)}</div>
+          </div>
+          <div class="memory-spell-block">
+            <div class="spell-label">Real-Life Application</div>
+            <div class="spell-text">${cleanLessonHtml(m.application)}</div>
           </div>
         </div>`;
     }
@@ -2526,30 +2567,6 @@
     function renderQuiz(card) {
       if (state.quizSubmitted) return renderResults(card);
       return window.QuizPageRenderer.render({ card, answers: state.quizAnswers, icon });
-    }
-
-    function renderMemory(card) {
-      const m = card.memory;
-      return `
-        <div class="card-panel">
-          <div class="phase-title">Memory Spell</div>
-          <div class="memory-spell-block">
-            <div class="spell-label">One-Sentence Summary</div>
-            <div class="spell-text">${m.summary}</div>
-          </div>
-          <div class="memory-spell-block">
-            <div class="spell-label">Mnemonic</div>
-            <div class="spell-text">${m.mnemonic}</div>
-          </div>
-          <div class="memory-spell-block">
-            <div class="spell-label">Visual Memory Image</div>
-            <div class="spell-text">${m.visual}</div>
-          </div>
-          <div class="memory-spell-block">
-            <div class="spell-label">Real-Life Application</div>
-            <div class="spell-text">${m.application}</div>
-          </div>
-        </div>`;
     }
 
     /* ─── Milestone Screen ─── */
@@ -2572,13 +2589,13 @@
 
       const nextBtn = nextPendingReward
         ? `<button class="btn btn-primary" onclick="goToMilestone('${nextPendingReward}')">Claim Next Milestone Reward</button>
-           <button class="btn btn-secondary" onclick="finishLesson()">Return Home</button>`
+           <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>`
         : deckComplete
         ? `<button class="btn btn-primary" onclick="showGrandmasterEnding()">Enter Grandmaster Ending</button>`
         : nextCard
            ? `<button class="btn btn-primary" onclick="startNextCard()">Move to the Next Card</button>
-             <button class="btn btn-secondary" onclick="finishLesson()">Return Home</button>`
-          : `<button class="btn btn-secondary" onclick="finishLesson()">Return Home</button>`;
+             <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>`
+          : `<button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>`;
 
       return `
         <div class="card-panel milestone-screen">
@@ -2657,7 +2674,7 @@
 
       const card = getCard();
       const phase = PHASES[state.phaseIndex] || PHASES[0];
-      const collapsedPhases = ['welcome', 'reveal', 'quiz', 'memory', 'results'];
+      const collapsedPhases = ['welcome', 'reveal', 'quiz', 'movie', 'results'];
       const shouldCollapseRightPanel = collapsedPhases.includes(phase.id);
       setRightPanelCollapsed(shouldCollapseRightPanel, 'system');
       dom.mainContent.dataset.phase = phase.id;
@@ -2675,20 +2692,21 @@
         case 'movie':      html = renderMovie(card); break;
         case 'reversed':   html = renderReversed(card); break;
         case 'quiz':       html = renderQuiz(card); break;
-        case 'memory':     html = renderMemory(card); break;
         case 'results':    html = state.quizSubmitted ? renderResults(card) : renderQuiz(card); break;
         default:           html = renderWelcome(); break;
       }
 
-      const showNav = phase.id !== 'welcome' && phase.id !== 'results';
+      const showNav = phase.id !== 'welcome';
       const navHtml = showNav ? `
         <div class="nav-buttons${phase.id === 'reveal' && !state.revealCardFlipped ? ' ritual-nav' : ''}">
           ${state.phaseIndex > 0 ? `<button class="btn btn-secondary" onclick="prevPhase()">← Back</button>` : ''}
           ${phase.id === 'quiz'
             ? ''
-            : phase.id === 'memory'
+            : phase.id === 'movie'
               ? `<button class="btn btn-primary" onclick="goToResults()">View Quiz Results →</button>`
-              : `<button class="btn btn-primary" onclick="nextPhase()">Continue →</button>`}
+              : phase.id === 'results'
+                ? ''
+                : `<button class="btn btn-primary" onclick="nextPhase()">Continue →</button>`}
         </div>` : '';
 
       dom.mainContent.innerHTML = html + navHtml;
@@ -2736,7 +2754,18 @@
 
     function prevPhase() {
       if (state.phaseIndex <= 0) return;
-      state.phaseIndex -= 1;
+      const currentPhase = PHASES[state.phaseIndex] || PHASES[0];
+      if (currentPhase.id === 'movie') {
+        const quizIndex = PHASES.findIndex(p => p.id === 'quiz');
+        const reversedIndex = PHASES.findIndex(p => p.id === 'reversed');
+
+        // After quiz submission, quiz phase renders results; go to Shadow instead.
+        state.phaseIndex = state.quizSubmitted && reversedIndex >= 0
+          ? reversedIndex
+          : (quizIndex >= 0 ? quizIndex : state.phaseIndex - 1);
+      } else {
+        state.phaseIndex -= 1;
+      }
       const card = getCard();
       if (card) playElementTransition(card);
       saveProgress();
@@ -2747,7 +2776,13 @@
 
     function nextPhase() {
       if (state.phaseIndex >= PHASES.length - 1) return;
-      state.phaseIndex += 1;
+      const currentPhase = PHASES[state.phaseIndex] || PHASES[0];
+      if (currentPhase.id === 'reversed' && state.quizSubmitted) {
+        const movieIndex = PHASES.findIndex(p => p.id === 'movie');
+        state.phaseIndex = movieIndex >= 0 ? movieIndex : state.phaseIndex + 1;
+      } else {
+        state.phaseIndex += 1;
+      }
       const card = getCard();
       if (card) playElementTransition(card);
       saveProgress();
@@ -2815,7 +2850,7 @@
       state.lastReviewedCard = card.id;
 
       saveProgress();
-      state.phaseIndex = PHASES.findIndex(p => p.id === 'memory');
+      state.phaseIndex = PHASES.findIndex(p => p.id === 'movie');
       renderPhase();
       if (!wasMastered) {
         showCompletionPopup(card, earned);

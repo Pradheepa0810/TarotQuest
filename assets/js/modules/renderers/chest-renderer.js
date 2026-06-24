@@ -41,7 +41,7 @@
             </div>
           </div>
           <div class="chest-vault-image-wrap">
-            <img class="chest-vault-image" src="Treasure_room.JPEG" alt="Treasure room" loading="lazy">
+            <img class="chest-vault-image" src="assets/images/Treasure_room.JPEG" alt="Treasure room" loading="lazy">
             <div class="chest-vault-amount"><span class="icon-inline">${options.icon('gem')}<span>${options.state.gems} Gems</span></span></div>
           </div>
           <p class="chest-vault-subcopy">Every lesson, quiz, streak, and achievement strengthens your chest.</p>
