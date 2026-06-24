@@ -723,14 +723,13 @@
       }
 
       targetResults.innerHTML = results.map(card => `
-        <article class="search-result-item">
+        <article class="search-result-item" role="button" tabindex="0" onclick="goToCardLesson('${card.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToCardLesson('${card.id}');}">
           <img class="search-result-thumb" src="${card.image}" alt="${card.name}" loading="lazy">
           <div class="search-result-text">
             <div class="search-result-name">${card.name}</div>
             <div class="search-result-suit">${card.suit}</div>
             <div class="search-result-core">${(card.keywords || []).slice(0, 3).join(' • ')}</div>
           </div>
-          <button type="button" class="btn btn-secondary search-result-learn-btn" onclick="goToCardLesson('${card.id}')">Learn More</button>
         </article>`).join('');
       targetResults.hidden = false;
     }
@@ -1885,43 +1884,47 @@
       const placeholderB = `<option value=""${state.compareRightCardId ? '' : ' selected'}>Choose Card B...</option>`;
 
       let html = `
-        <div class="card-panel">
-          <div class="phase-title">Card Comparison Tool</div>
-          <div class="compare-select-grid">
-            <div>
-              <label for="compareCenterCardA">Card A</label>
-              <select id="compareCenterCardA" onchange="setCompareCard('a', this.value)">${placeholderA}${optionsAHtml}</select>
-            </div>
-            <div>
-              <label for="compareCenterCardB">Card B</label>
-              <select id="compareCenterCardB" onchange="setCompareCard('b', this.value)">${placeholderB}${optionsBHtml}</select>
-            </div>
+        <div class="card-panel compare-shell">
+          <div class="compare-header-bar">
+            <div class="phase-title">Card Comparison</div>
           </div>
-          <div id="compareCenterOutput"></div>
-        </div>`;
+          <div id="compareCenterOutput"></div>`;
 
       const cardA = TarotDeck.getCard(state.compareLeftCardId);
       const cardB = TarotDeck.getCard(state.compareRightCardId);
 
+      const cardPickerA = `
+        <div class="compare-card-picker">
+          <label for="compareCenterCardA">Choose Card A</label>
+          <select id="compareCenterCardA" onchange="setCompareCard('a', this.value)">${placeholderA}${optionsAHtml}</select>
+        </div>`;
+
+      const cardPickerB = `
+        <div class="compare-card-picker">
+          <label for="compareCenterCardB">Choose Card B</label>
+          <select id="compareCenterCardB" onchange="setCompareCard('b', this.value)">${placeholderB}${optionsBHtml}</select>
+        </div>`;
+
       if (!cardA || !cardB) {
         html += `
-          <div class="card-panel" style="margin-top:0">
+          <div class="compare-display-area">
             <div class="compare-images">
               <article class="compare-card">
-                <img src="${cardA ? cardA.image : TAROT_CARD_BACK_IMAGE}" alt="${cardA ? cardA.name : 'Tarot card back'}" loading="lazy">
-                <div class="compare-card-name">${cardA ? cardA.name : 'Tarot Back'}</div>
+                ${cardPickerA}
+                <img src="${cardA ? cardA.image : TAROT_CARD_BACK_IMAGE}" alt="${cardA ? cardA.name : 'card back'}" loading="lazy">
+                <div class="compare-card-name">${cardA ? cardA.name : ''}</div>
               </article>
               <article class="compare-card">
-                <img src="${cardB ? cardB.image : TAROT_CARD_BACK_IMAGE}" alt="${cardB ? cardB.name : 'Tarot card back'}" loading="lazy">
-                <div class="compare-card-name">${cardB ? cardB.name : 'Tarot Back'}</div>
+                ${cardPickerB}
+                <img src="${cardB ? cardB.image : TAROT_CARD_BACK_IMAGE}" alt="${cardB ? cardB.name : 'card back'}" loading="lazy">
+                <div class="compare-card-name">${cardB ? cardB.name : ''}</div>
               </article>
             </div>
-            <div class="compare-placeholder">Choose both cards to reveal comparison details.</div>
+            <div class="nav-buttons compare-reset-wrap">
+              <button class="btn btn-secondary" onclick="resetCompareSelection()">Reset Pair</button>
+            </div>
           </div>
-          <div class="nav-buttons">
-            <button class="btn btn-secondary" onclick="resetCompareSelection()">Reset Pair</button>
-            <button class="btn btn-secondary" onclick="toggleCompareMode()">← Back to Lesson</button>
-          </div>`;
+        </div>`;
         return html;
       }
 
@@ -1931,50 +1934,61 @@
       const uniqueB = keywordsB.filter(k => !keywordsA.includes(k));
       const shared = keywordsA.filter(k => keywordsB.includes(k));
 
-      const uniqueAHtml = uniqueA.length ? uniqueA.map(k => `<div>- ${k}</div>`).join('') : '<div>- No unique keywords</div>';
-      const uniqueBHtml = uniqueB.length ? uniqueB.map(k => `<div>- ${k}</div>`).join('') : '<div>- No unique keywords</div>';
+      const uniqueAHtml = uniqueA.length ? uniqueA.map(k => `<div>${k}</div>`).join('') : '<div>No unique keywords</div>';
+      const uniqueBHtml = uniqueB.length ? uniqueB.map(k => `<div>${k}</div>`).join('') : '<div>No unique keywords</div>';
       const sharedHtml = shared.length ? `Shared: ${shared.join(', ')}` : 'Shared: No direct keyword overlap';
 
       html += `
-        <div class="card-panel" style="margin-top:0">
-          <div class="compare-images">
-            <article class="compare-card">
-              <img src="${cardA.image}" alt="${cardA.name}" loading="lazy">
-              <div class="compare-card-name">${cardA.name}</div>
-            </article>
-            <article class="compare-card">
-              <img src="${cardB.image}" alt="${cardB.name}" loading="lazy">
-              <div class="compare-card-name">${cardB.name}</div>
-            </article>
-          </div>
-          <div class="compare-section-title">Keyword Comparison</div>
-          <div class="compare-keywords-grid">
-            <div class="compare-keyword-col">
-              <div class="compare-keyword-head">${cardA.name}</div>
-              <div class="compare-keyword-list">${uniqueAHtml}</div>
+          <div class="compare-display-area">
+            <div class="compare-images">
+              <article class="compare-card">
+                ${cardPickerA}
+                <img src="${cardA.image}" alt="${cardA.name}" loading="lazy">
+                <div class="compare-card-name">${cardA.name}</div>
+              </article>
+              <article class="compare-card">
+                ${cardPickerB}
+                <img src="${cardB.image}" alt="${cardB.name}" loading="lazy">
+                <div class="compare-card-name">${cardB.name}</div>
+              </article>
             </div>
-            <div class="compare-keyword-col">
-              <div class="compare-keyword-head">${cardB.name}</div>
-              <div class="compare-keyword-list">${uniqueBHtml}</div>
+            <div class="nav-buttons compare-reset-wrap">
+              <button class="btn btn-secondary" onclick="resetCompareSelection()">Reset Pair</button>
             </div>
           </div>
-          <div class="compare-shared">${sharedHtml}</div>
-          <div class="compare-section-title">Element / Suit</div>
-          <div class="compare-meta-row">
-            <strong>${cardA.element}</strong>
-            <span>Element</span>
-            <strong>${cardB.element}</strong>
+          <div class="compare-details">
+            <h3 class="compare-section-heading">Comparison</h3>
+
+            <div class="compare-table" role="table" aria-label="Card comparison table">
+              <div class="compare-table-row compare-table-head" role="row">
+                <div class="compare-cell compare-cell-label" role="columnheader" aria-hidden="true"></div>
+                <div class="compare-cell compare-cell-card" role="columnheader"><strong>Card A: ${cardA.name}</strong></div>
+                <div class="compare-cell compare-cell-card" role="columnheader"><strong>Card B: ${cardB.name}</strong></div>
+              </div>
+
+              <div class="compare-table-row" role="row">
+                <div class="compare-cell compare-cell-label" role="rowheader">Keywords</div>
+                <div class="compare-cell compare-cell-value" role="cell"><div class="compare-keyword-stack">${uniqueAHtml}</div></div>
+                <div class="compare-cell compare-cell-value" role="cell"><div class="compare-keyword-stack">${uniqueBHtml}</div></div>
+              </div>
+
+              <div class="compare-table-row" role="row">
+                <div class="compare-cell compare-cell-label" role="rowheader">Element</div>
+                <div class="compare-cell compare-cell-value" role="cell"><strong>${cardA.element}</strong></div>
+                <div class="compare-cell compare-cell-value" role="cell"><strong>${cardB.element}</strong></div>
+              </div>
+
+              <div class="compare-table-row" role="row">
+                <div class="compare-cell compare-cell-label" role="rowheader">Suit</div>
+                <div class="compare-cell compare-cell-value" role="cell"><strong>${cardA.suit}</strong></div>
+                <div class="compare-cell compare-cell-value" role="cell"><strong>${cardB.suit}</strong></div>
+              </div>
+            </div>
+
+            <div class="compare-shared-block">
+              <strong>Shared Keywords:</strong> ${sharedHtml.replace('Shared: ', '')}
+            </div>
           </div>
-          <div class="compare-meta-row">
-            <strong>${cardA.suit}</strong>
-            <span>Suit</span>
-            <strong>${cardB.suit}</strong>
-          </div>
-          <div class="compare-prompt">What's different? How does ${cardA.name}'s ${cardA.element} energy shift into ${cardB.name}'s ${cardB.element} current in a reading?</div>
-        </div>
-        <div class="nav-buttons">
-          <button class="btn btn-secondary" onclick="resetCompareSelection()">Reset Pair</button>
-          <button class="btn btn-secondary" onclick="toggleCompareMode()">← Back to Lesson</button>
         </div>`;
 
       return html;
@@ -2027,11 +2041,8 @@
     }
 
     function resetCompareSelection() {
-      const order = TarotDeck.DECK_ORDER.filter(id => !!TarotDeck.getCard(id));
-      if (!order.length) return;
-
-      state.compareLeftCardId = TarotDeck.getCard(state.currentCard) ? state.currentCard : order[0];
-      state.compareRightCardId = order.find(id => id !== state.compareLeftCardId) || state.compareLeftCardId;
+      state.compareLeftCardId = null;
+      state.compareRightCardId = null;
 
       if (state.compareMode) {
         renderPhase();
@@ -2671,15 +2682,13 @@
 
       const showNav = phase.id !== 'welcome' && phase.id !== 'results';
       const navHtml = showNav ? `
-        <div class="nav-buttons${phase.id === 'reveal' ? ' ritual-nav' : ''}">
+        <div class="nav-buttons${phase.id === 'reveal' && !state.revealCardFlipped ? ' ritual-nav' : ''}">
           ${state.phaseIndex > 0 ? `<button class="btn btn-secondary" onclick="prevPhase()">← Back</button>` : ''}
           ${phase.id === 'quiz'
             ? ''
             : phase.id === 'memory'
               ? `<button class="btn btn-primary" onclick="goToResults()">View Quiz Results →</button>`
-              : phase.id === 'reveal' && !state.revealCardFlipped
-                ? `<button class="btn btn-primary" disabled title="Flip the card first">Continue →</button>`
-                : `<button class="btn btn-primary" onclick="nextPhase()">Continue →</button>`}
+              : `<button class="btn btn-primary" onclick="nextPhase()">Continue →</button>`}
         </div>` : '';
 
       dom.mainContent.innerHTML = html + navHtml;
@@ -2728,6 +2737,8 @@
     function prevPhase() {
       if (state.phaseIndex <= 0) return;
       state.phaseIndex -= 1;
+      const card = getCard();
+      if (card) playElementTransition(card);
       saveProgress();
       renderPhase();
       scrollToTop();
@@ -2737,6 +2748,8 @@
     function nextPhase() {
       if (state.phaseIndex >= PHASES.length - 1) return;
       state.phaseIndex += 1;
+      const card = getCard();
+      if (card) playElementTransition(card);
       saveProgress();
       renderPhase();
       scrollToTop();

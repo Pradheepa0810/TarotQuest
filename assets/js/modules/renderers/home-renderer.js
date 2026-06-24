@@ -5,9 +5,17 @@
         <section class="card-panel home-portal-panel welcome-screen">
           <div class="home-portal-hero">
             <h2 class="home-portal-title">Welcome, weary traveler</h2>
-            <p class="home-portal-copy">Come in from the road and rest awhile. The cottage keeps warm light in its windows, old stories in its rafters, and a patient hearth for every seeker who arrives with dust on their boots and questions in their heart.</p>
-            <p class="home-portal-copy">Long ago, the cottage was said to stand where starlight touched the earth. There, the cards began to whisper: of courage, loss, hope, and hidden paths. Each reading is a lantern, and each lesson a step deeper into the lore of the arcana.</p>
-            <p class="home-portal-copy">If you are ready, take up the deck and begin your tarot quest. The road ahead is mysterious, but the cottage will guide you toward wisdom one card at a time.</p>
+            <p class="home-portal-copy">The cottage predates its own walls.</p>
+            <p class="home-portal-copy">The road that leads here did not exist until you needed it to.</p>
+            <p class="home-portal-copy">Inside, the cards have been shuffled by hands no one remembers, read by mouths that spoke in languages the forest has since swallowed.</p>
+            <p class="home-portal-copy">They have, it should be noted, a habit of being right.</p>
+            <p class="home-portal-copy">Every seeker arrives the same, carrying something wordless,something that hums faintly in the chest at odd hours.</p>
+            <p class="home-portal-copy">The cottage knows.</p>
+            <p class="home-portal-copy">It set out your chair before dawn.</p>
+            <p class="home-portal-copy">It has kept the fire and has been expecting you for a very long time.</p>
+            <p class="home-portal-copy">Sit down.</p>
+            <p class="home-portal-copy">The deck is on the table.</p>
+            <p class="home-portal-copy">You already know what to do.</p>
             <div class="smoke-wisps" aria-hidden="true">
               <span class="smoke-wisp smoke-wisp-1"></span>
               <span class="smoke-wisp smoke-wisp-2"></span>
