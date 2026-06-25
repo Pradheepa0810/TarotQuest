@@ -23,10 +23,13 @@
 
       const grades = quiz.results.map((r, i) => `
         <div class="grade-item ${r.correct ? 'pass' : 'fail'}">
+          <div><strong>Question:</strong> ${r.q.q}</div>
           <strong>Q${i + 1}:</strong> ${r.correct
             ? `<span class="icon-inline">${options.icon('check')}<span>Correct!</span></span>`
             : `<span class="icon-inline">${options.icon('x')}<span>Not quite.</span></span>`}
-          ${r.correct ? '' : `<br><small>You chose: "${r.q.options[r.chosen]}" — ${r.q.explain}</small>`}
+          ${r.correct
+            ? `<br><small>You chose: "${r.q.options[r.chosen]}". ${r.q.explain}</small>`
+            : `<br><small>You chose: "${r.q.options[r.chosen]}" — Correct: "${r.q.options[r.q.answer]}". ${r.q.explain}</small>`}
         </div>`).join('');
 
       const nextBtn = options.pendingMilestoneId
@@ -34,6 +37,13 @@
         : options.nextCard
           ? '<button class="btn btn-primary" onclick="startNextCard()">Move to the Next Card</button>'
           : `<div class="complete-banner" style="margin-bottom:1rem"><span class="icon-inline">${options.icon('crown')}<span>You mastered all ${options.totalCards} cards!</span></span></div>`;
+
+      const primaryNav = options.nextCard && !options.pendingMilestoneId
+        ? `<div class="results-primary-nav">
+             <button class="btn btn-secondary" onclick="prevPhase()">← Back</button>
+             ${nextBtn}
+           </div>`
+        : nextBtn;
 
       return `
         <div class="card-panel results-panel">
@@ -47,7 +57,7 @@
           ${grades}
 
           <div class="nav-buttons" style="margin-top:1.5rem">
-            ${nextBtn}
+            ${primaryNav}
             ${options.state.lastReviewedCard ? '<button class="btn btn-secondary" onclick="reviewLastCard()">Review This Card Again</button>' : ''}
             <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>
           </div>

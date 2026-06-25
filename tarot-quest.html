@@ -6,7 +6,7 @@
   <title>Tarot Quest: Learn One Card at a Time</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body class="right-panel-collapsed">
@@ -58,6 +58,105 @@
   </div>
   <div class="ambient-particles" id="ambientParticles" aria-hidden="true"></div>
   <div class="fx-layer" id="fxLayer" aria-hidden="true"></div>
+
+  <div class="arcana-intro" id="arcanaIntro" aria-label="Arcana Mystica Intro Sequence">
+    <button type="button" class="intro-skip" id="introSkip">Skip Intro</button>
+
+    <div class="intro-exterior" aria-hidden="true">
+      <div class="intro-exterior-image" id="introExteriorImage"></div>
+      <div class="intro-flicker"></div>
+
+      <div class="intro-door-set">
+        <div class="intro-door-light"></div>
+        <div class="intro-door-frame">
+          <div class="intro-door-panel"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-interior" aria-hidden="true">
+      <div class="interior-fireplace intro-fade-item">
+        <div class="fireplace-arch">
+          <div class="fireplace-fire">
+            <span class="fire-flame flame-a"></span>
+            <span class="fire-flame flame-b"></span>
+            <span class="fire-flame flame-c"></span>
+          </div>
+        </div>
+        <div class="fireplace-floor-glow"></div>
+      </div>
+
+      <div class="interior-window intro-fade-item">
+        <div class="window-night-sky">
+          <span class="window-star" style="top:14%; left:18%;"></span>
+          <span class="window-star" style="top:26%; left:66%;"></span>
+          <span class="window-star" style="top:48%; left:34%;"></span>
+          <span class="window-star" style="top:62%; left:74%;"></span>
+        </div>
+        <div class="window-cross window-cross-v"></div>
+        <div class="window-cross window-cross-h"></div>
+        <div class="window-moonbeam"></div>
+      </div>
+
+      <div class="interior-chair intro-fade-item">
+        <div class="chair-back"></div>
+        <div class="chair-seat"></div>
+        <div class="chair-leg left"></div>
+        <div class="chair-leg right"></div>
+      </div>
+
+      <div class="interior-table-wrap intro-fade-item">
+        <div class="interior-table">
+          <div class="table-leg left"></div>
+          <div class="table-leg right"></div>
+        </div>
+
+        <div class="table-mug">
+          <div class="mug-handle"></div>
+          <svg class="mug-steam" viewBox="0 0 80 64" aria-hidden="true">
+            <path d="M22 58 C18 40, 26 32, 22 14" />
+            <path d="M40 60 C35 44, 47 35, 42 16" />
+            <path d="M58 58 C54 41, 64 32, 60 14" />
+          </svg>
+        </div>
+
+        <div class="table-teapot">
+          <div class="teapot-lid"></div>
+          <div class="teapot-spout"></div>
+        </div>
+
+        <div class="intro-scroll" id="introScroll">
+          <div class="scroll-envelope-flap" aria-hidden="true"></div>
+          <div class="scroll-envelope-pocket" aria-hidden="true"></div>
+
+          <div class="scroll-seal" id="scrollSeal" aria-hidden="true">
+            <svg viewBox="0 0 80 80" role="img" aria-label="Wax seal">
+              <circle cx="40" cy="40" r="24" class="seal-core"></circle>
+              <path class="seal-half seal-half-left" d="M40 16 A24 24 0 0 0 40 64 Z"></path>
+              <path class="seal-half seal-half-right" d="M40 16 A24 24 0 0 1 40 64 Z"></path>
+            </svg>
+          </div>
+
+          <div class="scroll-content" id="scrollContent">
+            <h2>Welcome, weary traveler</h2>
+            <p>The cottage predates its own walls.</p>
+            <p>The road that leads here did not exist until you needed it to.</p>
+            <p>Inside, the cards have been shuffled by hands no one remembers, read by mouths that spoke in languages the forest has since swallowed.</p>
+            <p>They have, it should be noted, a habit of being right.</p>
+            <p>Every seeker arrives the same, carrying something wordless, something that hums faintly in the chest at odd hours.</p>
+            <p>The cottage knows.</p>
+            <p>It set out your chair before dawn.</p>
+            <p>It has kept the fire and has been expecting you for a very long time.</p>
+            <p>Sit down.</p>
+            <p>The deck is on the table.</p>
+            <p>You already know what to do.</p>
+          </div>
+        </div>
+
+        <button type="button" class="intro-begin" id="introBeginBtn">Begin Your Tarot Quest</button>
+      </div>
+    </div>
+  </div>
 
   <div class="seeker-intro" id="seekerIntro" aria-hidden="true">
     <div class="seeker-intro-sparkles" aria-hidden="true"></div>
@@ -213,6 +312,7 @@
   <script src="assets/js/modules/renderers/chest-renderer.js"></script>
   <script src="assets/js/modules/renderers/quiz-renderer.js"></script>
   <script src="assets/js/modules/renderers/results-renderer.js"></script>
+  <script src="assets/js/intro-sequence.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

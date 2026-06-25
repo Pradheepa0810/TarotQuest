@@ -8,7 +8,7 @@
         'first_five': 'achievement_first_five.jpeg',
         'major_arcana_adept': 'achievement_major_arcana.jpeg',
         'wands_arcana_adept': 'achievement_wands.jpeg',
-        'cups_arcana_adept': 'achievement_cups.jpeg',
+        'cups_arcana_adept': 'achievement_major_arcana.jpeg',
         'swords_arcana_adept': 'achievement_swords.jpg',
         'pentacles_arcana_adept': 'achievement_pentacles.jpg',
         'quiz_perfectionist': 'achievement_quiz.jpg',
@@ -26,7 +26,7 @@
             <div class="achievement-back" aria-hidden="true">
               <div class="achievement-back-inner">
                 <div class="achievement-illustration">
-                  <img src="${imagePath}" alt="${achievement.name}" class="achievement-card-image" loading="lazy" />
+                  <img src="${imagePath}" alt="${achievement.name}" class="achievement-card-image" loading="lazy" onerror="this.onerror=null;this.src='assets/images/achievement_master.jpg';" />
                   <div class="achievement-hover-sparkles" aria-hidden="true">
                     <span></span><span></span><span></span><span></span><span></span>
                   </div>

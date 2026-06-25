@@ -217,6 +217,9 @@
 
     const dom = {};
     let audioCtx = null;
+    let homeLetterSoundTimeout = null;
+    let homeCtaRevealTimeout = null;
+    let homeTransitionCompleteTimeout = null;
     let achievementService = null;
     let modalState = {
       queue: [],
@@ -382,6 +385,167 @@
         osc.start(now);
         osc.stop(now + 0.22);
       } catch (_) {}
+    }
+
+    function playFireCrackleSound() {
+      if (!state.settings.sound) return;
+      try {
+        if (!ensureAudioContext()) return;
+        if (audioCtx.state !== 'running') return;
+
+        const now = audioCtx.currentTime;
+        const noiseBuffer = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * 0.28), audioCtx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+          data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+        }
+
+        const src = audioCtx.createBufferSource();
+        src.buffer = noiseBuffer;
+
+        const hp = audioCtx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.setValueAtTime(900, now);
+
+        const lp = audioCtx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.setValueAtTime(4200, now);
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.27);
+
+        src.connect(hp);
+        hp.connect(lp);
+        lp.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        src.start(now);
+        src.stop(now + 0.28);
+      } catch (_) {}
+    }
+
+    function parseAnimationTimeMs(value) {
+      if (!value || value === '0s') return 0;
+      const first = String(value).split(',')[0].trim();
+      if (first.endsWith('ms')) return Number.parseFloat(first) || 0;
+      if (first.endsWith('s')) return (Number.parseFloat(first) || 0) * 1000;
+      return Number.parseFloat(first) || 0;
+    }
+
+    function scheduleHomeLetterSound() {
+      if (homeLetterSoundTimeout) {
+        window.clearTimeout(homeLetterSoundTimeout);
+        homeLetterSoundTimeout = null;
+      }
+
+      if (state.activeView !== 'home') return;
+      const host = document.getElementById('homeLetterTransition');
+      if (!host || !host.classList.contains('is-transitioning')) return;
+      if (!state.settings.animations || prefersReducedMotion()) {
+        playFireCrackleSound();
+        return;
+      }
+
+      const letterEl = document.getElementById('homeSceneLetter');
+      const styles = letterEl ? window.getComputedStyle(letterEl) : null;
+      const delayMs = styles ? parseAnimationTimeMs(styles.animationDelay) : 150;
+      const durationMs = styles ? parseAnimationTimeMs(styles.animationDuration) : 1150;
+      const triggerMs = Math.max(0, Math.round(delayMs + durationMs * 0.62));
+
+      homeLetterSoundTimeout = window.setTimeout(() => {
+        homeLetterSoundTimeout = null;
+        if (state.activeView === 'home') {
+          playFireCrackleSound();
+        }
+      }, triggerMs);
+    }
+
+    function scheduleHomeCtaReveal() {
+      if (homeCtaRevealTimeout) {
+        window.clearTimeout(homeCtaRevealTimeout);
+        homeCtaRevealTimeout = null;
+      }
+
+      const cta = document.querySelector('.cta-after-transition');
+      if (!cta) return;
+
+      cta.classList.remove('is-visible');
+      cta.style.setProperty('opacity', '0', 'important');
+      cta.style.setProperty('visibility', 'hidden', 'important');
+      cta.style.setProperty('pointer-events', 'none');
+      cta.style.setProperty('transform', 'translateY(8px)');
+
+      if (state.activeView !== 'home') return;
+      const host = document.getElementById('homeLetterTransition');
+      if (!host || !host.classList.contains('is-transitioning')) return;
+      if (!state.settings.animations || prefersReducedMotion()) {
+        cta.classList.add('is-visible');
+        cta.style.setProperty('opacity', '1', 'important');
+        cta.style.setProperty('visibility', 'visible', 'important');
+        cta.style.setProperty('pointer-events', 'auto');
+        cta.style.setProperty('transform', 'translateY(0)');
+        return;
+      }
+
+      const letterEl = document.getElementById('homeSceneLetter');
+      const styles = letterEl ? window.getComputedStyle(letterEl) : null;
+      const delayMs = styles ? parseAnimationTimeMs(styles.animationDelay) : 150;
+      const durationMs = styles ? parseAnimationTimeMs(styles.animationDuration) : 1150;
+      const revealMs = Math.max(0, Math.round(delayMs + durationMs + 120));
+
+      homeCtaRevealTimeout = window.setTimeout(() => {
+        homeCtaRevealTimeout = null;
+        if (state.activeView !== 'home') return;
+        const ctaAfter = document.querySelector('.cta-after-transition');
+        if (!ctaAfter) return;
+        ctaAfter.classList.add('is-visible');
+        ctaAfter.style.setProperty('opacity', '1', 'important');
+        ctaAfter.style.setProperty('visibility', 'visible', 'important');
+        ctaAfter.style.setProperty('pointer-events', 'auto');
+        ctaAfter.style.setProperty('transform', 'translateY(0)');
+      }, revealMs);
+    }
+
+    function startHomeSceneTransition() {
+      if (state.activeView !== 'home') return;
+
+      const host = document.getElementById('homeLetterTransition');
+      const panel = document.getElementById('homePortalPanel');
+      if (!host) return;
+
+      if (host.classList.contains('is-transitioning') || host.classList.contains('is-transition-complete')) {
+        return;
+      }
+
+      host.classList.add('is-transitioning');
+      panel?.classList.add('home-transition-started');
+
+      scheduleHomeLetterSound();
+      scheduleHomeCtaReveal();
+
+      if (homeTransitionCompleteTimeout) {
+        window.clearTimeout(homeTransitionCompleteTimeout);
+        homeTransitionCompleteTimeout = null;
+      }
+
+      if (!state.settings.animations || prefersReducedMotion()) {
+        host.classList.add('is-transition-complete');
+        document.querySelector('.cta-after-transition')?.classList.add('is-visible');
+        return;
+      }
+
+      const letterEl = document.getElementById('homeSceneLetter');
+      const styles = letterEl ? window.getComputedStyle(letterEl) : null;
+      const delayMs = styles ? parseAnimationTimeMs(styles.animationDelay) : 150;
+      const durationMs = styles ? parseAnimationTimeMs(styles.animationDuration) : 1150;
+      const completeMs = Math.max(0, Math.round(delayMs + durationMs + 120));
+
+      homeTransitionCompleteTimeout = window.setTimeout(() => {
+        homeTransitionCompleteTimeout = null;
+        host.classList.add('is-transition-complete');
+      }, completeMs);
     }
 
     function applySettings() {
@@ -939,34 +1103,9 @@
       state.panelReturnView = 'home';
       closeSettingsDropdown();
       renderPhase();
-      playSeekerIntro(true);
+      window.dispatchEvent(new CustomEvent('arcana:home-opened'));
       scrollToTop();
       playUiSound('soft');
-    }
-
-    function playSeekerIntro(force = false) {
-      const intro = byId('seekerIntro');
-      if (!intro || !state.settings.animations) return;
-      if (intro.dataset.played === '1' && !force) return;
-
-      intro.dataset.played = '1';
-      intro.classList.remove('closing', 'open', 'holding');
-      // Restart CSS animation timeline
-      void intro.offsetWidth;
-      intro.classList.add('open');
-
-      window.setTimeout(() => {
-        intro.classList.add('holding');
-      }, 80);
-
-      window.setTimeout(() => {
-        intro.classList.remove('holding');
-        intro.classList.add('closing');
-      }, 430);
-
-      window.setTimeout(() => {
-        intro.classList.remove('open', 'closing', 'holding');
-      }, 900);
     }
 
     function openAlchemyLibrary() {
@@ -974,14 +1113,6 @@
       state.panelReturnView = state.activeView || 'home';
       state.activeView = 'library';
       closeSettingsDropdown();
-      renderPhase();
-      scrollToTop();
-      playUiSound('soft');
-    }
-
-    function closeAlchemyLibrary() {
-      state.activeView = state.panelReturnView || 'home';
-      state.panelReturnView = 'home';
       renderPhase();
       scrollToTop();
       playUiSound('soft');
@@ -1123,14 +1254,6 @@
       playUiSound('soft');
     }
 
-    function closeChestVault() {
-      state.activeView = state.panelReturnView || 'home';
-      state.panelReturnView = 'home';
-      renderPhase();
-      scrollToTop();
-      playUiSound('soft');
-    }
-
     function openSearchPortal() {
       state.compareMode = false;
       state.panelReturnView = state.activeView || 'home';
@@ -1163,6 +1286,7 @@
         selectAnswer,
         showGrandmasterEnding,
         startNextCard,
+        startHomeSceneTransition,
         startQuestFromHome,
         startReviewSession,
         submitQuiz,
@@ -1251,7 +1375,7 @@
         state.daily.lastLoginDate = today;
         state.daily.pendingLoginReward = DAILY_LOGIN_GEMS;
         state.gems += DAILY_LOGIN_GEMS;
-        state.daily.showWelcomeBack = true;
+        state.daily.showWelcomeBack = false;
         state.daily.welcomeMessage = 'Your first blessing has arrived. The cottage lights are warm for your journey.';
         return;
       }
@@ -1274,7 +1398,7 @@
       state.daily.pendingLoginReward = DAILY_LOGIN_GEMS;
       state.gems += DAILY_LOGIN_GEMS;
       state.daily.lastLoginDate = today;
-      state.daily.showWelcomeBack = true;
+      state.daily.showWelcomeBack = false;
     }
 
     function registerDailyCardCompletion() {
@@ -2126,17 +2250,31 @@
     }
 
     function openWelcomeOverlay() {
-      if (!state.daily.showWelcomeBack) return;
       const overlay = dom.welcomeOverlay;
       if (!overlay) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      state.daily.showWelcomeBack = false;
+      state.daily.pendingLoginReward = 0;
+    }
 
-      dom.welcomeMessage.textContent = state.daily.welcomeMessage;
-      dom.welcomeReward.textContent = `+${state.daily.pendingLoginReward} Gems Daily Blessing`;
-      dom.welcomeBlessing.textContent = state.daily.todayBlessing;
+    function isIntroSequenceVisible() {
+      const intro = byId('arcanaIntro');
+      if (!intro) return false;
+      return !intro.classList.contains('hidden') && !intro.classList.contains('sequence-ending');
+    }
 
-      overlay.classList.add('open');
-      overlay.setAttribute('aria-hidden', 'false');
-      playUiSound('reward');
+    function scheduleWelcomeOverlay() {
+      if (!state.daily.showWelcomeBack) return;
+
+      if (isIntroSequenceVisible()) {
+        window.addEventListener('arcana:intro-finished', () => {
+          openWelcomeOverlay();
+        }, { once: true });
+        return;
+      }
+
+      openWelcomeOverlay();
     }
 
     function closeWelcomeOverlay() {
@@ -2252,25 +2390,6 @@
             <button class="btn btn-primary" onclick="reviewLastCard()">Review Last Card</button>
             <button class="btn btn-secondary" onclick="resetProgress()">Begin a New Journey</button>
           </div>
-        </div>`;
-    }
-
-    function renderTrophyShelf() {
-      const slots = GROUPS.map(group => {
-        const unlocked = groupIsComplete(group.id);
-        const iconName = group.trophyIcon || group.icon || 'award';
-        const label = group.award || group.label;
-        return `
-          <div class="trophy-slot ${unlocked ? 'unlocked' : 'locked'}" title="${group.label}: ${unlocked ? 'Unlocked' : 'Locked'}">
-            <div class="trophy-icon">${icon(iconName)}</div>
-            <div class="trophy-name">${label}</div>
-          </div>`;
-      }).join('');
-
-      return `
-        <div class="trophy-shelf">
-          <div class="trophy-shelf-title">Trophy Shelf</div>
-          <div class="trophy-slots">${slots}</div>
         </div>`;
     }
 
@@ -2625,7 +2744,20 @@
     }
 
     /* ─── Phase router ─── */
+    function syncArcanaIntroVisibility() {
+      const intro = byId('arcanaIntro');
+      if (!intro) return;
+
+      intro.classList.add('force-hidden');
+      intro.classList.add('hidden', 'sequence-ending');
+      intro.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('intro-active');
+    }
+
     function renderPhase() {
+      syncArcanaIntroVisibility();
+      document.body.classList.toggle('home-view', state.activeView === 'home' && !state.compareMode);
+
       if (state.compareMode) {
         setRightPanelCollapsed(true, 'system');
         dom.mainContent.innerHTML = renderCompareCenter();
@@ -2674,7 +2806,7 @@
 
       const card = getCard();
       const phase = PHASES[state.phaseIndex] || PHASES[0];
-      const collapsedPhases = ['welcome', 'reveal', 'quiz', 'movie', 'results'];
+      const collapsedPhases = ['welcome', 'reveal', 'quiz'];
       const shouldCollapseRightPanel = collapsedPhases.includes(phase.id);
       setRightPanelCollapsed(shouldCollapseRightPanel, 'system');
       dom.mainContent.dataset.phase = phase.id;
@@ -2696,7 +2828,7 @@
         default:           html = renderWelcome(); break;
       }
 
-      const showNav = phase.id !== 'welcome';
+      const showNav = phase.id !== 'welcome' && phase.id !== 'results';
       const navHtml = showNav ? `
         <div class="nav-buttons${phase.id === 'reveal' && !state.revealCardFlipped ? ' ritual-nav' : ''}">
           ${state.phaseIndex > 0 ? `<button class="btn btn-secondary" onclick="prevPhase()">← Back</button>` : ''}
@@ -3142,5 +3274,4 @@
     exposeGlobalActions();
     renderPhase();
     refreshLucideIcons();
-    playSeekerIntro(false);
-    openWelcomeOverlay();
+    scheduleWelcomeOverlay();

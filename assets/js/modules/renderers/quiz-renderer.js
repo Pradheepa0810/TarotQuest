@@ -21,7 +21,7 @@
       return `
         <div class="card-panel">
           <div class="phase-title">Oracle Quiz</div>
-          <p style="margin-bottom:1.25rem;color:var(--text-dim)">Answer all questions from memory first. If you are unsure, pick the meaning that fits the card's image and lesson together.</p>
+          <p style="margin-bottom:1.25rem;color:var(--text-dim)">Answer all questions. Your score stays hidden until you submit, so no peeking.</p>
           ${questions}
           <div class="nav-buttons">
             <button class="btn btn-primary" ${allAnswered ? '' : 'disabled'} onclick="submitQuiz()"><span class="icon-inline">${options.icon('sparkles')}<span>Face the Oracle</span></span></button>
