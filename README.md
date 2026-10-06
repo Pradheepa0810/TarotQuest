@@ -5,10 +5,24 @@ Tarot Quest is a single-page, front-end web app for learning tarot cards one car
 ## How To Run
 
 1. Clone or download this repository.
-2. Open `tarot-quest.html` in any modern browser.
+2. Open `index.html` (or `tarot-quest.html`) in any modern browser.
 3. Start from the Home scene and use the in-app buttons to navigate.
 
 No build step or backend server is required.
+
+## Publish With GitHub Pages
+
+This is a static front-end app: it uses HTML, CSS, JavaScript, and local assets, with no server-side code or build step. `index.html` is the GitHub Pages entry point and forwards visitors to the app in `tarot-quest.html`.
+
+To publish it:
+
+1. Push the repository to GitHub.
+2. Open the repository's **Settings → Pages**.
+3. Under **Build and deployment**, choose **Deploy from a branch**.
+4. Select branch **main** and folder **/(root)**, then click **Save**.
+5. Wait for the Pages deployment to finish. The site will be available at `https://<your-github-username>.github.io/TarotQuest/`.
+
+The app's styles, scripts, and images use relative paths, so they work from the repository's project-site URL. Progress is stored in each visitor's browser with `localStorage`; it is not shared between devices or users. Google Fonts, Lucide icons, and one tarot image are loaded from external hosts, so those resources require an internet connection.
 
 ## Website Navigation Guide (With Images)
 
