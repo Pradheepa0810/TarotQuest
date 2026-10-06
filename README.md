@@ -12,7 +12,7 @@ No build step or backend server is required.
 
 ## Publish With GitHub Pages
 
-This is a static front-end app: it uses HTML, CSS, JavaScript, and local assets, with no server-side code or build step. `index.html` is the GitHub Pages entry point and forwards visitors to the app in `tarot-quest.html`.
+This is a static front-end app: it uses HTML, CSS, JavaScript, and local assets, with no server-side code or build step. `index.html` is the GitHub Pages entry point and displays the app from `tarot-quest.html` full-screen without changing the browser URL. The direct app URL works as well.
 
 To publish it:
 
