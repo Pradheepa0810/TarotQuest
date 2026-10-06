@@ -1,6 +1,9 @@
 # Tarot Quest
 
-Tarot Quest is a single-page, front-end web app for learning tarot cards one card at a time through guided lessons, quizzes, achievements, and progression tracking.
+Tarot Quest is an interactive, storybook-style experience for exploring the 78 cards of the tarot deck.
+Begin at the Alchemy Cottage and move through guided lessons that unpack each card’s imagery, numerology, colors, symbols, elemental associations, and meanings.
+
+After each lesson, test what you learned with an Oracle quiz, review your answers, and earn gems as you progress. Search for cards, compare their themes, build a learning streak, and unlock achievements while tracking mastery across the Major Arcana and four suits. Your progress is saved in your browser, so you can return to your journey without creating an account.
 
 ## How To Run
 
@@ -9,20 +12,6 @@ Tarot Quest is a single-page, front-end web app for learning tarot cards one car
 3. Start from the Home scene and use the in-app buttons to navigate.
 
 No build step or backend server is required.
-
-## Publish With GitHub Pages
-
-This is a static front-end app: it uses HTML, CSS, JavaScript, and local assets, with no server-side code or build step. `index.html` is the GitHub Pages entry point and displays the app from `tarot-quest.html` full-screen without changing the browser URL. The direct app URL works as well.
-
-To publish it:
-
-1. Push the repository to GitHub.
-2. Open the repository's **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select branch **main** and folder **/(root)**, then click **Save**.
-5. Wait for the Pages deployment to finish. The site will be available at `https://<your-github-username>.github.io/TarotQuest/`.
-
-The app's styles, scripts, and images use relative paths, so they work from the repository's project-site URL. Progress is stored in each visitor's browser with `localStorage`; it is not shared between devices or users. Google Fonts, Lucide icons, and one tarot image are loaded from external hosts, so those resources require an internet connection.
 
 ## Website Navigation Guide (With Images)
 
@@ -80,7 +69,6 @@ Check the Library to view achievement cards and unlock progress.
 
 ## Folder Structure And File Responsibilities
 
-```text
 tarot-quest/
 ├─ tarot-quest.html
 ├─ deck-data.js
