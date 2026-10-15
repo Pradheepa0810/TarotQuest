@@ -1,0 +1,1439 @@
+{
+  "lessons": [
+    {
+      "id": "fool",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "magician",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "high-priestess",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "empress",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "emperor",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "hierophant",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "lovers",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "chariot",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "strength",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "hermit",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wheel-of-fortune",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "justice",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "hanged-man",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "death",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "temperance",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "devil",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "tower",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "star",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "moon",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "sun",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "judgement",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "world",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": "major"
+    },
+    {
+      "id": "wands-ace",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-two",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-three",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-four",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-five",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-six",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-seven",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-eight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-nine",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-ten",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-page",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-knight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-queen",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "wands-king",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": "wands"
+    },
+    {
+      "id": "cups-ace",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-two",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-three",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-four",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-five",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-six",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-seven",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-eight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-nine",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-ten",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-page",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-knight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-queen",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "cups-king",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": "cups"
+    },
+    {
+      "id": "swords-ace",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-two",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-three",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-four",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-five",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-six",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-seven",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-eight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-nine",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-ten",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-page",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-knight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-queen",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "swords-king",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": "swords"
+    },
+    {
+      "id": "pentacles-ace",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-two",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-three",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-four",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-five",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-six",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-seven",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-eight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-nine",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-ten",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-page",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-knight",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-queen",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": null
+    },
+    {
+      "id": "pentacles-king",
+      "phases": [
+        "welcome",
+        "reveal",
+        "numerology",
+        "color",
+        "character",
+        "elemental",
+        "symbols",
+        "reversed",
+        "quiz",
+        "results"
+      ],
+      "score": 4,
+      "milestone": "pentacles"
+    }
+  ],
+  "unlockAt": {
+    "quiz_perfectionist": 3,
+    "speed_learner": 3,
+    "first_five": 5,
+    "major_arcana_adept": 22,
+    "wands_arcana_adept": 36,
+    "cups_arcana_adept": 50,
+    "swords_arcana_adept": 64,
+    "pentacles_arcana_adept": 78,
+    "tarot_master": 78
+  },
+  "achievements": [
+    {
+      "id": "first_five",
+      "unlocked": true
+    },
+    {
+      "id": "major_arcana_adept",
+      "unlocked": true
+    },
+    {
+      "id": "wands_arcana_adept",
+      "unlocked": true
+    },
+    {
+      "id": "cups_arcana_adept",
+      "unlocked": true
+    },
+    {
+      "id": "swords_arcana_adept",
+      "unlocked": true
+    },
+    {
+      "id": "pentacles_arcana_adept",
+      "unlocked": true
+    },
+    {
+      "id": "quiz_perfectionist",
+      "unlocked": true
+    },
+    {
+      "id": "speed_learner",
+      "unlocked": true
+    },
+    {
+      "id": "tarot_master",
+      "unlocked": true
+    }
+  ],
+  "ending": "Tarot Grandmaster\n\nAll 78 cards are now etched into your living memory.\n\nFinal Title Unlocked: Tarot Grandmaster\n\nYou completed 78/78 cards and reached 10368 Gems.\n\nYour journey through the Arcana is complete, but your readings are just beginning.\n\nReview Last Card\nBegin a New Journey",
+  "gate": "Seeker\n\nDear seeker, this is available after you master all the cards.\n\nInput\nContinue",
+  "mastered": 78,
+  "phaseCount": 780,
+  "gems": 10368,
+  "rank": "Tarot Grandmaster",
+  "srs": 78,
+  "images": [
+    {
+      "alt": "First Five",
+      "loaded": true
+    },
+    {
+      "alt": "Major Arcana Adept",
+      "loaded": true
+    },
+    {
+      "alt": "Wands Adept",
+      "loaded": true
+    },
+    {
+      "alt": "Cups Adept",
+      "loaded": true
+    },
+    {
+      "alt": "Swords Adept",
+      "loaded": true
+    },
+    {
+      "alt": "Pentacles Adept",
+      "loaded": true
+    },
+    {
+      "alt": "Quiz Perfectionist",
+      "loaded": true
+    },
+    {
+      "alt": "Speed Learner",
+      "loaded": true
+    },
+    {
+      "alt": "Tarot Master",
+      "loaded": true
+    }
+  ],
+  "saved": 78,
+  "persistence": {
+    "mastered": 78,
+    "unlocked": 9,
+    "srs": 78,
+    "gems": 10368
+  },
+  "certificate": {
+    "filename": "Tarot_Mastery_Certificate_Test_Seeker.png",
+    "bytes": 358368,
+    "width": 800,
+    "height": 560,
+    "downloadCompleted": true
+  },
+  "errors": []
+}

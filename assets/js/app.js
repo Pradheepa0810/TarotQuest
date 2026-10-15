@@ -1,4 +1,4 @@
-    const STORAGE_KEY = 'tarotQuestProgress_v2';
+const STORAGE_KEY = 'tarotQuestProgress_v2';
 
     const RANKS = [
       { min: 0,    title: 'Tarot Apprentice' },
@@ -14,13 +14,11 @@
       { id: 'reveal',     icon: '', label: 'The Card' },
       { id: 'numerology', icon: '', label: 'Numbers' },
       { id: 'color',      icon: '', label: 'Colors' },
-      { id: 'character',  icon: '', label: 'Figure' },
-      { id: 'landscape',  icon: '', label: 'Scene' },
+      { id: 'character',  icon: '', label: 'Figure & Scene' },
       { id: 'elemental',  icon: '', label: 'Elements' },
       { id: 'symbols',    icon: '', label: 'Symbols' },
       { id: 'reversed',   icon: '', label: 'Shadow' },
       { id: 'quiz',       icon: '', label: 'Boss Quiz' },
-      { id: 'movie',      icon: '', label: 'Spell' },
       { id: 'results',    icon: '', label: 'Gems' }
     ];
 
@@ -53,6 +51,35 @@
         <circle cx='110' cy='180' r='4' fill='#dcb977'/>
       </svg>`
     )}`;
+
+    const TAROT_CARD_DIMENSIONS = {
+      fool: [1144, 1919], magician: [1108, 1920], 'high-priestess': [1117, 1919], empress: [1123, 1920], emperor: [1117, 1919],
+      hierophant: [1114, 1919], lovers: [1122, 1920], chariot: [1111, 1919], strength: [1114, 1919], hermit: [1123, 1920],
+      'wheel-of-fortune': [1104, 1920], justice: [1114, 1919], 'hanged-man': [1092, 1920], death: [1111, 1919], temperance: [1106, 1920],
+      devil: [1090, 1920], tower: [1109, 1920], star: [1114, 1919], moon: [1111, 1919], sun: [1114, 1919], judgement: [1115, 1920], world: [1112, 1920],
+      'wands-ace': [1106, 1920], 'wands-two': [1115, 1920], 'wands-three': [1103, 1920], 'wands-four': [1108, 1920], 'wands-five': [1108, 1920],
+      'wands-six': [1118, 1920], 'wands-seven': [1109, 1920], 'wands-eight': [1115, 1920], 'wands-nine': [1114, 1919], 'wands-ten': [1101, 1920],
+      'wands-page': [1109, 1920], 'wands-knight': [1115, 1920], 'wands-queen': [1118, 1920], 'wands-king': [1104, 1920],
+      'cups-ace': [1112, 1920], 'cups-two': [1109, 1920], 'cups-three': [1117, 1919], 'cups-four': [1118, 1920], 'cups-five': [1121, 1920],
+      'cups-six': [1115, 1920], 'cups-seven': [1109, 1920], 'cups-eight': [1114, 1919], 'cups-nine': [1114, 1919], 'cups-ten': [1109, 1920],
+      'cups-page': [1115, 1920], 'cups-knight': [1109, 1920], 'cups-queen': [1114, 1919], 'cups-king': [1121, 1920],
+      'swords-ace': [1109, 1920], 'swords-two': [1121, 1920], 'swords-three': [1103, 1920], 'swords-four': [1117, 1919], 'swords-five': [1109, 1920],
+      'swords-six': [1111, 1919], 'swords-seven': [1114, 1919], 'swords-eight': [1114, 1919], 'swords-nine': [1114, 1919], 'swords-ten': [1107, 1920],
+      'swords-page': [1108, 1920], 'swords-knight': [1112, 1920], 'swords-queen': [1104, 1920], 'swords-king': [1117, 1919],
+      'pentacles-ace': [1109, 1920], 'pentacles-two': [1112, 1920], 'pentacles-three': [1117, 1919], 'pentacles-four': [1110, 1920],
+      'pentacles-five': [1112, 1920], 'pentacles-six': [1109, 1920], 'pentacles-seven': [1114, 1919], 'pentacles-eight': [1117, 1920],
+      'pentacles-nine': [1108, 1920], 'pentacles-ten': [1115, 1920], 'pentacles-page': [1112, 1920], 'pentacles-knight': [1111, 1919],
+      'pentacles-queen': [1109, 1920], 'pentacles-king': [1107, 1920]
+    };
+
+    function getCardImageDimensions(card) {
+      return TAROT_CARD_DIMENSIONS[card?.id] || [1108, 1920];
+    }
+
+    function cardImageDimensionsMarkup(card) {
+      const [width, height] = getCardImageDimensions(card);
+      return `width="${width}" height="${height}"`;
+    }
 
     const STREAK_MILESTONES = [
       { days: 7, gems: 120, title: 'Moonlit Initiate' },
@@ -92,6 +119,9 @@
       { id: 'pentacles', label: 'Pentacles (Earth)', icon: 'leaf', count: 14, color: 'pents', completionTitle: 'Stoneheart Adept', award: 'Verdant Hall Emblem', trophyIcon: 'leaf', flavor: 'You grounded your craft in Earth. Prosperity, effort, and stewardship now anchor your insight.', bonusGems: 220 }
     ];
 
+    // Sources consulted: Waite, The Pictorial Key to the Tarot (1910), Part II, Zero;
+    // Pollack, Seventy-Eight Degrees of Wisdom, “The Fool,” pp. 18–19;
+    // Biddy Tarot, “The Fool Tarot Card Meanings,” RWS description/upright/reversed.
     const FOOL_CARD = {
       id: 'fool',
       name: 'The Fool',
@@ -103,96 +133,80 @@
       image: 'https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg',
       archetype: 'The Eternal Wanderer',
       unlockTitle: 'The Fool, Keeper of Infinite Beginnings',
-      keywords: ['New beginnings', 'Innocence', 'Leap of faith', 'Spontaneity', 'Pure potential'],
+      keywords: ['New beginnings', 'Innocence', 'Spontaneity', 'Potential'],
       numerology: {
-        meaning: 'Zero is not "nothing" — it is the <em>space before the first step</em>. In Tarot, The Fool sits outside the numbered sequence: neither finished nor started, holding all possibilities at once. Think of an empty stage before the curtain rises, or a breath held before "Action!"',
-        why: 'The Fool carries zero because every great journey begins in a moment of not-knowing. Zero is the circle — no beginning, no end — the eternal return to fresh starts.',
-        expression: 'Pamela Colman Smith painted a youth who hasn\'t counted the cost. He doesn\'t need a number yet; he <em>is</em> the moment before counting begins. Potential without form.',
-        hook: '"Zero is the open door. The Fool walks through it smiling."'
+        meaning: 'Zero gives the Fool no fixed place in the sequence; Pollack says he can move in any direction.',
+        why: 'For Pollack, the Fool has no past and an infinite future: every moment can begin again.',
+        expression: 'On Smith’s card, one lifted step, a skyward gaze and the dog at his heel turn that openness into a journey already underway.',
+        hook: 'Zero leaves the page open; the Fool takes the first step.'
       },
       colors: [
-        { hex: '#f5e042', name: 'Golden Yellow (sun & boots)', meaning: 'Joy, optimism, divine dawn blessing the journey', trick: '"The sun rises — and so does he."' },
-        { hex: '#f0ece4', name: 'White (tunic & rose)', meaning: 'Innocence, purity, a clean slate untouched by experience', trick: '"White means he hasn\'t been stained by the world yet."' },
-        { hex: '#c0392b', name: 'Red (feather & stockings)', meaning: 'Vitality, passion, life force pulsing through the body', trick: '"Red feet — he\'s alive and moving forward."' },
-        { hex: '#5a8a3c', name: 'Green (landscape trim)', meaning: 'Nature, growth, the fertile ground of new adventure', trick: '"Green grass waits below — life continues either way."' },
-        { hex: '#9f84cf', name: 'Pale Violet-Gray (distant peaks)', meaning: 'The unknown future, mystery, challenges not yet faced', trick: '"Violet mountains = adventures still far away."' }
+        { hex: '#78a9d2', name: 'Mountain blue', phrase: 'the journey still ahead' },
+        { hex: '#f3eee3', name: 'White rose', phrase: 'innocence held openly' },
+        { hex: '#e8c64a', name: 'Sunlit yellow', phrase: 'the day’s first step' }
       ],
-      character: [
-        { aspect: 'Posture', detail: 'Mid-stride, one foot lifted — he is literally <em>in motion</em>, caught between steps. Not standing still, not running — strolling toward the edge with careless grace.', reveal: 'The Fool\'s message is forward movement without overthinking. Progress through trust, not planning.' },
-        { aspect: 'Eye Contact', detail: 'Head tilted back, eyes toward the sky — he is <em>not</em> watching the cliff.', reveal: 'He trusts the universe more than his eyes. Upright: faith and wonder. Reversed shadow: obliviousness to danger.' },
-        { aspect: 'Hand Gestures', detail: 'Right hand holds a white rose lightly; left hand grips a staff with a small knapsack tied to it.', reveal: 'The rose = beauty and passion held gently, not clutched. The staff = a traveler\'s tool; the bag = everything he carries but hasn\'t unpacked yet (unconscious baggage).' },
-        { aspect: 'Clothing', detail: 'A loose, colorful tunic with floral patterns, a feather in his cap, yellow boots — impractical, festive travel clothes.', reveal: 'He is not dressed for battle or business. He is the archetype of the free spirit — unburdened by society\'s armor.' },
-        { aspect: 'Facial Expression', detail: 'Calm, almost dreamy — a faint smile of someone hearing music only they can hear.', reveal: 'Inner peace despite external peril. The Fool finds joy in the moment, not in outcomes.' }
-      ],
-      characterChallenge: 'What would change if The Fool stood still at the cliff\'s edge, looking down instead of up? <em>He\'d become cautious — the Magician planning his next move, not the Fool leaping. Posture tells the whole story.</em>',
-      landscape: [
-        { item: 'Bright Sun (behind him)', symbol: 'Divine blessing, optimism, a new day dawning', why: 'Smith placed the sun at his back — warmth pushes him forward. He walks <em>into</em> the light\'s glow, not away from it.' },
-        { item: 'Snow-capped Mountains (distance)', symbol: 'Future challenges, the long road ahead, spiritual heights', why: 'Adventure isn\'t flat. The peaks remind us: this journey will ask much of him — but not yet.' },
-        { item: 'Cliff Edge (immediate)', symbol: 'Risk, the unknown, a leap of faith', why: 'The most dramatic symbol — one more step and he falls. Smith dares us to ask: is he foolish, or fearless?' },
-        { item: 'White Dog (at his heels)', symbol: 'Loyalty, instinct, animal wisdom nipping at unconsciousness', why: 'The dog tries to warn him — instinct knows what innocence ignores. Companion and alarm bell in one.' },
-        { item: 'Green Valley Below', symbol: 'Life continues, nature\'s abundance, soft landing?', why: 'Even the "fall" may lead somewhere fertile. The landscape holds both peril and promise.' }
-      ],
-      landscapeStory: 'Imagine dawn breaking over a high mountain pass. A young traveler hums to himself, rose in hand, while his loyal dog tugs at his coat — "Wait!" But the sun warms his shoulders like a friend\'s hand, distant peaks glow pink, and the valley below is green with promise. He takes one more step into the light, and the whole world holds its breath.',
+      figure: 'The young traveler moves lightly toward the cliff, eyes on the sky rather than the drop. A white rose rests in one hand; the small dog bounds close at his heels.\n\nWaite calls him a spirit in search of experience. Pollack reads the Fool’s openness as freedom, not a calculated pose: he is already moving before he knows the whole road.',
+      challenge: 'If he stopped to study the drop, the open step would become a deliberate pause; the image would lose its forward motion.',
+      scene: {
+        paragraphs: [
+          'A yellow sky opens above a high pass. The sun rests behind the traveler, while blue peaks mark ground he has not yet crossed.',
+          'A dog bounds at his heel as he lifts one foot toward the edge. The white rose stays in his hand; the road is still unknown.'
+        ],
+        takeaway: 'The Fool’s openness starts the journey, but the cliff keeps risk in the picture.'
+      },
       elemental: {
         dominant: 'Air',
         secondary: 'Spirit / Infinite Potential',
-        behavior: 'Air moves freely — curious, light, untethered. It doesn\'t settle; it explores.',
-        motivates: 'New ideas, freedom, possibility, the thrill of "what if?"',
-        strengths: 'Open-mindedness, creativity, courage to start fresh, infectious optimism',
-        shadows: 'Recklessness, naivety, avoiding commitment, head in the clouds',
-        asPerson: 'The friend who books a one-way ticket with no plan — brilliant at beginnings, terrible at reading fine print. Charming, restless, always smelling of wind and possibility.'
+        behavior: 'Air moves freely: curious, light, and ready to explore.',
+        motivates: 'New ideas, freedom, possibility, and the thrill of “what if?”',
+        strengths: 'Open-mindedness, creativity, and willingness to begin.',
+        shadows: 'Recklessness, naivety, and overlooking consequences.',
+        asPerson: 'A traveler with a small pack, more curious about the road than its map.'
       },
       symbols: [
-        { icon: 'award', name: 'White Rose', meaning: 'Purity and passion held lightly', hidden: 'Beauty doesn\'t need to be guarded — The Fool carries it openly', trick: '"A rose without thorns held high — innocence intact."' },
-        { icon: 'feather', name: 'Red Feather', meaning: 'Fire of life, airy spirit, the "feather-brained" fool', hidden: 'Waite chose a feather, not a crown — this archetype is light, not royal', trick: '"Feather in cap = light head, free heart."' },
-        { icon: 'backpack', name: 'Knapsack (on staff)', meaning: 'Unconscious baggage — talents and traumas not yet examined', hidden: 'He carries everything he needs but hasn\'t looked inside yet', trick: '"The bag on his back holds his future self."' },
-        { icon: 'mountain', name: 'Cliff Edge', meaning: 'Leap of faith, risk, threshold between worlds', hidden: 'Every hero\'s journey begins with leaving the known', trick: '"One step from falling — or flying."' },
-        { icon: 'dog', name: 'Small White Dog', meaning: 'Instinct, loyalty, protective warning', hidden: 'Your gut feeling trying to get your attention', trick: '"The dog knows — do you?"' },
-        { icon: 'sun', name: 'Rising Sun', meaning: 'New beginnings blessed by the divine', hidden: 'Optimism is not foolishness when the universe conspires in your favor', trick: '"Sun at his back — heaven pushes him forward."' }
+        { icon: 'award', name: 'White rose', where: 'Held lightly in the Fool’s hand.', meaning: 'Biddy Tarot connects the rose with innocence and purity. Cross-card echo: Waite’s Death carries a black banner with the Mystic Rose, where it signifies life.', echo: 'Waite’s Death carries a black banner with the Mystic Rose, where it signifies life.' },
+        { icon: 'dog', name: 'Small dog', where: 'Bounding at the traveler’s heels.', meaning: 'Biddy Tarot reads the dog as loyalty and protection; its movement makes a warning visible beside the Fool’s forward step. Cross-card echo: Strength places a lion beside its figure; the animal’s role shifts from warning companion to passion being guided.', echo: 'Strength places a lion beside its figure; the animal’s role shifts from warning companion to passion being guided.' },
+        { icon: 'backpack', name: 'Wallet on a wand', where: 'Tied to the staff over the Fool’s shoulder.', meaning: 'Waite notes the embroidered wallet as the traveler’s carried possession. Cross-card echo: The Magician lays the four suit emblems out on a table; the Fool carries his belongings packed away.', echo: 'The Magician lays the four suit emblems out on a table; the Fool carries his belongings packed away.' },
+        { icon: 'mountain', name: 'Cliff and distant peaks', where: 'The cliff meets his lifted foot; mountains rise behind him.', meaning: 'Waite places the Fool among the great heights, looking to the sky rather than below. Cross-card echo: The Hermit stands high on a peak after the journey has turned inward.', echo: 'The Hermit stands high on a peak after the journey has turned inward.' }
       ],
-      movie: {
-        setting: 'A mountain ridge at the golden hour. Wind rustles the grass. Distant eagles cry.',
-        sounds: 'A tin whistle melody, the dog\'s anxious bark, boots crunching gravel, your own heartbeat.',
-        weather: 'Warm sun on skin, cool air at altitude — perfect walking weather, dangerously perfect.',
-        emotions: 'Giddy freedom mixed with a flutter of "should I really?" — but the flutter loses.',
-        next: 'He steps off the edge — and the camera doesn\'t cut. We discover together whether he flies, falls, or finds a path invisible from above. That\'s The Fool: the story continues because he dared to move.'
-      },
       reversed: {
-        shadow: 'The Fool reversed embodies hesitation where there should be courage, or recklessness without any wisdom at all.',
+        shadow: 'Biddy Tarot gives The Fool reversed two distinct readings: holding back from a beginning, or moving with reckless disregard. Waite’s cliff-edge scene leaves both openness and danger in view, so context matters more than a simple opposite.',
         cautions: [
-          { aspect: 'Paralysis', detail: 'Fear has replaced faith. The Fool stands at the cliff\'s edge but cannot move — frozen by doubt, catastrophizing, replaying every possible failure in his mind.' },
-          { aspect: 'Foolish Risk', detail: 'He has leapt without thinking at all. No inner guidance, no spiritual trust — just blind impulse and arrogance masquerading as faith.' },
-          { aspect: 'Missed Opportunities', detail: 'The Fool reversed warns: the door was there, the moment was real, but he turned away. Second chances are rare.' },
-          { aspect: 'Recklessness', detail: 'Overconfidence without preparation. He packed no provisions, asked no questions, made no plans — and now suffers the consequences.' }
+          { aspect: 'Holding back', detail: 'The unknown feels too uncertain, so the first step is delayed.' },
+          { aspect: 'Reckless risk', detail: 'Movement outruns attention to consequences.' }
         ],
         meanings: [
-          { keyword: 'Hesitation', meaning: 'Fear holding you back from a necessary leap', application: 'Ask: what would I do if I trusted myself?' },
-          { keyword: 'Unwisdom', meaning: 'Moving without thought or guidance', application: 'Pause. Get counsel. Check your motives.' },
-          { keyword: 'Delay', meaning: 'The opportunity is passing; indecision is a decision', application: 'Time to commit, or time to release.' },
-          { keyword: 'Folly', meaning: 'Arrogance mistaken for confidence', application: 'The dog is barking louder now. Listen.' }
+          { keyword: 'beginnings', meaning: 'A start is postponed by fear or uncertainty.', application: 'Name what is holding the first step in place.' },
+          { keyword: 'spontaneity', meaning: 'Impulse has outrun attention to consequences.', application: 'Notice what the bounding dog is trying to bring into view.' }
         ],
-        readingTip: 'Reversed Fool often appears when someone is standing at a crossroads but too afraid, too proud, or too unprepared to move. The message: trust, or perish in safety.',
-        contrast: 'Upright Fool = leap with faith. Reversed Fool = leap in blindness, or refuse to leap at all.'
+        readingTip: 'Use the surrounding cards to distinguish a blocked beginning from a heedless leap.',
+        contrast: 'Upright, openness meets the road; reversed, the same impulse may be withheld or unchecked.'
       },
       memory: {
-        summary: 'The Fool is pure potential at the threshold — innocent, joyful, and ready to leap into the unknown.',
-        mnemonic: 'Fearless Open Optimistic Leap — <strong>F-O-O-L</strong>: Faith Over Obvious Limitations.',
-        visual: 'Picture a sunlit cliff, a smiling youth with a white rose, a barking dog, and one foot already in the air — forever between falling and flying.',
-        application: 'When The Fool appears, ask: "Where am I being invited to trust instead of control?" Start the project. Take the trip. Say yes — but maybe glance at the dog first.'
+        summary: 'The Fool begins with an open future and one untested step.',
+        visual: 'A white rose, a bounding dog, and a traveler looking toward the blue distance.',
+        application: 'Ask what new beginning is present—and what detail deserves a closer look.'
       },
+      // Object-based associations, not universal color rules; existing Air/Spirit attribution retained.
+      sources: [
+        { id: 'waite', author: 'A. E. Waite', title: 'The Pictorial Key to the Tarot', section: 'Part II, Zero: The Fool', url: 'https://archive.sacred-texts.com/tarot/pkt/pktar00.htm' },
+        { id: 'pollack', author: 'Rachel Pollack', title: 'Seventy-Eight Degrees of Wisdom', section: 'The Fool, pp. 18–19', url: 'https://archive.org/download/78-degrees-of-wisdom/78%20degrees%20of%20wisdom_djvu.txt' },
+        { id: 'biddy', author: 'Biddy Tarot', title: 'The Fool Tarot Card Meanings', section: 'RWS description and upright/reversed meanings', url: 'https://biddytarot.com/tarot-card-meanings/major-arcana/fool/' }
+      ],
       quiz: [
-        { q: 'What number is The Fool in the Major Arcana?', options: ['I (One)', '0 (Zero)', 'XXII (Twenty-Two)', 'No number'], answer: 1, explain: 'The Fool is 0 — outside the numbered sequence, representing infinite potential before the journey begins.' },
-        { q: 'What element is most associated with The Fool?', options: ['Fire', 'Water', 'Air', 'Earth'], answer: 2, explain: 'Air governs The Fool — freedom, movement, ideas, and the breath before the first word.' },
-        { q: 'What is The Fool looking at?', options: ['The cliff edge below', 'The white dog', 'The sky above', 'The knapsack on his staff'], answer: 2, explain: 'His head is tilted upward — dreaming, trusting, not watching his step. Classic Fool energy.' },
-        { q: 'What does the white rose symbolize?', options: ['Death and endings', 'Purity and innocence held lightly', 'Wealth and power', 'Secret knowledge'], answer: 1, explain: 'The white rose = untouched beauty and passion, carried openly without fear.' },
-        { q: 'What does the small dog at The Fool\'s heels represent?', options: ['Evil omens', 'Instinct and loyal warning', 'Wealth', 'The past he left behind'], answer: 1, explain: 'The dog nips at his heels — instinct trying to warn the unconscious traveler.' },
-        { q: 'What does the knapsack on the staff represent?', options: ['Empty pockets', 'Unconscious baggage — experiences not yet unpacked', 'A gift for someone he\'ll meet', 'Food for the journey only'], answer: 1, explain: 'Waite said the bag holds everything the Fool has accumulated — but he hasn\'t examined it yet.' },
-        { q: 'Numerology: What does Zero represent for this card?', options: ['Failure and nothingness', 'The void of infinite potential before creation', 'The end of a cycle', 'Balance between opposites'], answer: 1, explain: 'Zero is the open circle — all possibilities, no commitments. The blank page before the story.' },
-        { q: 'Which color dominates The Fool\'s boots and the sun?', options: ['Red', 'Golden Yellow', 'Black', 'Violet'], answer: 1, explain: 'Golden yellow = joy, divine dawn, optimism pushing the journey forward.' }
+        { q: 'Which detail appears beside The Fool at the cliff edge?', options: ['A small dog', 'A six-pointed star in a lantern', 'A pair of scales', 'Four suit emblems on a table'], answer: 0, explain: 'Waite describes the dog bounding beside the Fool; the other objects belong to the Hermit, Justice and Magician.' },
+        { q: 'You begin an unfamiliar journey with little baggage and no fixed route. Which card best fits?', options: ['The Fool', 'The Hermit', 'The Emperor', 'Death'], answer: 0, explain: 'Pollack describes the Fool as movement and possibility, ready to go in any direction.' },
+        { q: 'The Fool reversed is most commonly read as:', options: ['Holding back from a beginning or taking a reckless risk', 'Solitude becoming isolation', 'Resistance to a necessary ending', 'Self-doubt draining inner strength'], answer: 0, explain: 'Biddy Tarot gives both poles for The Fool reversed; the distractors echo the Hermit, Death and Strength.' },
+        { q: 'Why is the Fool’s gaze turned toward the sky rather than the cliff below?', options: ['The image shows openness to the unknown, while leaving the edge in view', 'He is following a star inside a lantern', 'He is watching a teacher bless two students', 'He is measuring the road with a staff'], answer: 0, explain: 'Waite says he surveys the blue distance and sky rather than the prospect below.' }
       ],
       gemReward: 120
     };
 
+    FOOL_CARD.quiz = FOOL_CARD.quiz.map((question, index) => ({
+      ...question,
+      options: question.options.slice(index).concat(question.options.slice(0, index)),
+      answer: (question.answer - index + question.options.length) % question.options.length
+    }));
     TarotDeck.CARDS.fool = FOOL_CARD;
 
     /* ─── SRS constants ─── */
@@ -216,7 +230,14 @@
     });
 
     const dom = {};
+    let lastAnnouncedViewKey = '';
+    let storageFailureReported = false;
+    let storageWarningTimeout = null;
     let audioCtx = null;
+    let ambientMusicTimer = null;
+    let ambientMusicBus = null;
+    let ambientMusicNodes = [];
+    let ambientMusicStep = 0;
     let homeLetterSoundTimeout = null;
     let homeCtaRevealTimeout = null;
     let homeTransitionCompleteTimeout = null;
@@ -245,6 +266,8 @@
       dom.completionPopup = byId('completionPopup');
       dom.welcomeOverlay = byId('welcomeOverlay');
       dom.mainContent = byId('mainContent');
+      dom.viewAnnouncement = byId('viewAnnouncement');
+      dom.storageWarning = byId('storageWarning');
       dom.lessonProgress = byId('lessonProgress');
       dom.phaseDots = byId('phaseDots');
       dom.sbTotal = byId('sbTotal');
@@ -273,6 +296,9 @@
       dom.sbDueCount = byId('sbDueCount');
       dom.compareModeBtn = byId('compareModeBtn');
       dom.restartQuestBtn = byId('restartQuestBtn');
+      dom.exportProgressBtn = byId('exportProgressBtn');
+      dom.importProgressBtn = byId('importProgressBtn');
+      dom.importProgressFile = byId('importProgressFile');
       dom.shortcutHomeBtn = byId('shortcutHomeBtn');
       dom.shortcutLibraryBtn = byId('shortcutLibraryBtn');
       dom.shortcutChestBtn = byId('shortcutChestBtn');
@@ -426,6 +452,121 @@
       } catch (_) {}
     }
 
+    function startAmbientMusic() {
+      if (!state.settings.sound || ambientMusicBus || !ensureAudioContext()) return;
+
+      try {
+        const now = audioCtx.currentTime;
+        const bus = audioCtx.createGain();
+        bus.gain.setValueAtTime(0.0001, now);
+        bus.gain.linearRampToValueAtTime(0.28, now + 2.5);
+        bus.connect(audioCtx.destination);
+        ambientMusicBus = bus;
+        ambientMusicNodes = [];
+
+        const addDrone = (frequency, volume) => {
+          const oscillator = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          oscillator.type = 'sine';
+          oscillator.frequency.setValueAtTime(frequency, now);
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.linearRampToValueAtTime(volume, now + 3);
+          oscillator.connect(gain);
+          gain.connect(bus);
+          oscillator.start(now);
+          ambientMusicNodes.push(oscillator);
+          ambientMusicNodes.push(gain);
+        };
+
+        // A very quiet C–G drone sits beneath a slow, original pentatonic chime pattern.
+        addDrone(130.81, 0.008);
+        addDrone(196, 0.004);
+        ambientMusicStep = 0;
+
+        const melody = [
+          659.25, 0, 783.99, 987.77, 0, 783.99, 659.25, 523.25,
+          0, 659.25, 587.33, 0, 783.99, 659.25, 523.25, 0,
+          587.33, 783.99, 659.25, 0, 523.25, 0, 659.25, 987.77
+        ];
+
+        const playNextNote = () => {
+          if (ambientMusicBus !== bus || !state.settings.sound) return;
+          const frequency = melody[ambientMusicStep % melody.length];
+          ambientMusicStep += 1;
+
+          if (frequency) {
+            const noteTime = audioCtx.currentTime;
+            const envelope = audioCtx.createGain();
+            const fundamental = audioCtx.createOscillator();
+            const overtone = audioCtx.createOscillator();
+            const overtoneGain = audioCtx.createGain();
+            fundamental.type = 'sine';
+            overtone.type = 'sine';
+            fundamental.frequency.setValueAtTime(frequency, noteTime);
+            overtone.frequency.setValueAtTime(frequency * 2, noteTime);
+            envelope.gain.setValueAtTime(0.0001, noteTime);
+            envelope.gain.linearRampToValueAtTime(0.032, noteTime + 0.09);
+            envelope.gain.exponentialRampToValueAtTime(0.0001, noteTime + 1.15);
+            overtoneGain.gain.setValueAtTime(0.12, noteTime);
+            fundamental.connect(envelope);
+            overtone.connect(overtoneGain);
+            overtoneGain.connect(envelope);
+            envelope.connect(bus);
+            fundamental.start(noteTime);
+            overtone.start(noteTime);
+            fundamental.onended = () => {
+              fundamental.disconnect();
+              overtone.disconnect();
+              overtoneGain.disconnect();
+              envelope.disconnect();
+            };
+            fundamental.stop(noteTime + 1.2);
+            overtone.stop(noteTime + 1.2);
+          }
+
+          ambientMusicTimer = window.setTimeout(playNextNote, 1350);
+        };
+
+        playNextNote();
+      } catch (_) {
+        stopAmbientMusic();
+      }
+    }
+
+    function stopAmbientMusic() {
+      if (ambientMusicTimer) {
+        window.clearTimeout(ambientMusicTimer);
+        ambientMusicTimer = null;
+      }
+
+      const bus = ambientMusicBus;
+      const nodes = ambientMusicNodes;
+      ambientMusicBus = null;
+      ambientMusicNodes = [];
+      if (!bus || !audioCtx) return;
+
+      try {
+        const now = audioCtx.currentTime;
+        bus.gain.cancelScheduledValues(now);
+        bus.gain.setTargetAtTime(0.0001, now, 0.08);
+        window.setTimeout(() => {
+          nodes.forEach(node => {
+            try { node.stop(); } catch (_) {}
+            try { node.disconnect(); } catch (_) {}
+          });
+          try { bus.disconnect(); } catch (_) {}
+        }, 500);
+      } catch (_) {}
+    }
+
+    function syncAmbientMusic() {
+      if (state.settings.sound) {
+        startAmbientMusic();
+      } else {
+        stopAmbientMusic();
+      }
+    }
+
     function parseAnimationTimeMs(value) {
       if (!value || value === '0s') return 0;
       const first = String(value).split(',')[0].trim();
@@ -556,7 +697,7 @@
       document.body.classList.toggle('animations-off', disableMotion);
 
       if (dom.settingSound) dom.settingSound.checked = !!state.settings.sound;
-      if (dom.settingAnimations) dom.settingAnimations.checked = !!state.settings.animations;
+      if (dom.settingAnimations) dom.settingAnimations.checked = !state.settings.animations;
       if (dom.themeChips) {
         dom.themeChips.forEach(chip => {
           const active = chip.dataset.theme === state.settings.theme;
@@ -605,6 +746,19 @@
           await resetProgress();
         });
       }
+
+      dom.settingsDropdown.addEventListener('click', event => {
+        const button = event.target instanceof Element
+          ? event.target.closest('#exportProgressBtn, #importProgressBtn')
+          : null;
+        if (button?.id === 'exportProgressBtn') exportProgress();
+        if (button?.id === 'importProgressBtn') dom.importProgressFile?.click();
+      });
+      dom.importProgressFile?.addEventListener('change', event => {
+        const file = event.target.files?.[0];
+        event.target.value = '';
+        if (file) importProgressFile(file);
+      });
     }
 
     /* ─────────────────────────────────────────────
@@ -763,7 +917,7 @@
               ${outcomeMsg}
             </div>
             <div class="nav-buttons">
-              <button class="btn btn-primary" onclick="finishReviewSession()">Return to Quest</button>
+              <button class="btn btn-primary" data-action="review.finish">Return to Quest</button>
             </div>
           </div>`;
       }
@@ -787,7 +941,7 @@
 
       const cardFace = `
         <div class="review-card-face">
-          <img class="review-card-image" src="${card.image}" alt="${card.name}" loading="lazy">
+          <img class="review-card-image" src="${card.image}" alt="${card.name}" ${cardImageDimensionsMarkup(card)} loading="lazy">
           <div class="review-card-title">${card.name}</div>
           <div class="review-card-subtitle">${card.suit} · ${card.element}</div>
           ${(entry.reviewCount || 0) > 0 ? `<div style="font-size:0.72rem;color:var(--text-dim)">Review #${entry.reviewCount + 1} · next in ${entry.interval}d after last session</div>` : ''}
@@ -802,8 +956,8 @@
             ${cardFace}
             <p style="color:var(--text-dim);font-size:0.88rem;text-align:center">Recall this card's keywords, element, and core meaning before revealing.</p>
             <div class="nav-buttons">
-              <button class="btn btn-primary" onclick="revealReviewCard()">Reveal Answer</button>
-              <button class="btn btn-secondary" onclick="finishReviewSession()">End Session</button>
+              <button class="btn btn-primary" data-action="review.reveal">Reveal Answer</button>
+              <button class="btn btn-secondary" data-action="review.finish">End Session</button>
             </div>
           </div>`;
       }
@@ -820,16 +974,16 @@
         <div>
           <p class="rating-prompt">How well did you recall this card?</p>
           <div class="rating-grid">
-            <button class="rating-btn" data-rating="1" onclick="rateReviewCard(1)">
+            <button class="rating-btn" data-action="review.rate" data-rating="1">
               <span style="font-size:1rem">✗</span><span>Forgot</span>
             </button>
-            <button class="rating-btn" data-rating="2" onclick="rateReviewCard(2)">
+            <button class="rating-btn" data-action="review.rate" data-rating="2">
               <span style="font-size:1rem">~</span><span>Hard</span>
             </button>
-            <button class="rating-btn" data-rating="3" onclick="rateReviewCard(3)">
+            <button class="rating-btn" data-action="review.rate" data-rating="3">
               <span style="font-size:1rem">✓</span><span>Good</span>
             </button>
-            <button class="rating-btn" data-rating="4" onclick="rateReviewCard(4)">
+            <button class="rating-btn" data-action="review.rate" data-rating="4">
               <span style="font-size:1rem">★</span><span>Easy</span>
             </button>
           </div>
@@ -886,8 +1040,8 @@
       }
 
       targetResults.innerHTML = results.map(card => `
-        <article class="search-result-item" role="button" tabindex="0" onclick="goToCardLesson('${card.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToCardLesson('${card.id}');}">
-          <img class="search-result-thumb" src="${card.image}" alt="${card.name}" loading="lazy">
+        <article class="search-result-item" role="button" tabindex="0" data-action="card.open" data-card-id="${card.id}">
+          <img class="search-result-thumb" src="${card.image}" alt="${card.name}" ${cardImageDimensionsMarkup(card)} loading="lazy">
           <div class="search-result-text">
             <div class="search-result-name">${card.name}</div>
             <div class="search-result-suit">${card.suit}</div>
@@ -923,9 +1077,7 @@
     }
 
     function initSettingsPanel() {
-      if (!dom.themeChips?.length) return;
-
-      dom.themeChips.forEach(chip => {
+      dom.themeChips?.forEach(chip => {
         chip.addEventListener('click', () => {
           const theme = chip.dataset.theme;
           if (!THEMES.includes(theme)) return;
@@ -936,6 +1088,22 @@
         });
       });
 
+      dom.settingsDropdown?.addEventListener('change', (event) => {
+        const control = event.target;
+        if (!(control instanceof HTMLInputElement)) return;
+
+        if (control.id === 'settingSound') {
+          state.settings.sound = control.checked;
+        } else if (control.id === 'settingAnimations') {
+          state.settings.animations = !control.checked;
+        } else {
+          return;
+        }
+
+        applySettings();
+        syncAmbientMusic();
+        saveProgress();
+      });
     }
 
     function initSidebarShortcuts() {
@@ -954,6 +1122,19 @@
       dom.shortcutSearchBtn?.addEventListener('click', () => {
         openSearchPortal();
       });
+    }
+
+    function initMobileSidebarProfile() {
+      const profile = byId('sidebarProfile');
+      if (!profile || !window.matchMedia) return;
+
+      const mobileQuery = window.matchMedia('(max-width: 900px)');
+      const syncProfileDisclosure = () => {
+        profile.open = !mobileQuery.matches;
+      };
+
+      syncProfileDisclosure();
+      mobileQuery.addEventListener('change', syncProfileDisclosure);
     }
 
     function initSidebarGroupButtons() {
@@ -981,7 +1162,7 @@
               text: achievement.description,
               gemsLabel: achievement.gems > 0
                 ? `+${achievement.gems} Gems · Total ${nextState.gems}`
-                : `Collected in Alchemy Library · Total ${nextState.gems} Gems`
+                : `Collected in The Seeker’s Archive · Total ${nextState.gems} Gems`
             });
           }
         });
@@ -1426,6 +1607,17 @@
     }
 
     /* ─── Persistence ─── */
+    function showStorageFailureToast() {
+      if (storageFailureReported || !dom.storageWarning) return;
+      storageFailureReported = true;
+      dom.storageWarning.textContent = 'Progress could not be saved in this browser. Check available storage or privacy settings, and export a backup when storage is available.';
+      dom.storageWarning.hidden = false;
+      storageWarningTimeout = window.setTimeout(() => {
+        if (dom.storageWarning) dom.storageWarning.hidden = true;
+        storageWarningTimeout = null;
+      }, 9000);
+    }
+
     function loadProgress() {
       try {
         const data = storageService.getJSON(STORAGE_KEY);
@@ -1494,9 +1686,8 @@
             }
           }
 
-          if (Number.isInteger(data.phaseIndex)) {
-            state.phaseIndex = Math.max(0, Math.min(PHASES.length - 1, data.phaseIndex));
-          }
+          const savedPhaseIndex = resolveSavedPhase(data);
+          if (savedPhaseIndex >= 0) state.phaseIndex = savedPhaseIndex;
         }
         processDailyLogin();
         evaluateAchievements();
@@ -1506,7 +1697,7 @@
 
     function saveProgress() {
       syncProgressState();
-      storageService.setJSON(STORAGE_KEY, {
+      const saved = storageService.setJSON(STORAGE_KEY, {
         version: 4,
         currentCard: state.currentCard,
         phaseIndex: state.phaseIndex,
@@ -1536,6 +1727,119 @@
         shownMilestones: state.shownMilestones,
         isFirstVisit: state.isFirstVisit
       });
+      if (!saved) showStorageFailureToast();
+      return saved;
+    }
+
+    function exportProgress() {
+      saveProgress();
+
+      try {
+        const rawProgress = localStorage.getItem(STORAGE_KEY);
+        if (!rawProgress) throw new Error('There is no saved progress to export yet.');
+
+        const progressBlob = new Blob([JSON.stringify(JSON.parse(rawProgress), null, 2)], { type: 'application/json' });
+        const downloadUrl = URL.createObjectURL(progressBlob);
+        const downloadLink = document.createElement('a');
+        const dateStamp = new Date().toISOString().slice(0, 10);
+        downloadLink.href = downloadUrl;
+        downloadLink.download = `tarot-quest-progress-${dateStamp}.json`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+        playUiSound('confirm');
+      } catch (error) {
+        showAlert({
+          icon: 'triangle-alert',
+          title: 'Export Failed',
+          message: error instanceof Error ? error.message : 'Saved progress could not be exported.'
+        });
+      }
+    }
+
+    // Phase IDs take precedence over obsolete indices in exported progress.
+    // The former scene now shares Figure; the former post-quiz Movie is Results.
+    function resolveSavedPhase(data) {
+      const aliases = { landscape: 'character', movie: 'results' };
+      const id = aliases[data.currentPhase] || data.currentPhase;
+      const byId = PHASES.findIndex(phase => phase.id === id);
+      if (byId >= 0) return byId;
+      if (!Number.isInteger(data.phaseIndex) || data.phaseIndex < 0) return -1;
+      if (data.version < 4 && !data.currentPhase) {
+        const legacy = ['welcome', 'reveal', 'numerology', 'color', 'character', 'landscape', 'elemental', 'symbols', 'reversed', 'quiz', 'movie', 'results'];
+        const legacyId = legacy[data.phaseIndex];
+        return PHASES.findIndex(phase => phase.id === (aliases[legacyId] || legacyId));
+      }
+      return data.phaseIndex < PHASES.length ? data.phaseIndex : -1;
+    }
+
+    function validateProgressImport(data) {
+      const requiredKeys = [
+        'version', 'currentCard', 'phaseIndex', 'currentPhase', 'completedCards', 'completedGroups', 'gems', 'rank',
+        'masteredStatus', 'lastReviewedCard', 'currentNavigationPosition', 'quizAnswers', 'quizSubmitted', 'showingMilestone',
+        'daily', 'settings', 'srs', 'rightPanelCollapsed', 'compareMode', 'compareLeftCardId', 'compareRightCardId',
+        'activeView', 'panelReturnView', 'achievementData', 'learnedCards', 'shownMilestones', 'isFirstVisit'
+      ];
+      const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+      if (!isObject(data)) throw new Error('The selected file must contain a Tarot Quest progress object.');
+
+      const missingKeys = requiredKeys.filter(key => !Object.prototype.hasOwnProperty.call(data, key));
+      if (missingKeys.length) throw new Error(`This file is missing required progress fields: ${missingKeys.join(', ')}.`);
+      if (!Number.isInteger(data.version) || data.version < 1 || data.version > 4) throw new Error('This progress file version is not supported.');
+      if (!TarotDeck.getCard(data.currentCard)) throw new Error('The selected current card is not recognized.');
+      const phaseIndex = resolveSavedPhase(data);
+      if (!Number.isInteger(data.phaseIndex) || data.phaseIndex < 0 || phaseIndex < 0) throw new Error('The saved lesson phase is invalid.');
+      if (!Number.isFinite(data.gems) || data.gems < 0) throw new Error('The saved gem total is invalid.');
+      if (!Array.isArray(data.completedCards) || !Array.isArray(data.learnedCards) || !Array.isArray(data.completedGroups) || !Array.isArray(data.quizAnswers)) {
+        throw new Error('Card progress, groups, and quiz answers must be arrays.');
+      }
+      if (![...data.completedCards, ...data.learnedCards].every(id => !!TarotDeck.getCard(id))) {
+        throw new Error('The progress file contains an unrecognized tarot card.');
+      }
+      if (!isObject(data.settings) || typeof data.settings.sound !== 'boolean' || typeof data.settings.animations !== 'boolean' || !THEMES.includes(data.settings.theme)) {
+        throw new Error('The saved settings are invalid.');
+      }
+      if (!isObject(data.daily) || !isObject(data.srs) || !isObject(data.masteredStatus) || !isObject(data.achievementData)) {
+        throw new Error('The saved daily, review, mastery, or achievement data is invalid.');
+      }
+      return { ...data, phaseIndex, currentPhase: PHASES[phaseIndex].id };
+    }
+
+    async function importProgressFile(file) {
+      if (!file) return;
+
+      let importedProgress;
+      try {
+        importedProgress = validateProgressImport(JSON.parse(await file.text()));
+      } catch (error) {
+        await showAlert({
+          icon: 'triangle-alert',
+          title: 'Invalid Progress File',
+          message: error instanceof Error ? error.message : 'The selected file could not be read.'
+        });
+        return;
+      }
+
+      const confirmed = await showConfirm({
+        icon: 'upload',
+        title: 'Replace Current Progress?',
+        message: 'Importing this file replaces the progress currently saved in this browser. This cannot be undone unless you have exported a backup.',
+        primaryText: 'Replace Progress',
+        cancelText: 'Keep Current Progress'
+      });
+      if (!confirmed) return;
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(importedProgress));
+        window.location.reload();
+      } catch (error) {
+        await showAlert({
+          icon: 'triangle-alert',
+          title: 'Import Failed',
+          message: error instanceof Error ? error.message : 'Imported progress could not be saved.'
+        });
+      }
     }
 
     function getCardGemReward(card) {
@@ -2019,13 +2323,13 @@
       const cardPickerA = `
         <div class="compare-card-picker">
           <label for="compareCenterCardA">Choose Card A</label>
-          <select id="compareCenterCardA" onchange="setCompareCard('a', this.value)">${placeholderA}${optionsAHtml}</select>
+          <select id="compareCenterCardA" data-action="compare.select-card" data-slot="a">${placeholderA}${optionsAHtml}</select>
         </div>`;
 
       const cardPickerB = `
         <div class="compare-card-picker">
           <label for="compareCenterCardB">Choose Card B</label>
-          <select id="compareCenterCardB" onchange="setCompareCard('b', this.value)">${placeholderB}${optionsBHtml}</select>
+          <select id="compareCenterCardB" data-action="compare.select-card" data-slot="b">${placeholderB}${optionsBHtml}</select>
         </div>`;
 
       if (!cardA || !cardB) {
@@ -2034,17 +2338,17 @@
             <div class="compare-images">
               <article class="compare-card">
                 ${cardPickerA}
-                <img src="${cardA ? cardA.image : TAROT_CARD_BACK_IMAGE}" alt="${cardA ? cardA.name : 'card back'}" loading="lazy">
+                <img src="${cardA ? cardA.image : TAROT_CARD_BACK_IMAGE}" alt="${cardA ? cardA.name : 'card back'}" ${cardA ? cardImageDimensionsMarkup(cardA) : 'width="220" height="360"'} loading="lazy">
                 <div class="compare-card-name">${cardA ? cardA.name : ''}</div>
               </article>
               <article class="compare-card">
                 ${cardPickerB}
-                <img src="${cardB ? cardB.image : TAROT_CARD_BACK_IMAGE}" alt="${cardB ? cardB.name : 'card back'}" loading="lazy">
+                <img src="${cardB ? cardB.image : TAROT_CARD_BACK_IMAGE}" alt="${cardB ? cardB.name : 'card back'}" ${cardB ? cardImageDimensionsMarkup(cardB) : 'width="220" height="360"'} loading="lazy">
                 <div class="compare-card-name">${cardB ? cardB.name : ''}</div>
               </article>
             </div>
             <div class="nav-buttons compare-reset-wrap">
-              <button class="btn btn-secondary" onclick="resetCompareSelection()">Reset Pair</button>
+              <button class="btn btn-secondary" data-action="compare.reset">Reset Pair</button>
             </div>
           </div>
         </div>`;
@@ -2066,17 +2370,17 @@
             <div class="compare-images">
               <article class="compare-card">
                 ${cardPickerA}
-                <img src="${cardA.image}" alt="${cardA.name}" loading="lazy">
+                <img src="${cardA.image}" alt="${cardA.name}" ${cardImageDimensionsMarkup(cardA)} loading="lazy">
                 <div class="compare-card-name">${cardA.name}</div>
               </article>
               <article class="compare-card">
                 ${cardPickerB}
-                <img src="${cardB.image}" alt="${cardB.name}" loading="lazy">
+                <img src="${cardB.image}" alt="${cardB.name}" ${cardImageDimensionsMarkup(cardB)} loading="lazy">
                 <div class="compare-card-name">${cardB.name}</div>
               </article>
             </div>
             <div class="nav-buttons compare-reset-wrap">
-              <button class="btn btn-secondary" onclick="resetCompareSelection()">Reset Pair</button>
+              <button class="btn btn-secondary" data-action="compare.reset">Reset Pair</button>
             </div>
           </div>
           <div class="compare-details">
@@ -2258,22 +2562,8 @@
       state.daily.pendingLoginReward = 0;
     }
 
-    function isIntroSequenceVisible() {
-      const intro = byId('arcanaIntro');
-      if (!intro) return false;
-      return !intro.classList.contains('hidden') && !intro.classList.contains('sequence-ending');
-    }
-
     function scheduleWelcomeOverlay() {
       if (!state.daily.showWelcomeBack) return;
-
-      if (isIntroSequenceVisible()) {
-        window.addEventListener('arcana:intro-finished', () => {
-          openWelcomeOverlay();
-        }, { once: true });
-        return;
-      }
-
       openWelcomeOverlay();
     }
 
@@ -2298,6 +2588,8 @@
 
       if (!card) {
         image.removeAttribute('src');
+        image.width = 220;
+        image.height = 360;
         image.alt = 'No card selected';
         image.classList.remove('current-card-pulse');
         image.classList.remove('altar-card-reversed');
@@ -2308,6 +2600,7 @@
       }
 
       image.src = card.image || TAROT_CARD_BACK_IMAGE;
+      [image.width, image.height] = getCardImageDimensions(card);
       image.alt = card.name || 'Tarot card';
       image.classList.toggle('altar-card-reversed', shouldInvertRightPanel);
       image.classList.toggle('current-card-pulse', !shouldInvertRightPanel);
@@ -2370,8 +2663,8 @@
           <div class="phase-title">Reveal Card</div>
           <p class="reveal-hint">Click the card to reveal your lesson.</p>
           <div class="card-image-wrap">
-            <button type="button" class="reveal-flip-btn" onclick="openCardFromRevealPage()" aria-label="Reveal current tarot card lesson">
-              <img class="card-image card-back-face" src="${TAROT_CARD_BACK_IMAGE}" alt="Tarot card back design" loading="lazy">
+            <button type="button" class="reveal-flip-btn" data-action="lesson.open-card-from-reveal" aria-label="Reveal current tarot card lesson">
+              <img class="card-image card-back-face" src="${TAROT_CARD_BACK_IMAGE}" alt="Tarot card back design" width="220" height="360" loading="lazy">
             </button>
           </div>
         </div>`;
@@ -2387,8 +2680,8 @@
           <p style="color:var(--text-dim)">You completed <strong>${progress.learned}/${progress.total}</strong> cards and reached <strong>${state.gems}</strong> Gems.</p>
           <p style="color:var(--text-dim)">Your journey through the Arcana is complete, but your readings are just beginning.</p>
           <div class="nav-buttons" style="margin-top:1.25rem">
-            <button class="btn btn-primary" onclick="reviewLastCard()">Review Last Card</button>
-            <button class="btn btn-secondary" onclick="resetProgress()">Begin a New Journey</button>
+            <button class="btn btn-primary" data-action="review.last-card">Review Last Card</button>
+            <button class="btn btn-secondary" data-action="progress.reset">Begin a New Journey</button>
           </div>
         </div>`;
     }
@@ -2420,10 +2713,10 @@
           </div>
 
           <div class="ritual-card-wrap">
-            <div class="card-image-wrap" onclick="revealCardFace()" role="button" tabindex="0" aria-label="Reveal the card face">
+            <div class="card-image-wrap" data-action="lesson.reveal-card-face" role="button" tabindex="0" aria-label="Reveal the card face">
               <div class="card-flip-inner ritual-flip-inner">
-                <img class="card-face card-back-face" src="${TAROT_CARD_BACK_IMAGE}" alt="Tarot card back design" loading="lazy">
-                <img class="card-face card-front-face" src="${card.image}" alt="${card.name} — Rider-Waite-Smith 1909" loading="lazy">
+                <img class="card-face card-back-face" src="${TAROT_CARD_BACK_IMAGE}" alt="Tarot card back design" width="220" height="360" loading="lazy">
+                <img class="card-face card-front-face" src="${card.image}" alt="${card.name} — Rider-Waite-Smith 1909" ${cardImageDimensionsMarkup(card)} loading="lazy" data-fallback-src="${TAROT_CARD_BACK_IMAGE}" data-fallback-width="220" data-fallback-height="360">
               </div>
             </div>
           </div>
@@ -2466,12 +2759,6 @@
         .trim();
     }
 
-    function getLandscapeMeaning(card) {
-      const keywordA = String(card?.keywords?.[0] || 'the card lesson').toLowerCase();
-      const keywordB = String(card?.keywords?.[1] || 'its deeper message').toLowerCase();
-      return `This setting grounds the card in lived experience. It shows how ${keywordA} and ${keywordB} can be practiced, not just imagined.`;
-    }
-
     function getSymbolMeaningText(card, symbol) {
       const name = String(symbol?.name || '').trim();
       let meaning = String(symbol?.meaning || '').trim();
@@ -2490,6 +2777,21 @@
     lessonRoot.cleanLessonHtml = cleanLessonHtml;
 
     function renderCharacter(card) {
+      const sceneHtml = card.scene
+        ? `${(card.scene.paragraphs || []).map(paragraph => `<p>${cleanLessonHtml(paragraph)}</p>`).join('')}<div class="memory-hook">${cleanLessonHtml(card.scene.takeaway || '')}</div>`
+        : `${card.landscape?.map(item => `<div class="observation"><p>${cleanLessonHtml(item.why)}</p></div>`).join('') || ''}<div class="memory-hook">${cleanLessonHtml(card.landscapeStory || '')}</div>${card.landscapeMeaning ? `<div class="story-block">${cleanLessonHtml(card.landscapeMeaning)}</div>` : ''}`;
+
+      if (card.figure) {
+        return `
+          <div class="card-panel">
+            <div class="phase-title">The Portrait</div>
+            <div class="story-block">${cleanLessonHtml(card.figure).replace(/\n\n/g, '</div><div class="story-block">')}</div>
+            ${card.challenge ? `<div class="memory-hook"><strong>Try this:</strong> ${cleanLessonHtml(card.challenge)}</div>` : ''}
+            <div class="phase-title">The Scene</div>
+            ${sceneHtml}
+          </div>`;
+      }
+
       const obs = card.character.map(o => `
         <div class="observation">
           <h4>${cleanLessonHtml(o.aspect)}</h4>
@@ -2501,22 +2803,9 @@
           <div class="phase-title">The Portrait</div>
           <p style="margin-bottom:1rem;color:var(--text-dim)">Start with the body. Posture, eye contact, hands, clothing, and expression whisper secrets.</p>
           ${obs}
-        </div>`;
-    }
-
-    function renderLandscape(card) {
-      const items = card.landscape.map(l => `
-        <div class="observation">
-          <p><strong>How to read this detail:</strong> ${cleanLessonHtml(l.why)}</p>
-        </div>`).join('');
-      const meaning = card.landscapeMeaning || getLandscapeMeaning(card);
-      return `
-        <div class="card-panel">
-          <div class="phase-title">The Landscape</div>
-          <p style="margin-bottom:1rem;color:var(--text-dim)">The background is more than scenery. It reveals the world the card invites you into.</p>
-          ${items}
-          <div class="memory-hook">${cleanLessonHtml(card.landscapeStory)}</div>
-          <div class="story-block"><strong>What it means:</strong> ${cleanLessonHtml(meaning)}</div>
+          ${card.characterChallenge ? `<div class="memory-hook"><strong>Try this:</strong> ${cleanLessonHtml(card.characterChallenge)}</div>` : ''}
+          <div class="phase-title">The Scene</div>
+          ${sceneHtml}
         </div>`;
     }
 
@@ -2530,7 +2819,7 @@
           <div class="story-block"><strong>What ${card.number} means:</strong><br>${cleanLessonHtml(n.meaning)}</div>
           <div class="story-block"><strong>Why it matters:</strong><br>${cleanLessonHtml(n.why)}</div>
           <div class="story-block"><strong>How ${card.name} expresses it:</strong><br>${cleanLessonHtml(n.expression)}</div>
-          <div class="memory-hook">🪝 Memory Hook: ${cleanLessonHtml(n.hook)}</div>
+          <div class="memory-hook">${cleanLessonHtml(n.hook)}</div>
         </div>`;
     }
 
@@ -2538,17 +2827,12 @@
       const rows = card.colors.map(c => `
         <div class="color-row">
           <div class="color-swatch" style="background:${c.hex}"></div>
-          <div>
-            <div class="color-name">${cleanLessonHtml(c.name)}</div>
-            <div>${cleanLessonHtml(c.meaning)}</div>
-            <div class="color-trick">${cleanLessonHtml(c.trick.replace(/"/g, ''))}</div>
-          </div>
+          <div>${cleanLessonHtml(c.phrase || '')}</div>
         </div>`).join('');
 
       return `
         <div class="card-panel">
           <div class="phase-title">The Palette</div>
-          <p style="margin-bottom:1rem;color:var(--text-dim)">Color speaks before meaning does.</p>
           ${rows}
         </div>`;
     }
@@ -2598,7 +2882,7 @@
           <span class="treasure-icon">${icon(s.icon || 'star')}</span>
           <div>
             <h4>${cleanLessonHtml(s.name)}</h4>
-            <p><strong>Look closer:</strong> ${cleanLessonHtml(getSymbolMeaningText(card, s))}</p>
+            <p>${cleanLessonHtml(getSymbolMeaningText(card, s))}</p>
           </div>
         </div>`).join('');
       return `
@@ -2621,10 +2905,9 @@
       const r = card.reversed;
       const combinedHtml = r.cautions.map((c, i) => {
         const meaning = r.meanings?.[i] || {};
-        const reversedKeyword = cleanLessonHtml(meaning.keyword || 'the upright keyword');
         return `
         <div class="shadow-item reversed-meaning">
-          <strong style="color:var(--gold)">${cleanLessonHtml(c.aspect)} (opposite of ${reversedKeyword})</strong>
+          <strong style="color:var(--gold)">${cleanLessonHtml(c.aspect)}</strong>
           <p style="font-size:0.88rem;color:var(--text)">${cleanLessonHtml(c.detail)}</p>
           <div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.35rem;margin-bottom:0.35rem">${cleanLessonHtml(meaning.meaning || '')}</div>
           <div style="font-size:0.8rem;color:var(--gold-dim);font-style:italic">${cleanLessonHtml(meaning.application || '')}</div>
@@ -2653,36 +2936,6 @@
         </div>`;
     }
 
-    function renderMovie(card) {
-      const movie = card.movie || {};
-      const m = card.memory || {};
-      return `
-        <div class="card-panel">
-          <div class="phase-title">Memory Spell</div>
-          <p style="margin-bottom:1rem;color:var(--text-dim);font-size:0.95rem;line-height:1.55">Read the card like a short film, then lock it in with memory anchors.</p>
-          <div class="movie-scene">
-            <p><strong>Setting:</strong> ${cleanLessonHtml(movie.setting || 'The scene is set for the card lesson.')}</p>
-            <p><strong>Sound:</strong> ${cleanLessonHtml(movie.sounds || 'Listen for the emotional tone beneath the image.')}</p>
-            <p><strong>Atmosphere:</strong> ${cleanLessonHtml(movie.weather || 'The mood tells you how this card is lived, not just defined.')}</p>
-            <p><strong>Key Movement:</strong> ${cleanLessonHtml(movie.moves || 'A single action reveals the card\'s turning point.')}</p>
-            <p><strong>Core Tension:</strong> ${cleanLessonHtml(movie.emotions || 'Notice what forces collide in this frame.')}</p>
-            <p><strong>What Happens Next:</strong> ${cleanLessonHtml(movie.next || 'The scene opens into the next choice.')}</p>
-          </div>
-          <div class="memory-spell-block">
-            <div class="spell-label">One-Sentence Summary</div>
-            <div class="spell-text">${cleanLessonHtml(m.summary)}</div>
-          </div>
-          <div class="memory-spell-block">
-            <div class="spell-label">Visual Memory Image</div>
-            <div class="spell-text">${cleanLessonHtml(m.visual)}</div>
-          </div>
-          <div class="memory-spell-block">
-            <div class="spell-label">Real-Life Application</div>
-            <div class="spell-text">${cleanLessonHtml(m.application)}</div>
-          </div>
-        </div>`;
-    }
-
     function renderQuiz(card) {
       if (state.quizSubmitted) return renderResults(card);
       return window.QuizPageRenderer.render({ card, answers: state.quizAnswers, icon });
@@ -2698,7 +2951,7 @@
       const groupCards = order.filter(id => getCardGroup(id) === groupId);
       const thumbs = groupCards.map(id => {
         const c = cards[id];
-        return c ? `<img class="milestone-card-thumb" src="${c.image}" alt="${c.name}" title="${c.name}">` : '';
+        return c ? `<img class="milestone-card-thumb" src="${c.image}" alt="${c.name}" title="${c.name}" ${cardImageDimensionsMarkup(c)} loading="lazy">` : '';
       }).join('');
 
       const nextId = getNextCardId();
@@ -2707,14 +2960,14 @@
       const nextPendingReward = checkPendingMilestone();
 
       const nextBtn = nextPendingReward
-        ? `<button class="btn btn-primary" onclick="goToMilestone('${nextPendingReward}')">Claim Next Milestone Reward</button>
-           <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>`
+          ? `<button class="btn btn-primary" data-action="milestone.claim" data-milestone-id="${nextPendingReward}">Claim Next Milestone Reward</button>
+            <button class="btn btn-secondary" data-action="lesson.finish">Return to Cottage</button>`
         : deckComplete
-        ? `<button class="btn btn-primary" onclick="showGrandmasterEnding()">Enter Grandmaster Ending</button>`
+        ? `<button class="btn btn-primary" data-action="ending.show-grandmaster">Enter Grandmaster Ending</button>`
         : nextCard
-           ? `<button class="btn btn-primary" onclick="startNextCard()">Move to the Next Card</button>
-             <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>`
-          : `<button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>`;
+           ? `<button class="btn btn-primary" data-action="lesson.next-card">Move to the Next Card</button>
+             <button class="btn btn-secondary" data-action="lesson.finish">Return to Cottage</button>`
+          : `<button class="btn btn-secondary" data-action="lesson.finish">Return to Cottage</button>`;
 
       return `
         <div class="card-panel milestone-screen">
@@ -2744,18 +2997,46 @@
     }
 
     /* ─── Phase router ─── */
-    function syncArcanaIntroVisibility() {
-      const intro = byId('arcanaIntro');
-      if (!intro) return;
+    function focusAndAnnounceRenderedView() {
+      if (dom.mainContent) {
+        try {
+          dom.mainContent.focus({ preventScroll: true });
+        } catch (_) {
+          dom.mainContent.focus();
+        }
+      }
 
-      intro.classList.add('force-hidden');
-      intro.classList.add('hidden', 'sequence-ending');
-      intro.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('intro-active');
+      if (!dom.viewAnnouncement) return;
+
+      let key;
+      let message;
+      if (state.compareMode) {
+        key = 'compare';
+        message = 'Card comparison';
+      } else if (state.activeView !== 'lesson') {
+        const viewLabels = {
+          home: 'Home',
+          library: 'The Seeker’s Archive',
+          chest: 'Treasure Room',
+          search: 'Card search'
+        };
+        key = `view:${state.activeView}`;
+        message = viewLabels[state.activeView] || 'Tarot Quest';
+      } else {
+        const phase = PHASES[state.phaseIndex] || PHASES[0];
+        const card = getCard();
+        key = `lesson:${state.currentCard}:${phase.id}:${state.quizSubmitted ? 'submitted' : 'open'}`;
+        message = phase.id === 'results' || (phase.id === 'quiz' && state.quizSubmitted)
+          ? `Quiz results${card?.name ? ` for ${card.name}` : ''}`
+          : `Lesson phase: ${phase.label}${card?.name ? ` — ${card.name}` : ''}`;
+      }
+
+      if (key === lastAnnouncedViewKey) return;
+      lastAnnouncedViewKey = key;
+      dom.viewAnnouncement.textContent = message;
     }
 
     function renderPhase() {
-      syncArcanaIntroVisibility();
       document.body.classList.toggle('home-view', state.activeView === 'home' && !state.compareMode);
 
       if (state.compareMode) {
@@ -2764,6 +3045,7 @@
         updateHUD();
         refreshLucideIcons();
         saveProgress();
+        focusAndAnnounceRenderedView();
         return;
       }
 
@@ -2773,6 +3055,7 @@
         updateHUD();
         refreshLucideIcons();
         saveProgress();
+        focusAndAnnounceRenderedView();
         return;
       }
 
@@ -2782,6 +3065,7 @@
         updateHUD();
         refreshLucideIcons();
         saveProgress();
+        focusAndAnnounceRenderedView();
         return;
       }
 
@@ -2791,6 +3075,7 @@
         updateHUD();
         refreshLucideIcons();
         saveProgress();
+        focusAndAnnounceRenderedView();
         return;
       }
 
@@ -2801,6 +3086,7 @@
         updateHUD();
         refreshLucideIcons();
         saveProgress();
+        focusAndAnnounceRenderedView();
         return;
       }
 
@@ -2818,10 +3104,8 @@
         case 'numerology': html = renderNumerology(card); break;
         case 'color':      html = renderColor(card); break;
         case 'character':  html = renderCharacter(card); break;
-        case 'landscape':  html = renderLandscape(card); break;
         case 'elemental':  html = renderElemental(card); break;
         case 'symbols':    html = renderSymbols(card); break;
-        case 'movie':      html = renderMovie(card); break;
         case 'reversed':   html = renderReversed(card); break;
         case 'quiz':       html = renderQuiz(card); break;
         case 'results':    html = state.quizSubmitted ? renderResults(card) : renderQuiz(card); break;
@@ -2831,20 +3115,17 @@
       const showNav = phase.id !== 'welcome' && phase.id !== 'results';
       const navHtml = showNav ? `
         <div class="nav-buttons${phase.id === 'reveal' && !state.revealCardFlipped ? ' ritual-nav' : ''}">
-          ${state.phaseIndex > 0 ? `<button class="btn btn-secondary" onclick="prevPhase()">← Back</button>` : ''}
-          ${phase.id === 'quiz'
+          ${state.phaseIndex > 0 ? `<button class="btn btn-secondary" data-action="phase.previous">← Back</button>` : ''}
+          ${phase.id === 'quiz' || phase.id === 'results'
             ? ''
-            : phase.id === 'movie'
-              ? `<button class="btn btn-primary" onclick="goToResults()">View Quiz Results →</button>`
-              : phase.id === 'results'
-                ? ''
-                : `<button class="btn btn-primary" onclick="nextPhase()">Continue →</button>`}
+            : `<button class="btn btn-primary" data-action="phase.next">Continue →</button>`}
         </div>` : '';
 
       dom.mainContent.innerHTML = html + navHtml;
       updateHUD();
       refreshLucideIcons();
       saveProgress();
+      focusAndAnnounceRenderedView();
     }
 
     /* ─── Actions ─── */
@@ -2887,7 +3168,7 @@
     function prevPhase() {
       if (state.phaseIndex <= 0) return;
       const currentPhase = PHASES[state.phaseIndex] || PHASES[0];
-      if (currentPhase.id === 'movie') {
+      if (currentPhase.id === 'results' && state.quizSubmitted) {
         const quizIndex = PHASES.findIndex(p => p.id === 'quiz');
         const reversedIndex = PHASES.findIndex(p => p.id === 'reversed');
 
@@ -2910,8 +3191,8 @@
       if (state.phaseIndex >= PHASES.length - 1) return;
       const currentPhase = PHASES[state.phaseIndex] || PHASES[0];
       if (currentPhase.id === 'reversed' && state.quizSubmitted) {
-        const movieIndex = PHASES.findIndex(p => p.id === 'movie');
-        state.phaseIndex = movieIndex >= 0 ? movieIndex : state.phaseIndex + 1;
+        const resultsIndex = PHASES.findIndex(p => p.id === 'results');
+        state.phaseIndex = resultsIndex >= 0 ? resultsIndex : state.phaseIndex + 1;
       } else {
         state.phaseIndex += 1;
       }
@@ -2982,7 +3263,7 @@
       state.lastReviewedCard = card.id;
 
       saveProgress();
-      state.phaseIndex = PHASES.findIndex(p => p.id === 'movie');
+      state.phaseIndex = PHASES.findIndex(p => p.id === 'results');
       renderPhase();
       if (!wasMastered) {
         showCompletionPopup(card, earned);
@@ -3215,7 +3496,11 @@
     }
 
     function showGrandmasterEnding() {
-      finishLesson();
+      state.activeView = 'lesson';
+      state.panelReturnView = 'home';
+      state.showingMilestone = false;
+      state.phaseIndex = 0;
+      renderPhase();
     }
 
     async function resetProgress() {
@@ -3235,28 +3520,134 @@
       }
     }
 
+    function dispatchUiAction(element, event) {
+      switch (element.dataset.action) {
+        case 'completion.close': closeCompletionPopup(); break;
+        case 'welcome.close': closeWelcomeOverlay(); break;
+        case 'compare.toggle': toggleCompareMode(); break;
+        case 'review.finish': finishReviewSession(); break;
+        case 'review.reveal': revealReviewCard(); break;
+        case 'review.rate': rateReviewCard(Number(element.dataset.rating)); break;
+        case 'card.open': goToCardLesson(element.dataset.cardId); break;
+        case 'compare.select-card': setCompareCard(element.dataset.slot, element.value); break;
+        case 'compare.reset': resetCompareSelection(); break;
+        case 'lesson.open-card-from-reveal': openCardFromRevealPage(); break;
+        case 'lesson.reveal-card-face': revealCardFace(); break;
+        case 'review.last-card': reviewLastCard(); break;
+        case 'progress.reset': resetProgress(); break;
+        case 'milestone.claim': goToMilestone(element.dataset.milestoneId); break;
+        case 'ending.show-grandmaster': showGrandmasterEnding(); break;
+        case 'lesson.next-card': startNextCard(); break;
+        case 'lesson.finish': finishLesson(); break;
+        case 'phase.previous': prevPhase(); break;
+        case 'phase.next': nextPhase(); break;
+        case 'quiz.show-results': goToResults(); break;
+        case 'chest.gem.flash': triggerTreasureGemFlash(event, element); break;
+        case 'home.start-transition': startHomeSceneTransition(); break;
+        case 'quest.start': startQuestFromHome(); break;
+        case 'certificate.download': handleDownloadFullDeckCertificate(); break;
+        case 'quiz.select-answer':
+          selectAnswer(Number(element.dataset.questionIndex), Number(element.dataset.optionIndex));
+          break;
+        case 'quiz.submit': submitQuiz(); break;
+        default: return false;
+      }
+      return true;
+    }
+
     function initGlobalHandlers() {
       document.addEventListener('pointerdown', attachRippleEffect, true);
+      document.addEventListener('pointerdown', syncAmbientMusic, true);
+      document.addEventListener('keydown', syncAmbientMusic, true);
+
+      document.addEventListener('click', event => {
+        if (!(event.target instanceof Element)) return;
+        const actionElement = event.target.closest('[data-action]');
+        if (!actionElement || ['compare.select-card', 'quiz.select-answer'].includes(actionElement.dataset.action)) return;
+        if (dispatchUiAction(actionElement, event)) event.stopPropagation();
+      }, true);
+
+      document.addEventListener('change', event => {
+        if (!(event.target instanceof Element)) return;
+        const actionElement = event.target.closest('[data-action]');
+        if (actionElement?.dataset.action === 'compare.select-card' || actionElement?.dataset.action === 'quiz.select-answer') {
+          dispatchUiAction(actionElement, event);
+        }
+      });
+
+      document.addEventListener('error', event => {
+        const image = event.target;
+        if (!(image instanceof HTMLImageElement) || !image.dataset.fallbackSrc || image.dataset.fallbackApplied === 'true') return;
+        image.dataset.fallbackApplied = 'true';
+        image.src = image.dataset.fallbackSrc;
+        image.width = Number(image.dataset.fallbackWidth) || 220;
+        image.height = Number(image.dataset.fallbackHeight) || 360;
+      }, true);
 
       document.addEventListener('keydown', (event) => {
-        if (event.key !== 'Escape') return;
+        if (event.key === 'Escape') {
+          if (state.modalOpen) {
+            return;
+          }
 
-        if (state.modalOpen) {
+          if (dom.settingsDropdown?.classList.contains('open')) {
+            closeSettingsDropdown();
+            return;
+          }
+
+          if (state.popupOpen) {
+            closeCompletionPopup();
+            return;
+          }
+
+          if (state.daily.showWelcomeBack && dom.welcomeOverlay?.classList.contains('open')) {
+            closeWelcomeOverlay();
+          }
           return;
         }
 
-        if (dom.settingsDropdown?.classList.contains('open')) {
-          closeSettingsDropdown();
+        if (event.key === 'Enter' || event.key === ' ') {
+          const actionElement = event.target instanceof Element
+            ? event.target.closest('[data-action][role="button"]')
+            : null;
+          if (actionElement && (actionElement.dataset.action === 'card.open' || actionElement.dataset.action === 'lesson.reveal-card-face')) {
+            event.preventDefault();
+            dispatchUiAction(actionElement, event);
+            return;
+          }
+        }
+
+        if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+        if (state.modalOpen || state.popupOpen || dom.welcomeOverlay?.classList.contains('open')) return;
+
+        const target = event.target;
+        const isEditing = target instanceof HTMLElement && (
+          target.isContentEditable
+          || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)
+          || !!target.closest('[contenteditable="true"]')
+        );
+        if (isEditing) return;
+
+        if (event.key === '/') {
+          event.preventDefault();
+          if (state.activeView !== 'search' || state.compareMode) openSearchPortal();
+          getSearchUiElements().input?.focus();
           return;
         }
 
-        if (state.popupOpen) {
-          closeCompletionPopup();
+        if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && state.activeView === 'lesson' && !state.compareMode) {
+          event.preventDefault();
+          event.key === 'ArrowLeft' ? prevPhase() : nextPhase();
           return;
         }
 
-        if (state.daily.showWelcomeBack && dom.welcomeOverlay?.classList.contains('open')) {
-          closeWelcomeOverlay();
+        if (event.key === '?') {
+          event.preventDefault();
+          showAlert({
+            icon: 'keyboard',
+            title: 'Keyboard Shortcuts',
+            message: '/  Search cards\n← / →  Previous or next lesson phase\n?  Show keyboard shortcuts\nEsc  Close dialogs and overlays'
+          });
         }
       });
     }
@@ -3268,6 +3659,7 @@
     initAmbientParticles();
     initSettingsPanel();
     initSidebarShortcuts();
+    initMobileSidebarProfile();
     initSidebarGroupButtons();
     initSettingsDropdown();
     initGlobalHandlers();

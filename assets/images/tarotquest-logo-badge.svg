@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"
+     fill="none" stroke="#dcb977" stroke-width="3"
+     stroke-linecap="round" stroke-linejoin="round"
+     role="img" aria-labelledby="title desc">
+  <title id="title">TarotQuest</title>
+  <desc id="desc">A compass rose with the four tarot suits — wand, cup, sword, and pentacle — at the cardinal points around a radiant center.</desc>
+
+  <!-- Compass housing and the smaller astrolabe ring. -->
+  <circle cx="64" cy="64" r="59"/>
+  <circle cx="64" cy="64" r="26" stroke="#8d7441" stroke-width="2"/>
+
+  <!-- Eight intermediate ticks: two in each quadrant, none cardinal. -->
+  <g stroke-width="2">
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(22.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(67.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(112.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(157.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(202.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(247.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(292.5 64 64)"/>
+    <line x1="64" y1="33" x2="64" y2="38" transform="rotate(337.5 64 64)"/>
+  </g>
+
+  <!-- North / Earth: an upright, interlaced pentagram in its circle. -->
+  <g>
+    <circle cx="64" cy="23" r="11"/>
+    <path d="M64 15 L68.7 29.5 L56.4 20.5 H71.6 L59.3 29.5 Z" stroke-width="2"/>
+  </g>
+
+  <!-- East / Air: point faces outward; the simple hilt faces inward. -->
+  <g>
+    <path d="M93 64 H98 M98 58 V70"/>
+    <polygon points="101,60 116,64 101,68"/>
+    <line x1="98" y1="64" x2="113" y2="64" stroke-width="2"/>
+  </g>
+
+  <!-- South / Fire: three new shoots on a living baton. -->
+  <g>
+    <line x1="64" y1="94" x2="64" y2="115"/>
+    <path d="M64 99 Q65 92 71 93 Q71 98 64 99 Z
+             M64 104 Q57 103 57 98 Q63 98 64 104 Z
+             M64 109 Q70 108 72 103 Q66 103 64 109 Z" stroke-width="2"/>
+  </g>
+
+  <!-- West / Water: shallow bowl, curved foot and a short stem. -->
+  <g>
+    <path d="M12 54 H32 Q32 66 22 66 Q12 66 12 54 Z
+             M22 66 V75 M15 78 Q22 72 29 78 Z"/>
+  </g>
+
+  <!-- Bold, undecorated eight-point star at the exact center. -->
+  <polygon points="64,49 68,57 75,53 71,60 79,64 71,68 75,75 68,71 64,79 60,71 53,75 57,68 49,64 57,60 53,53 60,57"
+           fill="#f6dfac" stroke="none"/>
+</svg>

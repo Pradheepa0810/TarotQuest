@@ -9,8 +9,8 @@
           <p>${q.q}</p>
           <div class="quiz-options">
             ${q.options.map((opt, oi) => `
-              <label class="quiz-option ${answers[qi] === oi ? 'selected' : ''}" onclick="selectAnswer(${qi}, ${oi})">
-                <input type="radio" name="q${qi}" ${answers[qi] === oi ? 'checked' : ''}>
+              <label class="quiz-option ${answers[qi] === oi ? 'selected' : ''}">
+                <input type="radio" name="q${qi}" data-action="quiz.select-answer" data-question-index="${qi}" data-option-index="${oi}" ${answers[qi] === oi ? 'checked' : ''}>
                 <span>${opt}</span>
               </label>`).join('')}
           </div>
@@ -24,7 +24,7 @@
           <p style="margin-bottom:1.25rem;color:var(--text-dim)">Answer all questions. Your score stays hidden until you submit, so no peeking.</p>
           ${questions}
           <div class="nav-buttons">
-            <button class="btn btn-primary" ${allAnswered ? '' : 'disabled'} onclick="submitQuiz()"><span class="icon-inline">${options.icon('sparkles')}<span>Face the Oracle</span></span></button>
+            <button class="btn btn-primary" data-action="quiz.submit" ${allAnswered ? '' : 'disabled'}><span class="icon-inline">${options.icon('sparkles')}<span>Face the Oracle</span></span></button>
           </div>
         </div>`;
     }

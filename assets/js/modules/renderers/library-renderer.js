@@ -15,18 +15,29 @@
         'speed_learner': 'achievement_speed.jpg',
         'tarot_master': 'achievement_master.jpg'
       };
+      const imageDimensions = {
+        'achievement_first_five.jpeg': [253, 423],
+        'achievement_major_arcana.jpeg': [248, 419],
+        'achievement_wands.jpeg': [248, 422],
+        'achievement_swords.jpg': [187, 310],
+        'achievement_pentacles.jpg': [184, 309],
+        'achievement_quiz.jpg': [186, 307],
+        'achievement_speed.jpg': [181, 308],
+        'achievement_master.jpg': [165, 269]
+      };
 
       const cardsHtml = options.achievements.map((achievement, index) => {
         const unlocked = options.unlockedIds.includes(achievement.id);
         const theme = options.themes[achievement.id] || { className: '', kicker: 'Archive Card' };
         const imagePath = `assets/images/${imageMap[achievement.id] || 'achievement_master.jpg'}`;
+        const [imageWidth, imageHeight] = imageDimensions[imageMap[achievement.id] || 'achievement_master.jpg'];
 
         return `
           <article class="achievement-card ${theme.className} ${unlocked ? 'unlocked' : 'locked'}" data-achievement="${achievement.id}" style="--card-index:${index}; --sweep-delay:${index}s;">
             <div class="achievement-back" aria-hidden="true">
               <div class="achievement-back-inner">
                 <div class="achievement-illustration">
-                  <img src="${imagePath}" alt="${achievement.name}" class="achievement-card-image" loading="lazy" onerror="this.onerror=null;this.src='assets/images/achievement_master.jpg';" />
+                  <img src="${imagePath}" alt="${achievement.name}" class="achievement-card-image" width="${imageWidth}" height="${imageHeight}" loading="lazy" data-fallback-src="assets/images/achievement_master.jpg" data-fallback-width="165" data-fallback-height="269" />
                   <div class="achievement-hover-sparkles" aria-hidden="true">
                     <span></span><span></span><span></span><span></span><span></span>
                   </div>
@@ -45,7 +56,7 @@
       }).join('');
 
       const certificateBtn = `
-        <button class="btn btn-accent" onclick="handleDownloadFullDeckCertificate()" style="margin-bottom: 1.5rem;">
+        <button class="btn btn-accent" data-action="certificate.download" style="margin-bottom: 1.5rem;">
           <span class="icon-inline">${options.icon('award')}<span>Download Mastery Certificate</span></span>
         </button>`;
 
@@ -53,7 +64,7 @@
         <section class="card-panel alchemy-library-panel">
           <div class="alchemy-library-head">
             <div>
-              <h2 class="phase-title">Alchemy Library</h2>
+              <h2 class="phase-title">The Seeker’s Archive</h2>
               <p class="alchemy-library-copy">Collected achievement cards: ${unlockedCount}/${options.achievements.length}</p>
               ${options.deckComplete ? '<p class="alchemy-library-copy" style="color: var(--color-accent); margin-top: 0.5rem;">🌟 Entire Deck Mastered! 🌟</p>' : ''}
             </div>

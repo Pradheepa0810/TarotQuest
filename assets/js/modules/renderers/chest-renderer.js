@@ -12,7 +12,7 @@
       ];
 
       const gemGrid = gemStats.map((stat, index) => `
-            <button class="treasure-gem-wrap gem-${stat.type}" type="button" style="--gem-index:${index}" onclick="triggerTreasureGemFlash(event, this)">
+            <button class="treasure-gem-wrap gem-${stat.type}" type="button" style="--gem-index:${index}" data-action="chest.gem.flash" data-gem-type="${stat.type}">
               <div class="gem-svg-shell" aria-hidden="true">
                 ${this.renderTreasureGemSvg(stat.type, index)}
                 <span class="gem-sparkle sparkle-1">
@@ -41,7 +41,7 @@
             </div>
           </div>
           <div class="chest-vault-image-wrap">
-            <img class="chest-vault-image" src="assets/images/Treasure_room.JPEG" alt="Treasure room" loading="lazy">
+            <img class="chest-vault-image" src="assets/images/Treasure_room.JPEG" alt="Treasure room" width="430" height="240" loading="lazy">
             <div class="chest-vault-amount"><span class="icon-inline">${options.icon('gem')}<span>${options.state.gems} Gems</span></span></div>
           </div>
           <p class="chest-vault-subcopy">Every lesson, quiz, streak, and achievement strengthens your chest.</p>

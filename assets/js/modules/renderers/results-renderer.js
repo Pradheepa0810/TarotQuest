@@ -33,14 +33,14 @@
         </div>`).join('');
 
       const nextBtn = options.pendingMilestoneId
-        ? `<button class="btn btn-primary" onclick="goToMilestone('${options.pendingMilestoneId}')"><span class="icon-inline">${options.icon('award')}<span>Claim Your Reward</span></span></button>`
+        ? `<button class="btn btn-primary" data-action="milestone.claim" data-milestone-id="${options.pendingMilestoneId}"><span class="icon-inline">${options.icon('award')}<span>Claim Your Reward</span></span></button>`
         : options.nextCard
-          ? '<button class="btn btn-primary" onclick="startNextCard()">Move to the Next Card</button>'
+          ? '<button class="btn btn-primary" data-action="lesson.next-card">Move to the Next Card</button>'
           : `<div class="complete-banner" style="margin-bottom:1rem"><span class="icon-inline">${options.icon('crown')}<span>You mastered all ${options.totalCards} cards!</span></span></div>`;
 
       const primaryNav = options.nextCard && !options.pendingMilestoneId
         ? `<div class="results-primary-nav">
-             <button class="btn btn-secondary" onclick="prevPhase()">← Back</button>
+             <button class="btn btn-secondary" data-action="phase.previous">← Back</button>
              ${nextBtn}
            </div>`
         : nextBtn;
@@ -58,8 +58,8 @@
 
           <div class="nav-buttons" style="margin-top:1.5rem">
             ${primaryNav}
-            ${options.state.lastReviewedCard ? '<button class="btn btn-secondary" onclick="reviewLastCard()">Review This Card Again</button>' : ''}
-            <button class="btn btn-secondary" onclick="finishLesson()">Return to Cottage</button>
+            ${options.state.lastReviewedCard ? '<button class="btn btn-secondary" data-action="review.last-card">Review This Card Again</button>' : ''}
+            <button class="btn btn-secondary" data-action="lesson.finish">Return to Cottage</button>
           </div>
         </div>`;
     }

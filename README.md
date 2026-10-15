@@ -11,7 +11,9 @@ After each lesson, test what you learned with an Oracle quiz, review your answer
 2. Open `index.html` (or `tarot-quest.html`) in any modern browser.
 3. Start from the Home scene and use the in-app buttons to navigate.
 
-No build step or backend server is required.
+No build step or backend server is required. To install the app and enable offline support, serve it from `localhost` or HTTPS; opening a `file://` page does not enable service workers. The app shell and local artwork are cached on the first online visit. Hosted tarot card images and fonts are cached as they load, so open the cards you want available before going offline. Progress remains in local browser storage and is not synced between devices.
+
+Use **Export Progress** in Sanctum Settings to download a JSON backup. **Import Progress** validates a backup and asks for confirmation before replacing the progress saved in this browser.
 
 ## Website Navigation Guide (With Images)
 
@@ -55,7 +57,7 @@ Open the treasure/chest experience to view gem totals and progression highlights
 
 ![Treasure Room](assets/images/Treasure_room.JPEG)
 
-### 6) Alchemy Library (Achievements)
+### 6) The Seeker’s Archive (Achievements)
 
 Check the Library to view achievement cards and unlock progress.
 
@@ -72,14 +74,22 @@ Check the Library to view achievement cards and unlock progress.
 tarot-quest/
 ├─ tarot-quest.html
 ├─ deck-data.js
+├─ manifest.webmanifest
 ├─ README.md
+├─ service-worker.js
 ├─ assets/
 │  ├─ css/
 │  │  └─ main.css
 │  ├─ images/
+│  │  ├─ apple-touch-icon.png
 │  │  ├─ Cottage.jpeg
+│  │  ├─ Cottage-fallback.jpg
+│  │  ├─ Cottage.webp
 │  │  ├─ Inside_Cottage.jpeg.png
+│  │  ├─ letter.jpg
 │  │  ├─ letter.jpeg.png
+│  │  ├─ letter.webp
+│  │  ├─ og-preview.jpg
 │  │  ├─ Treasure_room.JPEG
 │  │  ├─ achievement_first_five.jpeg
 │  │  ├─ achievement_major_arcana.jpeg
@@ -89,11 +99,13 @@ tarot-quest/
 │  │  ├─ achievement_speed.jpg
 │  │  ├─ achievement_swords.jpg
 │  │  ├─ achievement_wands.jpeg
-│  │  ├─ whimsical cottage.jpeg
+│  │  ├─ favicon.png
+│  │  ├─ tarot-quest-icon-192.png
+│  │  ├─ tarot-quest-icon-512.png
 │  │  └─ whimsical-cottage.jpeg
 │  └─ js/
 │     ├─ app.js
-│     ├─ intro-sequence.js
+│     ├─ pwa.js
 │     └─ modules/
 │        ├─ achievement-service.js
 │        ├─ quiz-engine.js
@@ -114,6 +126,8 @@ tarot-quest/
 - `tarot-quest.html`: Main HTML shell. Mount point and script/style includes for the app.
 - `deck-data.js`: Tarot deck source data (cards, ordering, and metadata consumed by app logic).
 - `README.md`: Project documentation and usage notes.
+- `manifest.webmanifest`: Installable app metadata and home-screen icons.
+- `service-worker.js`: Caches the local app shell and previously requested hosted assets for offline use.
 
 ### Styles
 
@@ -122,7 +136,7 @@ tarot-quest/
 ### Core App Scripts
 
 - `assets/js/app.js`: Main runtime controller. Handles state transitions, rendering orchestration, navigation logic, progression, gems, and action wiring.
-- `assets/js/intro-sequence.js`: Intro behavior handler. Legacy full-screen intro is programmatically disabled and hidden to prevent interaction conflicts.
+- `assets/js/pwa.js`: Registers the service worker and reports network status.
 
 ### Service/Logic Modules
 
@@ -136,7 +150,7 @@ tarot-quest/
 - `assets/js/modules/renderers/home-renderer.js`: Home panel markup, cottage-to-letter transition visuals, and Home CTA buttons.
 - `assets/js/modules/renderers/quiz-renderer.js`: Quiz screen markup, answer selection UI, and submit button state.
 - `assets/js/modules/renderers/results-renderer.js`: Seeker Accuracy screen, question result breakdown, earned gems, and post-quiz actions.
-- `assets/js/modules/renderers/library-renderer.js`: Alchemy Library achievement card grid and achievement visuals.
+- `assets/js/modules/renderers/library-renderer.js`: The Seeker’s Archive achievement card grid and achievement visuals.
 - `assets/js/modules/renderers/chest-renderer.js`: Treasure Room panel, gem visuals, progression summary, and gem interaction effects.
 
 ### Images
